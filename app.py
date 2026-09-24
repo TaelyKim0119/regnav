@@ -10,6 +10,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+from regnav.budget import status as budget_status
 from regnav.pipeline import ORDER, review
 
 load_dotenv()
@@ -65,4 +66,4 @@ def review_api(body: ReviewIn):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "mode": _mode()}
+    return {"ok": True, "mode": _mode(), "budget": budget_status()}

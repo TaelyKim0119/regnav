@@ -80,9 +80,14 @@ def _ask(client, user: str) -> dict:
     return _extract_json(r.choices[0].message.content or "")
 
 
-def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run: bool = False) -> Verdict:
+def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run: bool = False, budget=None) -> Verdict:
     if dry_run:
         return _dry(part, regulation, title, url, scope)
+    est_tokens = (len(SYSTEM) + len(part) + len(title) + min(len(scope), 2500)) // 4 + 300
+    if budget is not None and not budget.allow(est_tokens):
+        v = _dry(part, regulation, title, url, scope)
+        v.why = "[budget cap reached - no live call made] " + v.why
+        return v
     try:
         client = _client()
         user = f"PART: {part}\n\nREGULATION: {regulation} - {title}\nURL: {url}\n\nSCOPE EXCERPT:\n{scope[:2500]}"

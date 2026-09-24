@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from regnav.budget import ReviewBudget
 from regnav.judge import Verdict, judge
 from regnav.sources import ecfr, tavily_search, unece
 from regnav.text import terms
@@ -75,6 +76,7 @@ def fmvss_candidates(part: str, limit: int = 8) -> list[ecfr.Section]:
 
 def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int = 6) -> Report:
     report = Report(part, mode="dry-run" if dry_run else "nemotron")
+    budget = ReviewBudget()
 
     # optional web retrieval widens both candidate lists
     report.web_hits = tavily_search.search(part)
@@ -86,7 +88,7 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         if reg and reg not in un_cands:
             un_cands.append(reg)
     for reg in un_cands:
-        report.verdicts.append(judge(part, reg.code, reg.title, reg.url, reg.scope or reg.title, dry_run=dry_run))
+        report.verdicts.append(judge(part, reg.code, reg.title, reg.url, reg.scope or reg.title, dry_run=dry_run, budget=budget))
 
     fm_cands = fmvss_candidates(part, max_fmvss)
     if fm_named:
@@ -94,5 +96,5 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         fm_cands += [s for s in ecfr.index() if s.number in fm_named and s.number not in seen]
     for s in fm_cands:
         scope = ecfr.scope_excerpt(ecfr.section_text(s.identifier))
-        report.verdicts.append(judge(part, f"FMVSS {s.number}", s.label, s.url, scope, dry_run=dry_run))
+        report.verdicts.append(judge(part, f"FMVSS {s.number}", s.label, s.url, scope, dry_run=dry_run, budget=budget))
     return report
