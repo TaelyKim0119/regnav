@@ -41,7 +41,10 @@ class Verdict:
         return asdict(self)
 
 
-MODEL = os.environ.get("REGNAV_MODEL", "nvidia/nemotron-3-super-120b-a12b")   # verify the exact id on Token Factory
+MODEL = os.environ.get("REGNAV_MODEL", "nvidia/nemotron-3-super-120b-a12b")
+# Nemotron 3 reasons before answering; the reasoning counts against max_tokens, so
+# 300 truncates the reply before the JSON. ~300 reasoning + ~100 JSON is typical.
+MAX_TOKENS = int(os.environ.get("REGNAV_MAX_TOKENS", 1000))
 
 
 def _client():
@@ -71,19 +74,19 @@ def _ask(client, user: str) -> dict:
     model = os.environ.get("REGNAV_MODEL", MODEL)
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
     try:
-        r = client.chat.completions.create(model=model, temperature=0.1, max_tokens=300,
+        r = client.chat.completions.create(model=model, temperature=0.1, max_tokens=MAX_TOKENS,
                                            response_format={"type": "json_object"}, messages=messages)
     except Exception as e:  # e.g. 400 when the model has no JSON-mode tag
         if "response_format" not in str(e) and "json" not in str(e).lower():
             raise
-        r = client.chat.completions.create(model=model, temperature=0.1, max_tokens=300, messages=messages)
+        r = client.chat.completions.create(model=model, temperature=0.1, max_tokens=MAX_TOKENS, messages=messages)
     return _extract_json(r.choices[0].message.content or "")
 
 
 def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run: bool = False, budget=None) -> Verdict:
     if dry_run:
         return _dry(part, regulation, title, url, scope)
-    est_tokens = (len(SYSTEM) + len(part) + len(title) + min(len(scope), 2500)) // 4 + 300
+    est_tokens = (len(SYSTEM) + len(part) + len(title) + min(len(scope), 2500)) // 4 + 600
     if budget is not None and not budget.allow(est_tokens):
         v = _dry(part, regulation, title, url, scope)
         v.why = "[budget cap reached - no live call made] " + v.why
