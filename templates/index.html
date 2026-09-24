@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RegNav</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --fg:#e2e8f0; --muted:#94a3b8; --must:#f87171; --check:#fbbf24; --ref:#60a5fa; --accent:#34d399; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  form { display:flex; gap:8px; flex-wrap:wrap; }
+  textarea { flex:1 1 100%; min-height: 80px; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: var(--card); color: var(--fg); font-size: 1rem; }
+  button { padding: 10px 18px; border: 0; border-radius: 8px; background: var(--accent); color:#022c22; font-weight:600; cursor:pointer; }
+  .mode { color: var(--muted); font-size: .85rem; align-self:center; }
+  section { margin-top: 24px; }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; }
+  .card { background: var(--card); border-left: 4px solid var(--ref); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .card.must { border-color: var(--must); }
+  .card.check { border-color: var(--check); }
+  .card .head { display:flex; justify-content:space-between; gap: 8px; flex-wrap: wrap; }
+  .card .reg { font-weight: 700; }
+  .card .conf { color: var(--muted); font-size: .9rem; }
+  .card p { margin: 6px 0; }
+  .card a { color: var(--ref); font-size: .9rem; word-break: break-all; }
+  .examples button { background: #334155; color: var(--fg); font-weight: 500; font-size: .85rem; padding: 6px 10px; margin: 8px 4px 0 0; }
+  .disclaimer { color: var(--muted); font-size: .85rem; margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>RegNav</h1>
+  <p class="sub">Which regulations apply to this automotive part? FMVSS (US, live from eCFR) + UN Regulations (1958 Agreement), each judged by NVIDIA Nemotron on Nebius Token Factory.</p>
+  <form method="post" action="/review">
+    <textarea name="part" placeholder="Describe the part, e.g. LED rear lamp module, replacement tail lamp with stop and turn signal functions">{{ part or "" }}</textarea>
+    <button type="submit">Review</button>
+    <span class="mode">mode: {{ mode }}</span>
+  </form>
+  <div class="examples">
+    {% for ex in examples %}<button type="button" onclick='document.querySelector("textarea").value={{ ex|tojson }}'>{{ ex }}</button>{% endfor %}
+  </div>
+
+  {% if report %}
+    {% for prio, label in order %}
+      {% set items = report.bucket(prio) %}
+      {% if items %}
+      <section>
+        <h2>{{ label }} ({{ items|length }})</h2>
+        {% for v in items %}
+        <div class="card {{ prio }}">
+          <div class="head">
+            <span class="reg">{{ v.regulation }} &middot; {{ v.title }}</span>
+            <span class="conf">applies: {{ v.applies }} &middot; confidence {{ "%.2f"|format(v.confidence) }}</span>
+          </div>
+          <p>{{ v.why }}</p>
+          {% if v.clauses %}<p class="conf">clauses: {{ v.clauses|join(", ") }}</p>{% endif %}
+          <a href="{{ v.url }}" target="_blank" rel="noopener">{{ v.url }}</a>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+    {% endfor %}
+    {% if not report.verdicts %}<section><p>No candidate regulations matched. Try naming the component and its function.</p></section>{% endif %}
+  {% endif %}
+
+  {% if report and report.web_hits %}
+  <section>
+    <h2>Web evidence via Tavily ({{ report.web_hits|length }})</h2>
+    {% for h in report.web_hits %}
+    <div class="card"><div class="head"><span class="reg">{{ h.title }}</span></div><p>{{ h.snippet }}</p><a href="{{ h.url }}" target="_blank" rel="noopener">{{ h.url }}</a></div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <p class="disclaimer">RegNav is a review assistant: it surfaces candidate regulations and evidence for a human reviewer. It is not legal advice and does not replace type-approval or certification counsel.</p>
+</main>
+</body>
+</html>
