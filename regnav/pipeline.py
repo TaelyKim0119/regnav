@@ -1,6 +1,8 @@
 """Part -> candidate regulations -> verdicts -> review report."""
 from __future__ import annotations
 
+import os
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from regnav.budget import ReviewBudget
@@ -87,8 +89,7 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         reg = unece.BY_NUMBER.get(n)
         if reg and reg not in un_cands:
             un_cands.append(reg)
-    for reg in un_cands:
-        report.verdicts.append(judge(part, reg.code, reg.title, reg.url, reg.scope or reg.title, dry_run=dry_run, budget=budget))
+    jobs = [(reg.code, reg.title, reg.url, reg.scope or reg.title) for reg in un_cands]
 
     fm_cands = fmvss_candidates(part, max_fmvss)
     if fm_named:
@@ -96,5 +97,27 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         fm_cands += [s for s in ecfr.index() if s.number in fm_named and s.number not in seen]
     for s in fm_cands:
         scope = ecfr.scope_excerpt(ecfr.section_text(s.identifier))
-        report.verdicts.append(judge(part, f"FMVSS {s.number}", s.label, s.url, scope, dry_run=dry_run, budget=budget))
+        jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
+    report.verdicts = judge_all(part, jobs, dry_run=dry_run, budget=budget)
     return report
+
+
+def judge_all(part: str, jobs: list[tuple[str, str, str, str]], dry_run: bool = False,
+              budget: ReviewBudget | None = None, workers: int | None = None) -> list[Verdict]:
+    """Judge candidates concurrently, keeping input order.
+
+    Every live call still goes through ``budget.allow()`` (lock-protected), so the
+    per-review and per-day caps hold under concurrency; denied calls fall back to
+    dry-run verdicts inside ``judge``.
+    """
+    if workers is None:
+        workers = int(os.environ.get("REGNAV_JUDGE_WORKERS", 4))
+    workers = max(1, min(workers, 8, len(jobs) or 1))
+
+    def one(job):
+        return judge(part, *job, dry_run=dry_run, budget=budget)
+
+    if workers == 1:
+        return [one(j) for j in jobs]
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(one, jobs))
