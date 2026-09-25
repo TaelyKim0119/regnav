@@ -88,9 +88,10 @@ def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run:
         return _dry(part, regulation, title, url, scope)
     est_tokens = (len(SYSTEM) + len(part) + len(title) + min(len(scope), 2500)) // 4 + 600
     if budget is not None and not budget.allow(est_tokens):
-        v = _dry(part, regulation, title, url, scope)
-        v.why = "[budget cap reached - no live call made] " + v.why
-        return v
+        # Not judged: never present a keyword guess as a verdict.
+        return Verdict(regulation, title, url, "unclear", 0.0,
+                       "[not judged: per-review or daily call cap reached; candidate listed for manual review]",
+                       [], "reference")
     try:
         client = _client()
         user = f"PART: {part}\n\nREGULATION: {regulation} - {title}\nURL: {url}\n\nSCOPE EXCERPT:\n{scope[:2500]}"
