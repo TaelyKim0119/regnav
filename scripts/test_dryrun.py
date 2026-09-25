@@ -68,9 +68,25 @@ def check_dry_review_and_api():
     print("ok api: GET / 200 in dry-run mode")
 
 
+def check_kmvss_scaffold():
+    from regnav.sources import kmvss
+    top = [t.key for t, _ in kmvss.search(EXAMPLE)]
+    assert top and top[0] == "lighting", top
+    assert all(not t.article for t in kmvss.SEED), "article numbers must come from the official API"
+    assert kmvss.search("아날로그 시계") == []
+    os.environ["REGNAV_KMVSS"] = "1"
+    try:
+        regs = [v.regulation for v in pipeline.review(EXAMPLE, dry_run=True).verdicts]
+    finally:
+        os.environ.pop("REGNAV_KMVSS")
+    assert any(r.startswith("KMVSS") for r in regs), regs
+    print(f"ok kmvss: seed topics {top}, opt-in adds them to the review")
+
+
 EXAMPLE = "LED rear lamp module, replacement tail lamp with stop and turn signal functions"
 
 if __name__ == "__main__":
     check_parallel_order_and_budget()
     check_dry_review_and_api()
+    check_kmvss_scaffold()
     print("all dry-run checks passed")

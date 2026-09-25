@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 from regnav.budget import ReviewBudget
 from regnav.judge import Verdict, judge
-from regnav.sources import ecfr, tavily_search, unece
+from regnav.sources import ecfr, kmvss, tavily_search, unece
 from regnav.text import terms
 
 ORDER = (("must", "Must review"), ("check", "Confirm"), ("reference", "Reference only"))
@@ -98,6 +98,8 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     for s in fm_cands:
         scope = ecfr.scope_excerpt(ecfr.section_text(s.identifier))
         jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
+    if os.environ.get("REGNAV_KMVSS") == "1":  # opt-in until article text comes from the 법제처 API
+        jobs += [kmvss.judge_job(t) for t, _ in kmvss.search(part)]
     report.verdicts = judge_all(part, jobs, dry_run=dry_run, budget=budget)
     return report
 
