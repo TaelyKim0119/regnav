@@ -26,6 +26,10 @@
   .card a { color: var(--ref); font-size: .9rem; word-break: break-all; }
   .examples button { background: #334155; color: var(--fg); font-weight: 500; font-size: .85rem; padding: 6px 10px; margin: 8px 4px 0 0; }
   .disclaimer { color: var(--muted); font-size: .85rem; margin-top: 28px; }
+  table.cmp { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.cmp th, table.cmp td { border: 1px solid #ccd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  .tag { font-size: 11px; padding: 1px 5px; border-radius: 6px; background: #eef; }
+  @media (max-width: 640px) { table.cmp { display: block; overflow-x: auto; } }
 </style>
 </head>
 <body>
@@ -64,6 +68,22 @@
     {% if not report.verdicts %}<section><p>No candidate regulations matched. Try naming the component and its function.</p></section>{% endif %}
   {% endif %}
 
+  {% if report and report.comparison %}
+  <section>
+    <h2>Comparison: FMVSS / UN R / KMVSS</h2>
+    <p class="conf">Same subject in three regimes (curated equivalence, not an applicability verdict). A tag marks codes judged above.</p>
+    <table class="cmp">
+      <tr><th>Topic</th><th>FMVSS (US)</th><th>UN R (1958 Agreement)</th><th>KMVSS (Korea)</th></tr>
+      {% for r in report.comparison %}
+      <tr><td>{{ r.topic }}</td>
+        {% for cells in (r.fmvss, r.unece, r.kmvss) %}
+        <td>{% for c in cells %}<a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.code }}</a>{% if c.judged %} <span class="tag {{ c.judged }}">{{ c.judged }}</span>{% endif %}{% if not loop.last %}<br>{% endif %}{% else %}-{% endfor %}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+  {% endif %}
   {% if report and report.web_hits %}
   <section>
     <h2>Web evidence via Tavily ({{ report.web_hits|length }})</h2>

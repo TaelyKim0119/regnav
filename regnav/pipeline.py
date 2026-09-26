@@ -5,6 +5,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
+from regnav import compare
 from regnav.budget import ReviewBudget
 from regnav.judge import Verdict, judge
 from regnav.sources import ecfr, kmvss, tavily_search, unece
@@ -19,6 +20,7 @@ class Report:
     mode: str = "dry-run"
     verdicts: list[Verdict] = field(default_factory=list)
     web_hits: list[tavily_search.WebHit] = field(default_factory=list)
+    comparison: list[compare.Row] = field(default_factory=list)
 
     def bucket(self, prio: str) -> list[Verdict]:
         return sorted((v for v in self.verdicts if v.review_priority == prio), key=lambda v: -v.confidence)
@@ -26,7 +28,8 @@ class Report:
     def to_dict(self) -> dict:
         return {"part": self.part, "mode": self.mode,
                 "verdicts": [v.to_dict() for v in self.verdicts],
-                "web_hits": [h.to_dict() for h in self.web_hits]}
+                "web_hits": [h.to_dict() for h in self.web_hits],
+                "comparison": [r.to_dict() for r in self.comparison]}
 
     def markdown(self) -> str:
         lines = [f"# RegNav review - {self.part}", "", f"_mode: {self.mode}_", "",
@@ -44,6 +47,7 @@ class Report:
                     lines.append(f"  clauses: {', '.join(v.clauses)}  ")
                 lines.append(f"  {v.url}")
             lines.append("")
+        lines += compare.markdown(self.comparison)
         if self.web_hits:
             lines.append(f"## Web evidence via Tavily ({len(self.web_hits)})")
             for h in self.web_hits:
@@ -101,6 +105,7 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     if os.environ.get("REGNAV_KMVSS") == "1":  # opt-in until article text comes from the 법제처 API
         jobs += [kmvss.judge_job(t) for t, _ in kmvss.search(part)]
     report.verdicts = judge_all(part, jobs, dry_run=dry_run, budget=budget)
+    report.comparison = compare.comparison(part, report.verdicts)
     return report
 
 

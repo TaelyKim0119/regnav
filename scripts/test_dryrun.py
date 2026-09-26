@@ -89,8 +89,23 @@ def check_kmvss_scaffold():
 
 EXAMPLE = "LED rear lamp module, replacement tail lamp with stop and turn signal functions"
 
+def check_comparison_table():
+    from fastapi.testclient import TestClient
+    import app as webapp
+    part = "Aftermarket brake pad set for passenger car disc brakes"
+    rep = pipeline.review(part, dry_run=True)
+    row = rep.comparison[0]
+    assert row.kmvss[0].code.startswith("KMVSS") and any(c.code == "FMVSS 135" for c in row.fmvss), row.to_dict()
+    assert any(c.code == "UN R90" and c.judged for c in row.unece), "judged candidates must be tagged"
+    assert "## Comparison: FMVSS / UN R / KMVSS" in rep.markdown()
+    html = TestClient(webapp.app).post("/review", data={"part": part}).text
+    assert 'class="cmp"' in html and "FMVSS 135" in html
+    print(f"ok comparison: {len(rep.comparison)} topic row(s), UI table rendered")
+
+
 if __name__ == "__main__":
     check_parallel_order_and_budget()
     check_dry_review_and_api()
     check_kmvss_scaffold()
+    check_comparison_table()
     print("all dry-run checks passed")
