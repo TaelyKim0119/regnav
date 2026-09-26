@@ -72,7 +72,11 @@ def check_kmvss_scaffold():
     from regnav.sources import kmvss
     top = [t.key for t, _ in kmvss.search(EXAMPLE)]
     assert top and top[0] == "lighting", top
-    assert all(not t.article for t in kmvss.SEED), "article numbers must come from the official API"
+    # Articles are copied from a cited public copy of the rule, never guessed: each must look
+    # like a 조 reference, and the module docstring must name its source.
+    import re
+    assert all(re.fullmatch(r"제\d+조(의\d+)?(·제\d+조(의\d+)?)*", t.article) for t in kmvss.SEED if t.article)
+    assert "ulex.co.kr" in (kmvss.__doc__ or ""), "KMVSS article source must be cited"
     assert kmvss.search("아날로그 시계") == []
     os.environ["REGNAV_KMVSS"] = "1"
     try:
