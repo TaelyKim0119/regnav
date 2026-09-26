@@ -1,9 +1,10 @@
 .env
 .venv/
-__pycache__/
-*.pyc
+.git/
+notes/
 data/cache/
 proposal_text.txt
+__pycache__/
+*.pyc
 .claude/
-notes/
 space_build/

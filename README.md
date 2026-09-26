@@ -60,6 +60,20 @@ curl -X POST http://127.0.0.1:8000/api/review -H "Content-Type: application/json
      -d "{\"part\": \"Aftermarket brake pad set for passenger car disc brakes\"}"
 ```
 
+## Deploy (Docker / Hugging Face Spaces)
+
+The container listens on `$PORT` (default 7860, the Hugging Face Spaces convention):
+
+```bash
+docker build -t regnav . && docker run -p 7860:7860 -e NEBIUS_API_KEY=... regnav
+```
+
+For a Hugging Face Docker Space, `scripts/make_space.py --out space_build` assembles the
+Space folder from git-tracked files only (adds the `sdk: docker` README header from
+`space/`), checks the Space contract and boots the app once in dry-run mode, all without
+Docker. Push that folder to the Space and set `NEBIUS_API_KEY` as a Space secret. The
+per-review and per-day call caps in `regnav/budget.py` stay active on the public demo.
+
 ## Hackathon compliance
 
 * NVIDIA open model: `nvidia/nemotron-3-super-120b-a12b` (Nemotron 3 Super) served by Nebius Token Factory (OpenAI-compatible endpoint, runtime calls on every review).
