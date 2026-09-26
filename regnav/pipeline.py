@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from regnav.budget import ReviewBudget
 from regnav.judge import Verdict, judge
 from regnav.sources import ecfr, kmvss, tavily_search, unece
-from regnav.text import terms
+from regnav.text import terms, us_terms
 
 ORDER = (("must", "Must review"), ("check", "Confirm"), ("reference", "Reference only"))
 
@@ -59,7 +59,7 @@ def fmvss_candidates(part: str, limit: int = 8) -> list[ecfr.Section]:
     (e.g. 571.122 and 571.122a); keep only the latest identifier per title.
     Ties are broken towards shorter, more specific titles.
     """
-    words = terms(part)
+    words = us_terms(terms(part))
     by_label: dict[str, ecfr.Section] = {}
     for s in ecfr.index():
         if not s.number:

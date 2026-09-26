@@ -17,21 +17,24 @@ class UnReg:
     title: str
     keywords: tuple[str, ...]
     scope: str = ""
+    suffix: str = ""  # e.g. "-H" for UN R13-H
 
     @property
     def code(self) -> str:
-        return f"UN R{self.number}"
+        return f"UN R{self.number}{self.suffix}"
 
     @property
     def url(self) -> str:
-        return f"https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations-{self.number}"
+        return f"https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations-{self.number}{self.suffix.lower()}"
 
 
 CATALOGUE: list[UnReg] = [
-    UnReg(10, "Electromagnetic compatibility", ("emc", "electromagnetic", "전자파", "ecu", "electronic", "전장"),
+    UnReg(10, "Electromagnetic compatibility", ("emc", "electromagnetic", "전자파", "ecu", "electronic", "전장", "led", "sensor", "electrical", "wireless", "transmitter"),
           scope="Vehicles and electrical/electronic sub-assemblies (ESAs) intended to be fitted to vehicles, with regard to electromagnetic compatibility (emission and immunity)."),
     UnReg(13, "Braking of heavy vehicles", ("brake", "braking", "제동", "브레이크", "abs"),
           scope="Braking systems of vehicles of categories M2, M3, N and O, including service, secondary and parking braking and ABS; passenger cars use R13-H."),
+    UnReg(13, "Braking of passenger cars", ("brake", "braking", "제동", "브레이크", "abs"), suffix="-H",
+          scope="Braking of vehicles of categories M1 and N1 (passenger cars and light goods vehicles): service, secondary and parking braking, ABS and brake performance requirements."),
     UnReg(14, "Safety-belt anchorages", ("seat belt anchorage", "안전벨트", "앵커리지", "isofix"),
           scope="Safety-belt anchorages, ISOFIX anchorage systems and ISOFIX top tether anchorages in vehicles of categories M and N."),
     UnReg(16, "Safety-belts and restraint systems", ("seat belt", "belt", "안전벨트", "restraint"),
@@ -46,6 +49,8 @@ CATALOGUE: list[UnReg] = [
           scope="New pneumatic tyres designed primarily for vehicles of categories M1, O1 and O2."),
     UnReg(43, "Safety glazing materials", ("glass", "glazing", "유리", "윈드실드", "windshield", "틴팅", "tint"),
           scope="Safety glazing materials (windscreens, windows, glass-plastics) intended for installation on vehicles, and their installation."),
+    UnReg(44, "Child restraint systems (legacy)", ("child seat", "카시트", "child restraint", "booster", "isofix"),
+          scope="Restraining devices for child occupants of power-driven vehicles (legacy regulation; new approvals have moved to R129, and EU sales of R44-only seats ended in 2024)."),
     UnReg(46, "Devices for indirect vision (mirrors)", ("mirror", "미러", "camera monitor", "indirect vision"),
           scope="Devices for indirect vision, including mirrors and camera-monitor systems, and their installation on vehicles of categories M and N."),
     UnReg(48, "Installation of lighting and light-signalling devices", ("lamp", "lighting", "램프", "등화", "headlamp", "installation"),
@@ -106,7 +111,7 @@ CATALOGUE: list[UnReg] = [
           scope="Automated lane keeping systems (ALKS) fitted to vehicles of category M1 (vehicle-level approval)."),
 ]
 
-BY_NUMBER = {r.number: r for r in CATALOGUE}
+BY_NUMBER = {r.number: r for r in CATALOGUE if not r.suffix}
 
 
 def search(text: str, limit: int = 8) -> list[tuple[UnReg, int]]:
