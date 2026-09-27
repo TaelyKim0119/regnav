@@ -25,7 +25,24 @@ class UnReg:
 
     @property
     def url(self) -> str:
-        return f"https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations-{self.number}{self.suffix.lower()}"
+        return addenda_url(self.number)
+
+
+def addenda_url(number: int) -> str:
+    """UNECE publishes UN Regulations on range pages of 20 (0-20, 21-40, ... 141-160).
+
+    There is no per-regulation page; a per-number URL such as ...-regulations-148 is
+    not a published page. The range page lists every revision and amendment of each
+    regulation in it (verified against unece.org search results, 2026-09-27).
+    """
+    if number <= 20:
+        lo, hi = 0, 20
+    else:
+        lo = ((number - 1) // 20) * 20 + 1
+        hi = lo + 19
+    if lo >= 161:  # 161-180 lives under a different path prefix
+        return f"https://unece.org/transport/standards/transport/vehicle-regulations-wp29/addenda-1958-agreement-regulations-{lo}-{hi}"
+    return f"https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations-{lo}-{hi}"
 
 
 CATALOGUE: list[UnReg] = [

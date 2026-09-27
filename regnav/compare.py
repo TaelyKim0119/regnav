@@ -7,6 +7,7 @@ cell notes whether that regulation was also a judged candidate for this part.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 from regnav.sources import kmvss, unece
@@ -54,7 +55,12 @@ def fmvss_url(code: str) -> str:
 
 def un_url(code: str) -> str:
     reg = _UN_BY_CODE.get(code)
-    return reg.url if reg else "https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations"
+    if reg:
+        return reg.url
+    digits = re.search(r"R(\d+)", code)
+    if digits:
+        return unece.addenda_url(int(digits.group(1)))
+    return "https://unece.org/un-regulations-addenda-1958-agreement"
 
 
 def comparison(part: str, verdicts=()) -> list[Row]:

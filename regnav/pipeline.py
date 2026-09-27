@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from regnav import compare
 from regnav.budget import ReviewBudget
+from regnav.budget import _limits as budget_limits
 from regnav.judge import Verdict, judge
 from regnav.sources import ecfr, kmvss, tavily_search, unece
 from regnav.text import terms, us_terms
@@ -93,20 +94,43 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         reg = unece.BY_NUMBER.get(n)
         if reg and reg not in un_cands:
             un_cands.append(reg)
-    jobs = [(reg.code, reg.title, reg.url, reg.scope or reg.title) for reg in un_cands]
+    un_jobs = [(reg.code, reg.title, reg.url, reg.scope or reg.title) for reg in un_cands]
 
     fm_cands = fmvss_candidates(part, max_fmvss)
     if fm_named:
         seen = {s.number for s in fm_cands}
         fm_cands += [s for s in ecfr.index() if s.number in fm_named and s.number not in seen]
+    fm_jobs = []
     for s in fm_cands:
         scope = ecfr.scope_excerpt(ecfr.section_text(s.identifier))
-        jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
+        fm_jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
+    kr_jobs = []
     if os.environ.get("REGNAV_KMVSS") == "1":  # opt-in until article text comes from the 법제처 API
-        jobs += [kmvss.judge_job(t) for t, _ in kmvss.search(part)]
-    report.verdicts = judge_all(part, jobs, dry_run=dry_run, budget=budget)
+        kr_jobs = [kmvss.judge_job(t) for t, _ in kmvss.search(part)]
+
+    # Interleave by rank so the strongest candidates of every regime come first:
+    # UN1, FMVSS1, KMVSS1, UN2, FMVSS2, ... When a live review has more candidates
+    # than the per-review call cap, the weakest tail is listed as not judged instead
+    # of letting thread timing decide which ones miss out.
+    jobs = interleave(un_jobs, fm_jobs, kr_jobs)
+    overflow: list[tuple[str, str, str, str]] = []
+    if not dry_run:
+        cap = budget_limits()[0]
+        jobs, overflow = jobs[:cap], jobs[cap:]
+    report.verdicts = judge_all(part, jobs, dry_run=dry_run, budget=budget) + [
+        Verdict(code, title, url, "unclear", 0.0,
+                "[not judged: lower-ranked candidate beyond the per-review call cap; listed for manual review]",
+                [], "reference")
+        for code, title, url, _ in overflow]
     report.comparison = compare.comparison(part, report.verdicts)
     return report
+
+
+def interleave(*lists):
+    out = []
+    for i in range(max((len(x) for x in lists), default=0)):
+        out += [x[i] for x in lists if i < len(x)]
+    return out
 
 
 def judge_all(part: str, jobs: list[tuple[str, str, str, str]], dry_run: bool = False,

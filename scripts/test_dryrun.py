@@ -21,6 +21,41 @@ from regnav import budget, pipeline  # noqa: E402
 from regnav.judge import Verdict  # noqa: E402
 
 
+def check_un_links_and_cap_trim():
+    from regnav.sources import unece
+    base = "https://unece.org/transport/vehicle-regulations-wp29/standards/addenda-1958-agreement-regulations-"
+    assert unece.addenda_url(13) == base + "0-20"
+    assert unece.addenda_url(20) == base + "0-20"
+    assert unece.addenda_url(21) == base + "21-40"
+    assert unece.addenda_url(48) == base + "41-60"
+    assert unece.addenda_url(148) == base + "141-160"
+    assert unece.addenda_url(160) == base + "141-160"
+    assert unece.addenda_url(171).endswith("161-180") and "/transport/standards/transport/" in unece.addenda_url(171)
+    for reg in unece.CATALOGUE:  # no per-number pages exist on unece.org
+        assert reg.url.rsplit("-regulations-", 1)[1].count("-") == 1, reg.url
+    from regnav import compare
+    assert compare.un_url("UN R999") .startswith("https://unece.org/")
+    # interleave keeps each list's rank order and alternates regimes
+    assert pipeline.interleave([1, 2, 3], ["a"], ["x", "y"]) == [1, "a", "x", 2, "y", 3]
+    # live-mode trim: only the top `cap` candidates reach judge(); the rest are listed as not judged
+    calls = []
+    real_judge_all = pipeline.judge_all
+    pipeline.judge_all = lambda part, jobs, **kw: calls.append([j[0] for j in jobs]) or [
+        Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "must") for j in jobs]
+    os.environ["REGNAV_MAX_CALLS_PER_REVIEW"] = "5"
+    try:
+        rep = pipeline.review("LED rear lamp module with stop and turn signal functions", dry_run=False)
+    finally:
+        pipeline.judge_all = real_judge_all
+        os.environ.pop("REGNAV_MAX_CALLS_PER_REVIEW", None)
+    assert len(calls) == 1 and len(calls[0]) == 5, calls
+    assert calls[0][0].startswith("UN") and calls[0][1].startswith("FMVSS"), calls[0]
+    tail = [v for v in rep.verdicts if v.why.startswith("[not judged")]
+    assert tail and all(v.review_priority == "reference" and v.confidence == 0.0 for v in tail)
+    assert len(rep.verdicts) == 5 + len(tail)
+    print(f"ok links+trim: UN range pages, {len(calls[0])} judged / {len(tail)} listed as not judged")
+
+
 def check_parallel_order_and_budget():
     budget.STATE = Path(tempfile.mkdtemp()) / "budget.json"  # never touch the real counter
     os.environ["REGNAV_MAX_CALLS_PER_REVIEW"] = "5"
@@ -104,6 +139,7 @@ def check_comparison_table():
 
 
 if __name__ == "__main__":
+    check_un_links_and_cap_trim()
     check_parallel_order_and_budget()
     check_dry_review_and_api()
     check_kmvss_scaffold()
