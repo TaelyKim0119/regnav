@@ -22,6 +22,7 @@ class Report:
     verdicts: list[Verdict] = field(default_factory=list)
     web_hits: list[tavily_search.WebHit] = field(default_factory=list)
     comparison: list[compare.Row] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
     def bucket(self, prio: str) -> list[Verdict]:
         return sorted((v for v in self.verdicts if v.review_priority == prio), key=lambda v: -v.confidence)
@@ -30,11 +31,13 @@ class Report:
         return {"part": self.part, "mode": self.mode,
                 "verdicts": [v.to_dict() for v in self.verdicts],
                 "web_hits": [h.to_dict() for h in self.web_hits],
-                "comparison": [r.to_dict() for r in self.comparison]}
+                "comparison": [r.to_dict() for r in self.comparison],
+                "warnings": list(self.warnings)}
 
     def markdown(self) -> str:
         lines = [f"# RegNav review - {self.part}", "", f"_mode: {self.mode}_", "",
                  "_Review assistant output: candidates and evidence for a human reviewer, not legal advice._", ""]
+        lines += [f"> Note: {w}" for w in self.warnings] + ([""] if self.warnings else [])
         for prio, label in ORDER:
             items = self.bucket(prio)
             if not items:
@@ -84,6 +87,7 @@ def fmvss_candidates(part: str, limit: int = 8) -> list[ecfr.Section]:
 def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int = 6) -> Report:
     report = Report(part, mode="dry-run" if dry_run else "nemotron")
     budget = ReviewBudget()
+    ecfr.used_snapshot = False
 
     # optional web retrieval widens both candidate lists
     report.web_hits = tavily_search.search(part)
@@ -102,7 +106,7 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         fm_cands += [s for s in ecfr.index() if s.number in fm_named and s.number not in seen]
     fm_jobs = []
     for s in fm_cands:
-        scope = ecfr.scope_excerpt(ecfr.section_text(s.identifier))
+        scope = ecfr.scope(s.identifier) or s.label
         fm_jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
     kr_jobs = []
     if os.environ.get("REGNAV_KMVSS") == "1":  # opt-in until article text comes from the 법제처 API
@@ -123,6 +127,9 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
                 [], "reference")
         for code, title, url, _ in overflow]
     report.comparison = compare.comparison(part, report.verdicts)
+    if ecfr.used_snapshot:
+        snap = ecfr.snapshot().get("date", "unknown date")
+        report.warnings.append(f"US FMVSS text came from the bundled eCFR snapshot ({snap}); eCFR was not reachable.")
     return report
 
 

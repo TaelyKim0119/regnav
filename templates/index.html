@@ -45,6 +45,9 @@
     {% for ex in examples %}<button type="button" onclick='document.querySelector("textarea").value={{ ex|tojson }}'>{{ ex }}</button>{% endfor %}
   </div>
 
+  {% if report and report.warnings %}
+    {% for w in report.warnings %}<p class="disclaimer">Note: {{ w }}</p>{% endfor %}
+  {% endif %}
   {% if report %}
     {% for prio, label in order %}
       {% set items = report.bucket(prio) %}

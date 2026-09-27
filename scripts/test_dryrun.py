@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT))
 if os.environ.get("NEBIUS_API_KEY"):
     sys.exit("refusing to run: unset NEBIUS_API_KEY (these checks must stay offline)")
 os.environ["NEBIUS_API_KEY"] = ""  # keep dotenv from loading a real key
+os.environ["REGNAV_ECFR_OFFLINE"] = "1"  # use the committed eCFR snapshot: no network needed
 
 from regnav import budget, pipeline  # noqa: E402
 from regnav.judge import Verdict  # noqa: E402
@@ -54,6 +55,31 @@ def check_un_links_and_cap_trim():
     assert tail and all(v.review_priority == "reference" and v.confidence == 0.0 for v in tail)
     assert len(rep.verdicts) == 5 + len(tail)
     print(f"ok links+trim: UN range pages, {len(calls[0])} judged / {len(tail)} listed as not judged")
+
+
+def check_ecfr_snapshot_and_outage():
+    import httpx
+    from regnav.sources import ecfr
+    # offline mode reads the committed snapshot
+    idx = ecfr.index()
+    assert len([x for x in idx if x.number]) >= 70, len(idx)
+    assert "original and replacement lamps" in ecfr.scope("571.108")
+    # live mode with eCFR unreachable falls back to the snapshot and says so in the report
+    os.environ.pop("REGNAV_ECFR_OFFLINE", None)
+    real_client = ecfr._client
+    def unreachable():
+        raise httpx.ConnectError("simulated outage")
+    ecfr._client = unreachable
+    try:
+        rep = pipeline.review("LED rear lamp module with stop and turn signal functions", dry_run=True)
+    finally:
+        ecfr._client = real_client
+        os.environ["REGNAV_ECFR_OFFLINE"] = "1"
+    regs = [v.regulation for v in rep.verdicts]
+    assert "FMVSS 108" in regs, regs
+    assert rep.warnings and "snapshot" in rep.warnings[0], rep.warnings
+    assert "Note:" in rep.markdown() and rep.to_dict()["warnings"]
+    print(f"ok ecfr snapshot: {len(idx)} sections offline; outage falls back with a warning ({len(regs)} verdicts)")
 
 
 def check_parallel_order_and_budget():
@@ -140,6 +166,7 @@ def check_comparison_table():
 
 if __name__ == "__main__":
     check_un_links_and_cap_trim()
+    check_ecfr_snapshot_and_outage()
     check_parallel_order_and_budget()
     check_dry_review_and_api()
     check_kmvss_scaffold()

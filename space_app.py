@@ -60,6 +60,7 @@ def _cell(text: str) -> str:
 
 def render(report) -> str:
     out = [f"### {_cell(report.part)}", ""]
+    out += [f"> Note: {_cell(w)}" for w in report.warnings] + ([""] if report.warnings else [])
     for prio, label in ORDER:
         items = report.bucket(prio)
         if not items:

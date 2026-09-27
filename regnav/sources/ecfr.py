@@ -2,10 +2,16 @@
 
 The API requires gzip; section bodies are XML which we flatten to text and
 cache on disk so a review never re-downloads a standard.
+
+A committed snapshot (data/ecfr_snapshot.json: the Part 571 index plus the scope
+excerpt of every standard, built by scripts/make_ecfr_snapshot.py) is the fallback
+when eCFR cannot be reached, and the only source when REGNAV_ECFR_OFFLINE=1
+(tests, sandboxed runs without general web access).
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,6 +22,21 @@ BASE = "https://www.ecfr.gov/api/versioner/v1"
 TITLE = 49
 PART = "571"
 CACHE = Path(__file__).resolve().parents[2] / "data" / "cache" / "ecfr"
+SNAPSHOT = Path(__file__).resolve().parents[2] / "data" / "ecfr_snapshot.json"
+NETWORK_ERRORS = (httpx.HTTPError, OSError)
+_snapshot_cache: dict | None = None
+used_snapshot = False  # set when any lookup fell back to the snapshot (reported to the user)
+
+
+def offline() -> bool:
+    return os.environ.get("REGNAV_ECFR_OFFLINE") == "1"
+
+
+def snapshot() -> dict:
+    global _snapshot_cache
+    if _snapshot_cache is None:
+        _snapshot_cache = json.loads(SNAPSHOT.read_text(encoding="utf-8")) if SNAPSHOT.exists() else {}
+    return _snapshot_cache
 
 
 @dataclass(frozen=True)
@@ -58,27 +79,49 @@ def latest_date(client: httpx.Client | None = None) -> str:
 
 
 def index(date: str | None = None) -> list[Section]:
-    """All sections of 49 CFR 571 (general + every FMVSS standard)."""
+    """All sections of 49 CFR 571 (general + every FMVSS standard): live, else snapshot."""
+    global used_snapshot
+    raw = None
+    if not offline():
+        try:
+            raw = _live_index(date)
+        except NETWORK_ERRORS:
+            raw = None
+    if raw is None:
+        raw = snapshot().get("index", [])
+        used_snapshot = True
+    return [Section(s["identifier"], s["label"], _number(s["identifier"], s["label"])) for s in raw]
+
+
+def _live_index(date: str | None = None) -> list[dict]:
     CACHE.mkdir(parents=True, exist_ok=True)
     with _client() as c:
         date = date or latest_date(c)
         cached = CACHE / f"index-{date}.json"
         if cached.exists():
-            raw = json.loads(cached.read_text(encoding="utf-8"))
-        else:
-            r = c.get(f"{BASE}/structure/{date}/title-{TITLE}.json")
-            r.raise_for_status()
-            node = _find_part(r.json())
-            raw = [
-                {"identifier": s["identifier"], "label": s.get("label_description") or ""}
-                for sub in node.get("children", []) for s in sub.get("children", [])
-                if s.get("type") == "section"
-            ]
-            cached.write_text(json.dumps(raw, ensure_ascii=False, indent=1), encoding="utf-8")
-    out = []
-    for s in raw:
-        out.append(Section(s["identifier"], s["label"], _number(s["identifier"], s["label"])))
-    return out
+            return json.loads(cached.read_text(encoding="utf-8"))
+        r = c.get(f"{BASE}/structure/{date}/title-{TITLE}.json")
+        r.raise_for_status()
+        node = _find_part(r.json())
+        raw = [
+            {"identifier": s["identifier"], "label": s.get("label_description") or ""}
+            for sub in node.get("children", []) for s in sub.get("children", [])
+            if s.get("type") == "section"
+        ]
+        cached.write_text(json.dumps(raw, ensure_ascii=False, indent=1), encoding="utf-8")
+        return raw
+
+
+def scope(identifier: str) -> str:
+    """Scope excerpt of one section: live (cached) text, else the snapshot, else ''."""
+    global used_snapshot
+    if not offline():
+        try:
+            return scope_excerpt(section_text(identifier))
+        except NETWORK_ERRORS:
+            pass
+    used_snapshot = True
+    return snapshot().get("scopes", {}).get(identifier, "")
 
 
 def _find_part(node: dict) -> dict:

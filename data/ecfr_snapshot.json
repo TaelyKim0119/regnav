@@ -1,0 +1,435 @@
+{
+ "source": "https://www.ecfr.gov/api/versioner/v1 (49 CFR Part 571)",
+ "date": "2026-09-24",
+ "index": [
+  {
+   "identifier": "571.1",
+   "label": "Scope."
+  },
+  {
+   "identifier": "571.3",
+   "label": "Definitions."
+  },
+  {
+   "identifier": "571.4",
+   "label": "Explanation of usage."
+  },
+  {
+   "identifier": "571.5",
+   "label": "Matter incorporated by reference."
+  },
+  {
+   "identifier": "571.7",
+   "label": "Applicability."
+  },
+  {
+   "identifier": "571.8",
+   "label": "Effective date."
+  },
+  {
+   "identifier": "571.9",
+   "label": "Separability."
+  },
+  {
+   "identifier": "571.10",
+   "label": "Designation of seating positions."
+  },
+  {
+   "identifier": "571.101",
+   "label": "Standard No. 101; Controls and displays."
+  },
+  {
+   "identifier": "571.102",
+   "label": "Standard No. 102; Transmission shift position sequence, starter interlock, and transmission braking effect."
+  },
+  {
+   "identifier": "571.103",
+   "label": "Standard No. 103; Windshield defrosting and defogging systems."
+  },
+  {
+   "identifier": "571.104",
+   "label": "Standard No. 104; Windshield wiping and washing systems."
+  },
+  {
+   "identifier": "571.105",
+   "label": "Standard No. 105; Hydraulic and electric brake systems."
+  },
+  {
+   "identifier": "571.106",
+   "label": "Standard No. 106; Brake hoses."
+  },
+  {
+   "identifier": "571.107",
+   "label": "§ 571.107 [Reserved]"
+  },
+  {
+   "identifier": "571.108",
+   "label": "Standard No. 108; Lamps, reflective devices, and associated equipment."
+  },
+  {
+   "identifier": "571.109",
+   "label": "Standard No. 109; New pneumatic tires for vehicles manufactured from 1949 to 1975, bias ply tires, and T-type spare tires."
+  },
+  {
+   "identifier": "571.110",
+   "label": "Tire selection and rims and motor home/recreation vehicle trailer load carrying capacity information for motor vehicles with a GVWR of 4,536 kilograms (10,000 pounds) or less."
+  },
+  {
+   "identifier": "571.111",
+   "label": "Standard No. 111; Rear visibility."
+  },
+  {
+   "identifier": "571.112",
+   "label": "§ 571.112 [Reserved]"
+  },
+  {
+   "identifier": "571.113",
+   "label": "Standard No. 113; Hood latch system."
+  },
+  {
+   "identifier": "571.114",
+   "label": "Standard No. 114; Theft protection and rollaway prevention."
+  },
+  {
+   "identifier": "571.115",
+   "label": "§ 571.115 [Reserved]"
+  },
+  {
+   "identifier": "571.116",
+   "label": "Standard No. 116; Motor vehicle brake fluids."
+  },
+  {
+   "identifier": "571.117",
+   "label": "Standard No. 117; Retreaded pneumatic tires."
+  },
+  {
+   "identifier": "571.118",
+   "label": "Standard No. 118; Power-operated window, partition, and roof panel systems."
+  },
+  {
+   "identifier": "571.119",
+   "label": "Standard No. 119; New pneumatic tires for motor vehicles with a GVWR of more than 4,536 kilograms (10,000 pounds), specialty tires, and tires for motorcycles."
+  },
+  {
+   "identifier": "571.120",
+   "label": "Tire selection and rims and motor home/recreation vehicle trailer load carrying capacity information for motor vehicles with a GVWR of more than 4,536 kilograms (10,000 pounds)."
+  },
+  {
+   "identifier": "571.121",
+   "label": "Standard No. 121; Air brake systems."
+  },
+  {
+   "identifier": "571.122",
+   "label": "Standard No. 122; Motorcycle brake systems."
+  },
+  {
+   "identifier": "571.122a",
+   "label": "Standard No. 122; Motorcycle brake systems."
+  },
+  {
+   "identifier": "571.123",
+   "label": "Standard No. 123; Motorcycle controls and displays."
+  },
+  {
+   "identifier": "571.124",
+   "label": "Standard No. 124; Accelerator control systems."
+  },
+  {
+   "identifier": "571.125",
+   "label": "Standard No. 125; Warning devices."
+  },
+  {
+   "identifier": "571.126",
+   "label": "Standard No. 126; Electronic stability control systems for light vehicles."
+  },
+  {
+   "identifier": "571.127",
+   "label": "Standard No. 127; Automatic emergency braking systems for light vehicles."
+  },
+  {
+   "identifier": "571.128",
+   "label": "§ 571.128 [Reserved]"
+  },
+  {
+   "identifier": "571.129",
+   "label": "Standard No. 129; New non-pneumatic tires for passenger cars."
+  },
+  {
+   "identifier": "571.131",
+   "label": "Standard No. 131; School bus pedestrian safety devices."
+  },
+  {
+   "identifier": "571.135",
+   "label": "Standard No. 135; Light vehicle brake systems."
+  },
+  {
+   "identifier": "571.136",
+   "label": "Standard No. 136; Electronic stability control systems for heavy vehicles."
+  },
+  {
+   "identifier": "571.138",
+   "label": "Standard No. 138; Tire pressure monitoring systems."
+  },
+  {
+   "identifier": "571.139",
+   "label": "Standard No. 139; New pneumatic radial tires for light vehicles."
+  },
+  {
+   "identifier": "571.141",
+   "label": "Standard No. 141; Minimum Sound Requirements for Hybrid and Electric Vehicles."
+  },
+  {
+   "identifier": "571.201",
+   "label": "Standard No. 201; Occupant protection in interior impact."
+  },
+  {
+   "identifier": "571.202",
+   "label": "Standard No. 202; Head restraints; Applicable at the manufacturers option until September 1, 2009."
+  },
+  {
+   "identifier": "571.202a",
+   "label": "Standard No. 202a; Head restraints; Mandatory applicability begins on September 1, 2009."
+  },
+  {
+   "identifier": "571.203",
+   "label": "Standard No. 203; Impact protection for the driver from the steering control system."
+  },
+  {
+   "identifier": "571.204",
+   "label": "Standard No. 204; Steering control rearward displacement."
+  },
+  {
+   "identifier": "571.205",
+   "label": "Standard No. 205, Glazing materials."
+  },
+  {
+   "identifier": "571.206",
+   "label": "Standard No. 206; Door locks and door retention components."
+  },
+  {
+   "identifier": "571.207",
+   "label": "Standard No. 207; Seating systems."
+  },
+  {
+   "identifier": "571.208",
+   "label": "Standard No. 208; Occupant crash protection."
+  },
+  {
+   "identifier": "571.209",
+   "label": "Standard No. 209; Seat belt assemblies."
+  },
+  {
+   "identifier": "571.210",
+   "label": "Standard No. 210; Seat belt assembly anchorages."
+  },
+  {
+   "identifier": "571.211",
+   "label": "§ 571.211 [Reserved]"
+  },
+  {
+   "identifier": "571.212",
+   "label": "Standard No. 212; Windshield mounting."
+  },
+  {
+   "identifier": "571.213",
+   "label": "Child restraint systems; Applicable unless a vehicle or child restraint system is certified to § 571.213b."
+  },
+  {
+   "identifier": "571.213a",
+   "label": "Standard No. 213a; Child restraint systems—side impact protection."
+  },
+  {
+   "identifier": "571.213b",
+   "label": "Standard No. 213b; Child restraint systems; Mandatory applicability beginning December 5, 2026."
+  },
+  {
+   "identifier": "571.214",
+   "label": "Standard No. 214; Side impact protection."
+  },
+  {
+   "identifier": "571.215",
+   "label": "§ 571.215 [Reserved]"
+  },
+  {
+   "identifier": "571.216a",
+   "label": "Standard No. 216a; Roof crush resistance; Upgraded standard."
+  },
+  {
+   "identifier": "571.217",
+   "label": "Standard No. 217; Bus emergency exits and window retention and release."
+  },
+  {
+   "identifier": "571.217a",
+   "label": "Standard No. 217a; Anti-ejection glazing for bus portals; Mandatory applicability beginning October 30, 2027."
+  },
+  {
+   "identifier": "571.218",
+   "label": "Standard No. 218; Motorcycle helmets."
+  },
+  {
+   "identifier": "571.219",
+   "label": "Standard No. 219; Windshield zone intrusion."
+  },
+  {
+   "identifier": "571.220",
+   "label": "Standard No. 220; School bus rollover protection."
+  },
+  {
+   "identifier": "571.221",
+   "label": "Standard No. 221; School bus body joint strength."
+  },
+  {
+   "identifier": "571.222",
+   "label": "Standard No. 222; School bus passenger seating and crash protection."
+  },
+  {
+   "identifier": "571.223",
+   "label": "Standard No. 223; Rear impact guards."
+  },
+  {
+   "identifier": "571.224",
+   "label": "Standard No. 224; Rear impact protection."
+  },
+  {
+   "identifier": "571.225",
+   "label": "Standard No. 225; Child restraint anchorage systems."
+  },
+  {
+   "identifier": "571.226",
+   "label": "Standard No. 226; Ejection Mitigation."
+  },
+  {
+   "identifier": "571.227",
+   "label": "Standard No. 227; Bus rollover structural integrity."
+  },
+  {
+   "identifier": "571.301",
+   "label": "Standard No. 301; Fuel system integrity."
+  },
+  {
+   "identifier": "571.302",
+   "label": "Standard No. 302; Flammability of interior materials."
+  },
+  {
+   "identifier": "571.303",
+   "label": "Standard No. 303; Fuel system integrity of compressed natural gas vehicles."
+  },
+  {
+   "identifier": "571.304",
+   "label": "Standard No. 304; Compressed natural gas fuel container integrity."
+  },
+  {
+   "identifier": "571.305",
+   "label": "Standard No. 305; electric-powered vehicles: electrolyte spillage and electrical shock protection; applicable unless a vehicle is certified to § 571.305a."
+  },
+  {
+   "identifier": "571.305a",
+   "label": "Standard No. 305a; electric-powered vehicles: Electric powertrain integrity; mandatory applicability begins on September 1, 2027."
+  },
+  {
+   "identifier": "571.307",
+   "label": "Standard No. 307; Fuel system integrity of hydrogen vehicles."
+  },
+  {
+   "identifier": "571.308",
+   "label": "Standard No. 308; Compressed hydrogen storage system integrity."
+  },
+  {
+   "identifier": "571.401",
+   "label": "Standard No. 401; Interior trunk release."
+  },
+  {
+   "identifier": "571.403",
+   "label": "Standard No. 403; Platform lift systems for motor vehicles."
+  },
+  {
+   "identifier": "571.404",
+   "label": "Standard No. 404; Platform lift installations in motor vehicles."
+  },
+  {
+   "identifier": "571.500",
+   "label": "Standard No. 500; Low-speed vehicles."
+  }
+ ],
+ "scopes": {
+  "571.101": "S1. Scope. This standard specifies performance requirements for location, identification, color, and illumination of motor vehicle controls, telltales and indicators. \nS2. Purpose. The purpose of this standard is to ensure the accessibility, visibility and recognition of motor vehicle controls, telltales and indicators, and to facilitate the proper selection of controls under daylight and nighttime conditions, in order to reduce the safety hazards caused by the diversion of the driver's attention from the driving task, and by mistakes in selecting controls. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses.",
+  "571.102": "§ 571.102 Standard No. 102; Transmission shift position sequence, starter interlock, and transmission braking effect. \nS1. Purpose and scope. This standard specifies the requirements for the transmission shift position sequence, a starter interlock, and for a braking effect of automatic transmissions, to reduce the likelihood of shifting errors, to prevent starter engagement by the driver when the transmission is in any drive position, and to provide supplemental braking at speeds below 40 kilometers per hour (25 miles per hour). \nS2. Application. This standard applies to passenger cars, multi-purpose passenger vehicles, trucks, and buses. \nS3. Requirements. \nS3.1 Automatic transmissions. \nS3.1.1 Location of transmission shift positions on passenger cars. A neutral position shall be located between forward drive and reverse drive positions. \nS3.1.1.1 Transmission shift levers. If a steering-column-mounted transmission shift lever is used, movement from neutral position to forward drive position shall be clockwise. If the transmission shift lever sequence includes a park position, it shall be located at the end, adjacent to the reverse drive position. \nS3.1.2 Transmission braking effect. In vehicles having more than one forward transmission gear ratio, one forward drive position shall provide a greater degree of engine braking than the highest speed transmission ratio at vehicle speeds below 40 kilometers per hour (25 miles per hour). \nS3.1.3 Starter interlock. Except as provi",
+  "571.103": "S1. Scope. This standard specifies requirements for windshield defrosting and defogging systems. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses. \nS3. Definitions. Road load means the power output required to move a given motor vehicle at curb weight plus 180 kilograms on level, clean, dry, smooth portland cement concrete pavement (or other surface with equivalent coefficient of surface friction) at a specified speed through still air at 20 degrees Celsius, and standard barometric pressure (101.3 kilopascals) and includes driveline friction, rolling friction, and air resistance.",
+  "571.104": "S1. Scope. This standard specifies requirements for windshield wiping and washing systems. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses. \nS3. Definitions. The term seating reference point is substituted for the terms manikin H point, manikin H point with seat in rearmost position and H point wherever any of these terms appear in any SAE Standard or SAE Recommended Practice referred to in this standard. \n Daylight opening means the maximum unobstructed opening through the glazing surface, as defined in paragraph 2.3.12 of section E, “Ground Vehicle Practice,” of SAE Aerospace-Automotive Drawing Standards (1963) (incorporated by reference, see § 571.5). \n Glazing surface reference line means the line resulting from the intersection of the glazing surface and a horizontal plane 635 millimeters above the seating reference point, as shown in Figure 1 of SAE Recommended Practice J903a (1966) (incorporated by reference, see § 571.5). \n Overall width means the maximum overall body width dimension “W116”, as defined in section E, “Ground Vehicle Practice,” of SAE Aerospace-Automotive Drawing Standards (1963) (incorporated by reference, see § 571.5). \n Plan view reference line means— \n(a) For vehicles with bench-type seats, a line parallel to the vehicle longitudinal centerline outboard of the steering wheel centerline 0.15 times the difference between one-half of the shoulder room dimension and the steering wheel centerl",
+  "571.105": "S1. Scope. This standard specifies requirements for hydraulic and electric service brake systems, and associated parking brake systems. \nS2. Purpose. The purpose of this standard is to insure safe braking performance under normal and emergency conditions. \nS3. Application. This standard applies to multi-purpose passenger vehicles, trucks, and buses with a GVWR greater than 3,500 kilograms (7,716 pounds) that are equipped with hydraulic or electric brake systems.",
+  "571.106": "S1. Scope. This standard specifies labeling and performance requirements for motor vehicle brake hose, brake hose assemblies, and brake hose end fittings. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring as a result of brake system failure from pressure or vacuum loss due to hose or hose assembly rupture. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, buses, trailers, and motorcycles, and to hydraulic, air, and vacuum brake hose, brake hose assemblies, and brake hose end fittings for use in those vehicles.",
+  "571.107": "§ 571.107 [Reserved]",
+  "571.108": "S1 Scope. This standard specifies requirements for original and replacement lamps, reflective devices, and associated equipment. \nS2 Purpose. The purpose of this standard is to reduce traffic accidents and deaths and injuries resulting from traffic accidents, by providing adequate illumination of the roadway, and by enhancing the conspicuity of motor vehicles on the public roads so that their presence is perceived and their signals understood, both in daylight and in darkness or other conditions of reduced visibility. \nS3 Application. This standard applies to: \nS3.1 Passenger cars, multipurpose passenger vehicles, trucks, buses, trailers (except pole trailers and trailer converter dollies), and motorcycles; \nS3.2 Retroreflective sheeting and reflex reflectors manufactured to conform to S8.2 of this standard; and \nS3.3 Lamps, reflective devices, and associated equipment for replacement of like equipment on vehicles to which this standard applies.",
+  "571.109": "S1. Scope. This standard specifies tire dimensions and laboratory test requirements for bead unseating resistance, strength, endurance, and high speed performance; defines tire load ratings; and specifies labeling requirements for passenger car tires. \nS2. Application. This standard applies to new pneumatic radial tires for use on passenger cars manufactured from 1949 through 1975, new pneumatic bias ply tires, and T-type spare tires. However, it does not apply to any tire that has been so altered so as to render impossible its use, or its repair for use, as motor vehicle equipment. \nS3. Definitions. \n Bead means that part of the tire made of steel wires, wrapped or reinforced by ply cords, that is shaped to fit the rim. \n Bead separation means a breakdown of bond between components in the bead area. \n Bias ply tire means a pneumatic tire in which the ply cords that extend to the beads are laid at alternate angles substantially less than 90° to the centerline of the tread. \n Carcass means the tire structure, except tread and sidewall rubber. \n Chunking means the breaking away of pieces of the tread or sidewall. \n Cord means the strands forming the plies in the tire. \n Cord separation means cords parting away from adjacent rubber compounds. \n Cracking means any parting within the tread, sidewall, or innerliner of the tire extending to cord material. \n Groove means the space between two adjacent tread ribs. \n Innerliner means the layer(s) forming the inside surface of a tubeles",
+  "571.110": "§ 571.110 Tire selection and rims and motor home/recreation vehicle trailer load carrying capacity information for motor vehicles with a GVWR of 4,536 kilograms (10,000 pounds) or less. \nS1. Purpose and scope. This standard specifies requirements for tire selection to prevent tire overloading and for motor home/recreation vehicle trailer load carrying capacity information. \nS2. Application. This standard applies to motor vehicles with a gross vehicle weight rating (GVWR) of 4,536 kilograms (10,000 pounds) or less, except for motorcycles, and to non-pneumatic spare tire assemblies for those vehicles. \nS3. Definitions. \n Accessory weight means the combined weight (in excess of those standard items which may be replaced) of automatic transmission, power steering, power brakes, power windows, power seats, radio, and heater, to the extent that these items are available as factory-installed equipment (whether installed or not). \n Curb weight means the weight of a motor vehicle with standard equipment including the maximum capacity of fuel, oil, and coolant, and, if so equipped, air conditioning and additional weight optional engine. \n Maximum loaded vehicle weight means the sum of— \n(a) Curb weight; \n(b) Accessory weight; \n(c) Vehicle capacity weight; and \n(d) Production options weight. \n Light truck (LT) tire means a tire designated by its manufacturer as primarily intended for use on lightweight trucks or multipurpose passenger vehicles. \n Non-pneumatic rim is used as defined in",
+  "571.111": "S1. Scope. This standard specifies requirements for rear visibility devices and systems. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and injuries that occur when the driver of a motor vehicle does not have a clear and reasonably unobstructed view to the rear. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, buses, school buses, motorcycles and low-speed vehicles.",
+  "571.112": "§ 571.112 [Reserved]",
+  "571.113": "§ 571.113 Standard No. 113; Hood latch system. \nS1. Purpose and scope. This standard establishes the requirement for providing a hood latch system or hood latch systems. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses. \nS3. Definitions. Hood means any exterior movable body panel forward of the windshield that is used to cover an engine, luggage, storage, or battery compartment. \nS4. Requirements. \nS4.1 Each hood must be provided with a hood latch system. \nS4.2 A front opening hood which, in any open position, partially or completely obstructs a driver's forward view through the windshield must be provided with a second latch position on the hood latch system or with a second hood latch system.",
+  "571.114": "S1. Scope. This standard specifies vehicle performance requirements intended to reduce the incidence of crashes resulting from theft and accidental rollaway of motor vehicles. \nS2. Purpose. The purpose of this standard is to decrease the likelihood that a vehicle is stolen, or accidentally set in motion. \nS3. Application. This standard applies to all passenger cars, and to trucks and multipurpose passenger vehicles with a GVWR of 4,536 kilograms (10,000 pounds) or less. However, it does not apply to walk-in van-type vehicles. Additionally, paragraph S5.3 of this standard applies to all motor vehicles, except trailers and motorcycles, with a GVWR of 4,536 kilograms (10,000 pounds) or less.",
+  "571.115": "§ 571.115 [Reserved]",
+  "571.116": "S1. Scope. This standard specifies requirements for fluids for use in hydraulic brake systems of motor vehicles, containers for these fluids, and labeling of the containers. \nS2. Purpose. The purpose of this standard is to reduce failures in the hydraulic braking systems of motor vehicles which may occur because of the manufacture or use of improper or contaminated fluid. \nS3. Application. This standard applies to all fluid for use in hydraulic brake systems of motor vehicles. In addition, S5.3 applies to passenger cars, multipurpose passenger vehicles, trucks, buses, trailers, and motorcycles.",
+  "571.117": "S1. Scope. This standard specifies performance, labeling, and certification requirements for retreaded pneumatic passenger car tires. \nS2. Purpose. The purpose of this standard is to require retreaded pneumatic passenger car tires to meet safety criteria similar to those for new pneumatic passenger car tires. \nS3. Application. This standard applies to retreaded pneumatic tires for use on passenger cars manufactured after 1948.",
+  "571.118": "§ 571.118 Standard No. 118; Power-operated window, partition, and roof panel systems. \nS1. Purpose and scope. This standard specifies requirements for power operated window, partition, and roof panel systems to minimize the likelihood of death or injury from their accidental operation. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, and trucks with a gross vehicle weight rating of 4,536 kilograms or less. This standard's inadvertent actuation performance requirements of S6(a) need not be met for vehicles manufactured before October 1, 2008. The standard's pull-to-close switch operability requirements of S6(c) need not be met for vehicles manufactured before October 1, 2010. \nS3. Definitions. \n Infrared reflectance means the ratio of the intensity of infrared light reflected and scattered by a flat sample of the test rod material to the intensity of infrared light reflected and scattered by a mirror that reflects 99.99 percent of the infrared radiation incident on its surface as measured by the apparatus show in Figure 2. \n Power operated roof panel systems mean moveable panels in the vehicle roof which close by vehicle supplied power either by a sliding or hinged motion, and do not include convertible top systems. \nS4. Operating requirements. Except as provided in S5, power operated window, partition, or roof panel systems may be closed only in the following circumstances: \n(a) When the key that controls activation of the vehicle's",
+  "571.119": "S1. Scope. This standard establishes performance and marking requirements for tires for use on motor vehicles with a GVWR of more than 4,536 kilograms (10,000 pounds), specialty tires, and tires for motorcycles. \n S2. Purpose. The purpose of this standard is to provide safe operational performance levels for tires used on motor vehicles with a GVWR of more than 10,000 pounds, trailers, and motorcycles, and to place sufficient information on the tires to permit their proper selection and use. \nS3. Application. This standard applies to: \n(a) New pneumatic tires for use on motor vehicles with a GVWR of more than 4,536 kilograms (10,000 pounds) manufactured after 1948; \n(b) New pneumatic light truck tires with a tread depth of\n 18/32 inch or greater, for use on motor vehicles with a GVWR of 4,536 kilograms (10,000 pounds) or less manufactured after 1948; \n(c) Tires for use on special-use trailers (ST, FI and 8-12 rim or lower diameter code); and \n(d) Tires for use on motorcycles manufactured after 1948.",
+  "571.120": "S1. Scope. This standard specifies tire and rim selection requirements, rim marking requirements and motor home/recreation vehicle trailer load carrying capacity information. \nS2. Purpose. The purpose of this standard is to provide safe operational performance by ensuring that vehicles to which it applies are equipped with tires of adequate size and load rating and with rims of appropriate size and type designation, and by ensuring that consumers are informed of motor home/recreation vehicle trailer load carrying capacity. \nS3. Application. This standard applies to motor vehicles with a gross vehicle weight rating (GVWR) of more than 4,536 kilograms (10,000 pounds and motorcycles, to rims for use on those vehicles, and to non-pneumatic spare tire assemblies for use on those vehicles.",
+  "571.121": "S1. Scope. This standard establishes performance and equipment requirements for braking systems on vehicles equipped with air brake systems. \nS2. Purpose. The purpose of this standard is to insure safe braking performance under normal and emergency conditions. \nS3. Application. This standard applies to trucks, buses, and trailers equipped with air brake systems. However, it does not apply to: \n(a) Any trailer that has a width of more than 102.36 inches with extendable equipment in the fully retracted position and is equipped with two short track axles in a line across the width of the trailer. \n(b) Any vehicle equipped with an axle that has a gross axle weight rating (GAWR) of 29,000 pounds or more; \n(c) Any truck or bus that has a speed attainable in 2 miles of not more than 33 mph; \n(d) Any truck that has a speed attainable in 2 miles of not more than 45 mph, an unloaded vehicle weight that is not less than 95 percent of its gross vehicle weight rating (GVWR), and no capacity to carry occupants other than the driver and operating crew; \n(e) Any trailer that has a GVWR of more than 120,000 pounds and whose body conforms to that described in the definition of heavy hauler trailer set forth in S4; \n(f) Any trailer that has an unloaded vehicle weight which is not less than 95 percent of its GVWR; and \n(g) Any load divider dolly.",
+  "571.122": "S1. Scope. This standard specifies requirements for motorcycle service brake systems and, where applicable, associated parking brake systems. \nS2. Purpose. The purpose of the standard is to ensure safe motorcycle braking performance under normal and emergency riding conditions. \nS3. Application. This standard applies to category 3-1 motorcycles, category 3-2 motorcycles, category 3-3 motorcycles, and category 3-4 motorcycles manufactured on and after September 1, 2014. This standard applies to category 3-5 motorcycles manufactured on and after September 1, 2015. At the manufacturer's option, any motorcycle manufactured on or after October 23, 2012 may comply with this standard.",
+  "571.122a": "S1. Scope. This standard specifies performance requirements for motorcycle brake systems. \nS2. Purpose. The purpose of the standard is to insure safe motorcycle braking performance under normal and emergency conditions. \nS3. Application. This standard applies to motorcycles. However, this standard does not apply to motorcycles certified to comply with § 571.122.",
+  "571.123": "S1. Scope. This standard specifies requirements for the location, operation, identification, and illumination of motorcycle controls and displays, and requirements for motorcycle stands and footrests. \nS2. Purpose. The purpose of this standard is to minimize accidents caused by operator error in responding to the motoring environment, by standardizing certain motorcycle controls and displays. \nS3. Application. This standard applies to motorcycles equipped with handlebars, except for motorcycles that are designed, and sold exclusively for use by law enforcement agencies.",
+  "571.124": "S1. Scope. This standard establishes requirements for the return of a vehicle's throttle to the idle position when the driver removes the actuating force from the accelerator control, or in the event of a severance or disconnection in the accelerator control system. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries resulting from engine overspeed caused by malfunctions in the accelerator control system. \nS3. Application. This standard applies to passenger cars, multi-purpose passenger vehicles, trucks, and buses.",
+  "571.125": "S1. Scope. This standard establishes requirements for devices, without self-contained energy sources, that are designed to be carried in motor vehicles and used to warn approaching traffic of the presence of a stopped vehicle, except for devices designed to be permanently affixed to the vehicle. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries due to rear end collisions between moving traffic and disabled vehicles. \nS3. Application. This standard applies to devices, without self-contained energy sources, that are designed to be carried in buses and trucks that have a gross vehicle weight rating (GVWR) greater than 10,000 pounds. These devices are used to warn approaching traffic of the presence of a stopped vehicle, except for devices designed to be permanently affixed to the vehicle.",
+  "571.126": "S1. Scope. This standard establishes performance and equipment requirements for electronic stability control (ESC) systems. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and injuries that result from crashes in which the driver loses directional control of the vehicle, including those resulting in vehicle rollover. \nS3 Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses with a gross vehicle weight rating of 4,536 kilograms (10,000 pounds) or less, according to the phase-in schedule specified in S8 of this standard.",
+  "571.127": "S1. Scope. This standard establishes performance requirements for automatic emergency braking (AEB) systems for light vehicles. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and injuries that result from crashes in which drivers do not apply the brakes or fail to apply sufficient braking power to avoid or mitigate a crash. \nS3. Application. This standard applies to passenger cars and to multipurpose passenger vehicles, trucks, and buses with a gross vehicle weight rating (GVWR) of 4,536 kilograms (10,000 pounds) or less.",
+  "571.128": "§ 571.128 [Reserved]",
+  "571.129": "S1 Scope. This standard specifies tire dimensions and laboratory test requirements for lateral strength, strength, endurance, and high speed performance; defines the tire load rating; and specifies labeling requirements for non-pneumatic spare tires. \nS2 Application. This standard applies to new temporary spare non-pneumatic tires for use on passenger cars. \nS3 Definitions. \n Carcass means the tire structure except for the tread which provides the major portion of the tire's capability to deflect in response to the vertical loads and tractive forces that the tire transmits from the roadway to the non-pneumatic rim, the wheel center member, or the vehicle and which attaches to the vehicle or attaches, either integrally or separably, to the wheel center member or non-pneumatic rim. \n Carcass separation means the pulling away of the carcass from the non-pneumatic rim or wheel center member. \n Chunking means the breaking away of pieces of the carcass or tread. \n Cracking means any parting within the carcass, tread, or any components that connect the tire to the non-pneumatic rim or wheel center member and, if the non-pneumatic tire is integral with the non-pneumatic rim or wheel center member, any parting within the non-pneumatic rim, or wheel center member. \n Load rating means the maximum load a tire is rated to carry. \n Maximum tire width means the greater of either the linear distance between the exterior edges of the carcass or the linear distance between the exterior edges o",
+  "571.131": "S1. Scope. This standard establishes requirements for devices that can be installed on school buses to improve the safety of pedestrians in the vicinity of stopped school buses. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries by minimizing the likelihood of vehicles passing a stopped school bus and striking pedestrians in the vicinity of the bus. \nS3. Application. This standard applies to school buses other than multifunction school activity buses.",
+  "571.135": "S1. Scope. This standard specifies requirements for service brake and associated parking brake systems. \nS2. Purpose. The purpose of this standard is to ensure safe braking performance under normal and emergency driving conditions. \nS3. Application. This standard applies to passenger cars manufactured on or after September 1, 2000 and to multi-purpose passenger vehicles, trucks and buses with a gross vehicle weight rating (GVWR) of 3,500 kilograms (7,716 pounds) or less, manufactured on or after September 1, 2002. In addition, at the option of the manufacturer, passenger cars manufactured before September 1, 2000, and multi-purpose passenger vehicles, trucks and buses with a GVWR of 3,500 kilograms (7,716 pounds) or less, manufactured before September 1, 2002, may meet the requirements of this standard instead of Federal Motor Vehicle No. 105, Hydraulic Brake Systems.",
+  "571.136": "S1 Scope. This standard establishes performance and equipment requirements for electronic stability control (ESC) systems on heavy vehicles. \nS2 Purpose. The purpose of this standard is to reduce crashes caused by rollover or by directional loss-of-control. \nS3 Application. This standard applies to the following vehicles: \nS3.1 Truck tractors with a gross vehicle weight rating of greater than 11,793 kilograms (26,000 pounds). However, it does not apply to: \n(a) Any truck tractor equipped with an axle that has a gross axle weight rating of 13,154 kilograms (29,000 pounds) or more; \n(b) Any truck tractor that has a speed attainable in 3.2 km (2 miles) of not more than 53 km/h (33 mph); and \n(c) Any truck tractor that has a speed attainable in 3.2 km (2 miles) of not more than 72 km/h (45 mph), an unloaded vehicle weight that is not less than 95 percent of its gross vehicle weight rating, and no capacity to carry occupants other than the driver and operating crew. \nS3.2 Buses with a gross vehicle weight rating of greater than 11,793 kilograms (26,000 pounds). However, it does not apply to \n(a) School buses; \n(b) Perimeter-seating buses; \n(c) Transit buses; \n(d) Any bus equipped with an axle that has a gross axle weight rating of 13,154 kilograms (29,000 pounds) or more; and \n(e) Any bus that has a speed attainable in 3.2 km (2 miles) of not more than 53 km/h (33 mph.)",
+  "571.138": "§ 571.138 Standard No. 138; Tire pressure monitoring systems. \nS1 Purpose and scope. This standard specifies performance requirements for tire pressure monitoring systems (TPMSs) to warn drivers of significant under-inflation of tires and the resulting safety problems. \nS2 Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses that have a gross vehicle weight rating of 4,536 kilograms (10,000 pounds) or less, except those vehicles with dual wheels on an axle, according to the phase-in schedule specified in S7 of this standard. \nS3 Definitions. The following definitions apply to this standard: \n Lightly loaded vehicle weight means unloaded vehicle weight plus the weight of a mass of 180 kg (396 pounds), including test driver and instrumentation. \n Tire pressure monitoring system means a system that detects when one or more of a vehicle's tires is significantly under-inflated and illuminates a low tire pressure warning telltale. \n Vehicle Placard and Tire inflation pressure label mean the sources of information for the vehicle manufacturer's recommended cold tire inflation pressure pursuant to § 571.110 of this Part. \nS4 Requirements. \nS4.1 General. To the extent provided in S7, each vehicle must be equipped with a tire pressure monitoring system that meets the requirements specified in S4 under the test conditions specified in S5 and the test procedures specified in S6 of this standard. \nS4.2 TPMS detection requirements. The ti",
+  "571.139": "S1. Scope and purpose. This standard specifies tire dimensions, test requirements, labeling requirements, and defines tire load ratings. \nS2 Application. This standard applies to new pneumatic radial tires for use on motor vehicles (other than motorcycles and low speed vehicles) that have a gross vehicle weight rating (GVWR) of 10,000 pounds or less and that were manufactured after 1975. This standard does not apply to special tires (ST) for trailers in highway service, tires for use on farm implements (FI) in agricultural service with intermittent highway use, tires with rim diameters of 12 inches and below, T-type temporary use spare tires with radial construction, and light truck tires with a tread depth of 18/32 inch or greater. \nS3 Definitions. \n Bead means the part of the tire that is made of steel wires, wrapped or reinforced by ply cords and that is shaped to fit the rim. \n Bead separation means a breakdown of the bond between components in the bead. \n Bias ply tire means a pneumatic tire in which the ply cords that extend to the beads are laid at alternate angles substantially less than 90 degrees to the centerline of the tread. \n Carcass means the tire structure, except tread and sidewall rubber which, when inflated, bears the load. \n Chunking means the breaking away of pieces of the tread or sidewall. \n Cord means the strands forming the plies in the tire. \n Cord separation means the parting of cords from adjacent rubber compounds. \n Cracking means any parting with",
+  "571.141": "S1. Scope. This standard establishes performance requirements for pedestrian alert sounds for motor vehicles. \nS2. Purpose. The purpose of this standard is to reduce the number of injuries that result from electric and hybrid vehicle crashes with pedestrians by providing a sound level and sound characteristics necessary for these vehicles to be detected and recognized by pedestrians. \nS3. Application. This standard applies to— \n(a) Electric vehicles with a gross vehicle weight rating (GVWR) of 4,536 Kg or less that are passenger cars, multipurpose passenger vehicles, trucks, or buses; \n(b) Hybrid vehicles with a gross vehicle weight rating (GVWR) of 4,536 Kg or less that are passenger cars, multi-purpose passenger vehicles, trucks, or buses; and \n(c) Electric vehicles and hybrid vehicles that are low speed vehicles.",
+  "571.201": "§ 571.201 Standard No. 201; Occupant protection in interior impact. \nS1. Purpose and scope. This standard specifies requirements to afford impact protection for occupants. \nS2. Application. This standard applies to passenger cars and to multipurpose passenger vehicles, trucks designed to carry at least one person, and buses with a GVWR of 4,536 kilograms or less, except that the requirements of S6 do not apply to buses with a GVWR of more than 3,860 kilograms. \nS3. Definitions. \n A-pillar means any pillar that is entirely forward of a transverse vertical plane passing through the seating reference point of the driver's designated seating position or, if there is no driver's designated seating position, any pillar that is entirely forward of a transverse vertical plane passing through the seating reference point of the rearmost designated seating position in the front row of seats. \n Ambulance means a motor vehicle designed exclusively for the purpose of emergency medical care, as evidenced by the presence of a passenger compartment to accommodate emergency medical personnel, one or more patients on litters or cots, and equipment and supplies for emergency care at a location or during transport. \n B-pillar means the forwardmost pillar on each side of the vehicle that is, in whole or in part, rearward of a transverse vertical plane passing through the seating reference point of the driver's designated seating position or, if there is no driver's designated seating position, the",
+  "571.202": "§ 571.202 Standard No. 202; Head restraints; Applicable at the manufacturers option until September 1, 2009. \nS1. Purpose and scope. This standard specifies requirements for head restraints to reduce the frequency and severity of neck injury in rear-end and other collisions. \nS2. Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks and buses with a GVWR of 4,536 kg or less, manufactured before September 1, 2009. Until September 1, 2009, manufacturers may comply with the standard in this § 571.202, with the European regulations referenced in S4.3 of this § 571.202, or with the standard in § 571.202a. For vehicles manufactured on or after September 1, 2009 and before September 1, 2010, manufacturers may comply with the standard in this § 571.202 or with the European regulations referenced in S4.3 of this § 571.202, instead of the standard in § 571.202a, only to the extent consistent with phase-in specified in § 571.202a. \nS3. Definitions. \n Head restraint means a device that limits rearward displacement of a seated occupant's head relative to the occupant's torso. \n Height means, when used in reference to a head restraint, the distance from the H-point, measured parallel to the torso reference line defined by the three dimensional SAE Standard J826 JUL95 (incorporated by reference, see § 571.5) manikin, to a plane normal to the torso reference line. \n Top of the head restraint means the point on the head restraint with the greates",
+  "571.202a": "§ 571.202a Standard No. 202a; Head restraints; Mandatory applicability begins on September 1, 2009. \nS1. Purpose and scope. This standard specifies requirements for head restraints to reduce the frequency and severity of neck injury in rear-end and other collisions. \nS2 Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks and buses with a GVWR of 4,536 kg or less, manufactured on or after September 1, 2009. However, the standard's requirements for rear head restraints do not apply to vehicles manufactured before September 1, 2010, and, for vehicles manufactured between September 1, 2010 and August 31, 2011, the requirements for rear head restraints apply only to the extent provided in S7. Until September 1, 2009, manufacturers may comply with the standard in this § 571.202a, with the standard in § 571.202, or with the European regulations referenced in S4.3(a) of § 571.202. For vehicles manufactured on or after September 1, 2009 and before September 1, 2010, manufacturers may comply with the standard in § 571.202 or with the European regulations referenced in S4.3(a) of § 571.202, instead of the standard in this § 571.202a, only to the extent consistent with the phase-in specified in this § 571.202a. \nS3. Definitions. \n Backset means the minimum horizontal distance between the rear of a representation of the head of a seated 50th percentile male occupant and the head restraint, as measured by the head restraint measurement devic",
+  "571.203": "§ 571.203 Standard No. 203; Impact protection for the driver from the steering control system. \nS1. Purpose and scope. This standard specifies requirements for steering control systems that will minimize chest, neck, and facial injuries to the driver as a result of impact. \nS2. Application. This standard applies to passenger cars and to multipurpose passenger vehicles, trucks and buses with a gross vehicle weight rating of 4,536 kg or less. However, it does not apply to vehicles that conform to the frontal barrier crash requirements (S5.1) of Standard No. 208 (49 CFR 571.208) by means of other than seat belt assemblies. It also does not apply to walk-in vans or vehicles without a steering control. \nS3. [Reserved] \nS4. Requirements. Each passenger car and each multipurpose passenger vehicle, truck and bus with a gross vehicle weight rating of 4,536 kg or less manufactured on or after September 1, 1981 shall meet the requirements of S5.1 and S5.2. \nS5. Impact protection requirements. \nS5.1 Except as provided in this paragraph, the steering control system of any vehicle to which this standard applies shall be impacted in accordance with S5.1(a). \n(a) When the steering control system is impacted by a body block in accordance with SAE Recommended Practice J944 JUN80 (incorporated by reference, see § 571.5), at a relative velocity of 24 km/h, the impact force developed on the chest of the body block transmitted to the steering control system shall not exceed 11,120 N, except for in",
+  "571.204": "§ 571.204 Standard No. 204; Steering control rearward displacement. \nS1. Purpose and scope. This standard specifies requirements limiting the rearward displacement of the steering control into the passenger compartment to reduce the likelihood of chest, neck, or head injury. \nS2. Application. This standard applies to passenger cars and to multipurpose passenger vehicles, trucks and buses. However, it does not apply to vehicles certified to S14 of Standard No. 208 (49 CFR 571.208). It also does not apply to walk-in vans or vehicles without steering controls. \nS3. Definitions. \n Steering column means a structural housing that surrounds a steering shaft. \n Steering shaft means a component that transmits steering torque from the steering wheel to the steering gear. \nS4. Requirements. When a passenger car or a truck, bus or multipurpose passenger vehicle with a gross vehicle weight rating of 4,536 kg or less and an unloaded vehicle weight of 2,495 kg or less is tested under the conditions of S5 in a 48 km/h perpendicular impact into a fixed collision barrier, the upper end of the steering column and shaft in the vehicle shall not be displaced more than 127 mm in a horizontal rearward direction parallel to the longitudinal axis of the vehicle. The amount of displacement shall be measured relative to an undisturbed point on the vehicle and shall represent the maximum dynamic movement of the upper end of the steering column and shaft during the crash test. \nS5. Test conditions. The r",
+  "571.205": "S1. Scope. This standard specifies requirements for glazing materials for use in motor vehicles and motor vehicle equipment. \nS2. Purpose. The purpose of this standard is to reduce injuries resulting from impact to glazing surfaces, to ensure a necessary degree of transparency in motor vehicle windows for driver visibility, and to minimize the possibility of occupants being thrown through the vehicle windows in collisions. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks designed to carry at least one person, buses, motorcycles, slide-in campers, pickup covers designed to carry persons while in motion and low speed vehicles, and to glazing materials for use in those vehicles.",
+  "571.206": "S1. Scope and Purpose. This standard specifies requirements for vehicle door locks and door retention components, including latches, hinges, and other supporting means, to minimize the likelihood of occupants being ejected from a vehicle as a result of impact. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks designed to carry at least one person, and buses with a gross vehicle weight rating (GVWR) of 4,536 kg or less. \nS3. Definitions. \n Auxiliary Door Latch is a latch equipped with a fully latched position, with or without a secondary latched position, and fitted to a door or door system equipped with a primary door latch system. \n Auxiliary Door Latch System consists of door latches and strikers other than those associated with the primary door latch system. \n Back Door is a door or door system on the back end of a motor vehicle through which passengers can enter or depart the vehicle or cargo can be loaded or unloaded. It does not include: \n(a) A trunk lid; or \n(b) A door or window composed entirely of glazing material and whose latches and/or hinge systems are attached directly to the glazing material. \n Body Member is that portion of the hinge normally affixed to the body structure. \n Door Closure Warning System is a system that will activate a visual signal when a door latch system is not in its fully latched position and the vehicle ignition is activated. \n Door Hinge System is one or more hinges used to support a door.",
+  "571.207": "§ 571.207 Standard No. 207; Seating systems. \nS1. Purpose and scope. This standard establishes requirements for seats, their attachment assemblies, and their installation to minimize the possibility of their failure by forces acting on them as a result of vehicle impact. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks designed to carry at least one person, and buses. \nS3. Definitions. Occupant seat means a seat that provides at least one designated seating position. \n Seat adjuster means the part of the seat that provides forward and rearward positioning of the seat bench and back, and/or rotation around a vertical axis, including any fixed portion, such as a seat track. In the case of a seat equipped with seat adjusters at different levels, the term means the uppermost seat adjuster. \nS4. Requirements. \nS4.1 Driver's seat. Each vehicle with manually operated driving controls shall have a driver's designated seating position. \nS4.2. General performance requirements. When tested in accordance with S5, each occupant seat shall withstand the following forces, in newtons, except for: a side-facing seat; a passenger seat on a bus other than a school bus; and, a passenger seat on a school bus with a GVWR greater than 4,536 kilograms (10,000 pounds). \n(a) In any position to which it can be adjusted—20 times the mass of the seat in kilograms multiplied by 9.8 applied in a forward longitudinal direction; \n(b) In any position to which",
+  "571.208": "S1. Scope. This standard specifies performance requirements for the protection of vehicle occupants in crashes. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths of vehicle occupants, and the severity of injuries, by specifying vehicle crashworthiness requirements in terms of forces and accelerations measured on anthropomorphic dummies in test crashes, and by specifying equipment requirements for active and passive restraint systems. \nS3. Application. (a) This standard applies to passenger cars, multipurpose passenger vehicles, trucks designed to carry at least one person, and buses. In addition, S9, Pressure vessels and explosive devices, applies to vessels designed to contain a pressurized fluid or gas, and to explosive devices, for use in the above types of motor vehicles as part of a system designed to provide protection to occupants in the event of a crash. \n(b) Notwithstanding any language to the contrary, any vehicle manufactured after March 19, 1997, and before September 1, 2006, that is subject to a dynamic crash test requirement conducted with unbelted dummies may meet the requirements specified in S5.1.2(a)(1), S5.1.2(a)(2), or S13 instead of the applicable unbelted requirement, unless the vehicle is certified to meet the requirements specified in S14.5, S15, S17, S19, S21, S23, and S25. \n(c) For vehicles which are certified to meet the requirements specified in S13 instead of the otherwise applicable dynamic crash test requirement conduc",
+  "571.209": "§ 571.209 Standard No. 209; Seat belt assemblies. \nS1. Purpose and scope. This standard specifies requirements for seat belt assemblies. \nS2. Application. This standard applies to seat belt assemblies for use in passenger cars, multipurpose passenger vehicles, trucks, and buses. \nS3. Definitions. Adjustment hardware means any or all hardware designed for adjusting the size of a seat belt assembly to fit the user, including such hardware that may be integral with a buckle, attachment hardware, or retractor. \n Attachment hardware means any or all hardware designed for securing the webbing of a seat belt assembly to a motor vehicle. \n Automatic-locking retractor means a retractor incorporating adjustment hardware by means of a positive self-locking mechanism which is capable when locked of withstanding restraint forces. \n Buckle means a quick release connector which fastens a person in a seat belt assembly. \n Emergency-locking retractor means a retractor incorporating adjustment hardware by means of a locking mechanism that is activated by vehicle acceleration, webbing movement relative to the vehicle, or other automatic action during an emergency and is capable when locked of withstanding restraint forces. \n Hardware means any metal or rigid plastic part of a seat belt assembly. \n Load-limiter means a seat belt assembly component or feature that controls tension on the seat belt to modulate the forces that are imparted to occupants restrained by the belt assembly during a crash",
+  "571.210": "§ 571.210 Standard No. 210; Seat belt assembly anchorages. \nS1. Purpose and scope. This standard establishes requirements for seat belt assembly anchorages to insure their proper location for effective occupant restraint and to reduce the likelihood of their failure. \nS2. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, buses, and school buses. \nS3. Definitions. \n Actuator means the device used to apply the load in performing testing. \n Bridged pull yoke means the yoke that bridges the torso and pelvis on the FAD1 or FAD2 and is used for testing Type 1 seat belt assemblies. \n FAD means the force application device, either the FAD1 or the FAD2, a one-piece device consisting of an upper torso portion and a pelvic portion hinged together. \n FAD1 means the larger version of the force application device specified in drawings NHTSA221-210-01, “Drawing Package for the Force Application Device 1 (FAD1),” April 9, 2024 (incorporated by reference, see § 571.5). FAD1 is depicted in figure 7 to this standard (figure provided for illustration purposes). \n FAD2 means the smaller version of the force application device specified in drawings NHTSA221-210-01J, “Drawing Package for the Force Application Device 2 (FAD2),” April 9, 2024 (incorporated by reference; see § 571.5). FAD2 is depicted in figure 8 to this standard (figure provided for illustration purposes). \n Midsagittal plane means the vertical plane that separates the FAD into equal left",
+  "571.211": "§ 571.211 [Reserved]",
+  "571.212": "S1. Scope. This standard establishes windshield retention requirements for motor vehicles during crashes. \nS2. Purpose. The purpose of this standard is to reduce crash injuries and fatalities by providing for retention of the vehicle windshield during a crash, thereby utilizing fully the penetration-resistance and injury-avoidance properties of the windshield glazing material and preventing the ejection of occupants from the vehicle. \nS3. Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks designed to carry at least one person, and buses having a gross vehicle weight rating of 4,536 kilograms or less. However, it does not apply to forward control vehicles, walk-in van-type vehicles, or to open-body type vehicles with fold-down or removable windshields.",
+  "571.213": "S1. Scope. This standard specifies requirements for child restraint systems used in motor vehicles and aircraft. \nS2. Purpose. The purpose of this standard is to reduce the number of children killed or injured in motor vehicle crashes and in aircraft. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks and buses, and to child restraint systems for use in motor vehicles and aircraft, manufactured before December 5, 2026. FMVSS No. 213b applies to child restraint systems manufactured on or after December 5, 2026.",
+  "571.213a": "S1. Scope. This standard specifies side impact protection requirements for child restraint systems recommended for children in a weight range that includes weights up to 18 kilograms (40 pounds) or by children in a height range that includes heights up to 1100 millimeters (43 inches). \nS2. Purpose. The purpose of this standard is to reduce the number of children killed or injured in motor vehicle side impacts. Each child restraint system subject to this standard shall also meet all applicable requirements in FMVSS No. 213 (§ 571.213). \nS3. Application. This standard applies to add-on child restraint systems that are either recommended for use by children in a weight range that includes weights up to 18 kilograms (40 pounds) regardless of height, or by children in a height range that includes heights up to 1100 millimeters regardless of weight, except for car beds and harnesses.",
+  "571.213b": "S1. Scope. This standard specifies requirements for child restraint systems used in motor vehicles and aircraft. \nS2. Purpose. The purpose of this standard is to reduce the number of children killed or injured in motor vehicle crashes and in aircraft. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks and buses, and to child restraint systems for use in motor vehicles and aircraft, manufactured on or after December 5, 2026.",
+  "571.214": "S1 Scope and purpose. \n(a) Scope. This standard specifies performance requirements for protection of occupants in side impacts. \n(b) Purpose. The purpose of this standard is to reduce the risk of serious and fatal injury to occupants of passenger cars, multipurpose passenger vehicles, trucks and buses in side impacts by specifying strength requirements for side doors, limiting the forces, deflections and accelerations measured on anthropomorphic dummies in test crashes, and by other means. \nS2 Applicability. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks designed to carry at least one person and buses with a gross vehicle weight rating (GVWR) of 4,536 kilograms (kg) (10,000 pounds (lb)) or less, except for walk-in vans, or otherwise specified. \nS3 Definitions. \n Contoured means, with respect to a door, that the lower portion of its front or rear edge is curved upward, typically to conform to a wheel well. \n Double side doors means a pair of hinged doors with the lock and latch mechanisms located where the door lips overlap. \n Limited line manufacturer means a manufacturer that sells three or fewer carlines, as that term is defined in 49 CFR 583.4, in the United States during a production year. \n Lowered floor means the replacement floor on a motor vehicle whose original floor has been removed, in part or in total, and replaced by a floor that is lower than the original floor. \n Modified roof means the replacement roof on a motor vehicl",
+  "571.215": "§ 571.215 [Reserved]",
+  "571.216a": "S1. Scope. This standard establishes strength requirements for the passenger compartment roof. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries due to the crushing of the roof into the occupant compartment in rollover crashes. \nS3 Application and selection of compliance options. \nS3.1 Application. \n(a) This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks designed to carry at least one person, and buses with a GVWR of 4,536 kilograms (10,000 pounds) or less, according to the implementation schedule specified in S8 and S9 of this section. However, it does not apply to— \n(1) School buses; \n(2) Vehicles that conform to the rollover test requirements (S5.3) of Standard No. 208 (§ 571.208) by means that require no action by vehicle occupants; \n(3) Convertibles, except for optional compliance with the standard as an alternative to the rollover test requirement (S5.3) of Standard No. 208; or \n(4) Trucks built in two or more stages with a GVWR greater than 2,722 kilograms (6,000 pounds) not built using a chassis cab or using an incomplete vehicle with a full exterior van body. \n(b) At the option of the manufacturer, vehicles within either of the following categories may comply with the roof crush requirements (S4) of Standard No. 220 (§ 571.220) instead of the requirements of this standard: \n(1) Vehicles built in two or more stages, other than vehicles built using a chassis cab; \n(2) Vehicles with a GVWR greater than 2,722",
+  "571.217": "S1. Scope. This standard establishes requirements for the retention of windows other than windshields in buses, and establishes operating forces, opening dimensions, and markings for bus emergency exits. \nS2. Purpose. The purpose of this standard is to minimize the likelihood of occupants being thrown from the bus and to provide a means of readily accessible emergency egress. \nS3. Application. This standard applies to buses, except buses manufactured for the purpose of transporting persons under physical restraint.",
+  "571.217a": "S1. Scope. This standard establishes requirements to improve side and roof bus portals by way of glazing that is highly resistant to partial or complete occupant ejection in all types of crashes. \nS2. Purpose. The purpose of this standard is to reduce death and injuries resulting from complete and partial ejections of bus occupants through side and roof portals during rollovers and other crashes. \nS3. Application. \n(a) Subject to S3(b) of this section, this standard applies to: \n(1) Over-the-road buses manufactured on or after October 30, 2027, and \n(2) Buses, other than over-the-road buses, that have a gross vehicle weight rating (GVWR) greater than 11,793 kilograms (kg) manufactured on or after October 30, 2027. \n(b) This standard does not apply to school buses, transit buses, prison buses, and perimeter-seating buses.",
+  "571.218": "S1. Scope. This standard establishes minimum performance requirements for helmets designed for use by motorcyclists and other motor vehicle users. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries to motorcyclists and other motor vehicle users resulting from head impacts. \nS3. Application. This standard applies to all helmets designed for use by motorcyclists and other motor vehicle users.",
+  "571.219": "S1. Scope. This standard specifies limits for the displacement into the windshield area of motor vehicle components during a crash. \nS2. Purpose. The purpose of this standard is to reduce crash injuries and fatalities that result from occupants contacting vehicle components displaced near or through the windshield. \nS3. Application. This standard applies to passenger cars and to multipurpose passenger vehicles, trucks designed to carry at least one person, and buses of 4,536 kilograms or less gross vehicle weight rating. However, it does not apply to forward control vehicles, walk-in van-type vehicles, or to open-body-type vehicles with fold-down or removable windshields.",
+  "571.220": "S1. Scope. This standard establishes performance requirements for school bus rollover protection. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and the severity of injuries that result from failure of the school bus body structure to withstand forces encountered in rollover crashes. \nS3. Applicability. This standard applies to school buses.",
+  "571.221": "S1. Scope. This standard establishes requirements for the strength of the body panel joints in school bus bodies. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries resulting from the structural collapse of school bus bodies during crashes. \nS3. Application. This standard applies to school buses.",
+  "571.222": "S1. Scope. This standard establishes occupant protection requirements for school bus passenger seating and restraining barriers. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and the severity of injuries that result from the impact of school bus occupants against structures within the vehicle during crashes and sudden driving maneuvers. \nS3. Application. This standard applies to school buses.",
+  "571.223": "S1. Scope. This standard specifies requirements for rear impact guards for trailers and semitrailers. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and serious injuries that occur when light duty vehicles collide with the rear end of trailers and semitrailers. \nS3. Application. This standard applies to rear impact guards for trailers and semitrailers subject to Federal Motor Vehicle Safety Standard No. 224, Rear Impact Protection (§ 571.224).",
+  "571.224": "S1. Scope. This standard establishes requirements for the installation of rear impact guards on trailers and semitrailers with a gross vehicle weight rating (GVWR) of 4,536 kg or more. \nS2. Purpose. The purpose of this standard is to reduce the number of deaths and serious injuries occurring when light duty vehicles impact the rear of trailers and semitrailers with a GVWR of 4,536 kg or more. \n S3. Application. This standard applies to trailers and semitrailers with a GVWR of 4,356 kg or more. The standard does not apply to pole trailers, pulpwood trailers, low chassis vehicles, road construction controlled horizontal discharge trailers, special purpose vehicles, wheels back vehicles, or temporary living quarters as defined in 49 CFR 523.2. If a cargo tank motor vehicle, as defined in 49 CFR 171.8, is certified to carry hazardous materials and has a rear bumper or rear end protection device conforming with 49 CFR part 178 located in the area of the horizontal member of the rear underride guard required by this standard, the guard need not comply with the energy absorption requirement (S5.2.2) of 49 CFR 571.223.",
+  "571.225": "§ 571.225 Standard No. 225; Child restraint anchorage systems. \nS1. Purpose and scope. This standard establishes requirements for child restraint anchorage systems to ensure their proper location and strength for the effective securing of child restraints, to reduce the likelihood of the anchorage systems' failure, and to increase the likelihood that child restraints are properly secured and thus more fully achieve their potential effectiveness in motor vehicles. \nS2. Application. This standard applies to passenger cars; to trucks and multipurpose passenger vehicles with a gross vehicle weight rating (GVWR) of 3,855 kilograms (8,500 pounds) or less; and to buses (including school buses) with a GVWR of 4,536 kg (10,000 lb) or less. This standard does not apply to walk-in van-type vehicles, vehicles manufactured to be sold exclusively to the U.S. Postal Service, shuttle buses, and funeral coaches. \nS3. Definitions. \n Child restraint anchorage means any vehicle component, other than Type I or Type II seat belts, that is involved in transferring loads generated by a child restraint system to the vehicle structure. \n Child restraint anchorage system means a vehicle system that is designed for attaching a child restraint system to a vehicle at a particular designated seating position, consisting of: \n(a) Two lower anchorages meeting the requirements of S9; and \n(b) A tether anchorage meeting the requirements of S6. \n Child restraint fixture (CRF) means the fixture depicted in Figur",
+  "571.226": "§ 571.226 Standard No. 226; Ejection Mitigation. \nS1. Purpose and Scope. This standard establishes requirements for ejection mitigation systems to reduce the likelihood of complete and partial ejections of vehicle occupants through side windows during rollovers or side impact events. \nS2. Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks designed to carry at least one person, and buses with a gross vehicle weight rating of 4,536 kg or less, except walk-in vans, modified roof vehicles, convertibles, and vehicles with no doors or with doors that are designed to be easily attached or removed so the vehicle can be operated without doors. Also excluded from this standard are law enforcement vehicles, correctional institution vehicles, taxis and limousines, if they have a fixed security partition separating the 1st and 2nd or 2nd and 3rd rows and if they are produced by more than one manufacturer or are altered (within the meaning of 49 CFR 567.7). \nS3. Definitions. \n Ejection impactor means a device specified in S7.1 of this standard that is a component of the ejection mitigation test device and is the moving mass that strikes the ejection mitigation countermeasure. \n Ejection impactor targeting point means the intersection of the y-axis of the ejection headform and the outer surface of the ejection headform. \n Ejection mitigation countermeasure means a device or devices, except seat belts, integrated into the vehicle that reduce",
+  "571.227": "S1. Scope. This standard establishes performance requirements for bus rollover structural integrity. \nS2. Purpose. The purpose of this standard is to reduce death and injuries resulting from the structural collapse of the bus body structure in rollover crashes and from partial and complete ejections through emergency exits opening in such crashes. \nS3. Application. \n(a) Subject to S3(b), this standard applies to: \n(1) Over-the-road buses; and \n(2) Buses that are not over-the-road buses, and that have a gross vehicle weight rating (GVWR) greater than 11,793 kilograms (26,000 pounds). \n(b) This standard does not apply to: \n(1) School buses, school bus derivative buses, transit buses, and prison buses; and \n(2) Buses with 7 or fewer designated seating positions rearward of the driver's seating position that are forward-facing or can convert to forward-facing without the use of tools.",
+  "571.301": "S1. Scope. This standard specifies requirements for the integrity of motor vehicle fuel systems. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring from fires that result from fuel spillage during and after motor vehicle crashes, and resulting from ingestion of fuels during siphoning. \nS3. Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks and buses that have a GVWR of 4,536 kg or less and use fuel with a boiling point above 0 °C, and to school buses that have a GVWR greater than 4,536 kg and use fuel with a boiling point above 0 °C.",
+  "571.302": "S1. Scope. This standard specifies burn resistance requirements for materials used in the occupant compartments of motor vehicles. \nS2. Purpose. The purpose of this standard is to reduce the deaths and injuries to motor vehicle occupants caused by vehicle fires, especially those originating in the interior of the vehicle from sources such as matches or cigarettes. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses. \nS3A. Definitions. Occupant compartment air space means the space within the occupant compartment that normally contains refreshable air.",
+  "571.303": "S1. Scope. This standard specifies requirements for the integrity of motor vehicle fuel systems using compressed natural gas (CNG), including the CNG fuel systems of bi-fuel, dedicated, and dual fuel CNG vehicles. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring from fires that result from fuel leakage during and after motor vehicle crashes. \nS3. Application. This standard applies to passenger cars, multipurpose passenger vehicles, trucks and buses that have a gross vehicle weight rating (GVWR) of 10,000 pounds or less and use CNG as a motor fuel. This standard also applies to school buses regardless of weight that use CNG as a motor fuel.",
+  "571.304": "S1. Scope. This standard specifies requirements for the integrity of compressed natural gas (CNG), motor vehicle fuel containers. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring from fires that result from fuel leakage during and after motor vehicle crashes. \nS3. Application. This standard applies to each passenger car, multipurpose passenger vehicle, truck, and bus that uses CNG as a motor fuel and to each container designed to store CNG as motor fuel on-board any motor vehicle.",
+  "571.305": "S1. Scope. This standard specifies requirements for limitation of electrolyte spillage and retention of electric energy storage/conversion devices during and after a crash, and protection from harmful electric shock during and after a crash and during normal vehicle operation. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries during and after a crash that occur because of electrolyte spillage from electric energy storage devices, intrusion of electric energy storage/conversion devices into the occupant compartment, and electrical shock, and to reduce deaths and injuries during normal vehicle operation that occur because of electric shock or driver error. \nS3. Application. This standard applies to passenger cars, and to multipurpose passenger vehicles, trucks, and buses with a gross vehicle weight rating (GVWR) of 4,536 kilograms (kg) or less, that use electrical propulsion components with working voltages greater than 60 volts direct current (VDC) or 30 volts alternating current (VAC), and whose speed attainable over a distance of 1.6 km on a paved level surface is more than 40 km/h, that are manufactured before September 1, 2027.",
+  "571.305a": "S1. Scope. This standard specifies requirements for protection from harmful electric shock, fire, explosion, and gas venting during normal vehicle operation and during and after a crash. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries during normal vehicle operations and during and after a crash that occur because of electrolyte leakage, intrusion of electric energy storage/conversion devices into the occupant compartment, electric shock, fire, explosion, and gas venting, including deaths and injuries due to driver error. \nS3. Application. (a) This standard applies to passenger cars, multipurpose passenger vehicles, trucks, and buses that use electrical propulsion components with working voltages greater than 60 volts direct current (VDC) or 30 volts alternating current (VAC), and whose speed attainable over a distance of 1.6 km on a paved level surface is more than 40 km/h. \n(b) Mandatory applicability begins September 1, 2027, for vehicles with a gross vehicle weight rating of 4,536 kilograms (kg) or less and September 1, 2028, for vehicles with a gross vehicle weight rating over 4,536 kg. Small-volume manufacturers, final-stage manufacturers, and alterers are provided an additional year to comply with the requirements beyond the dates identified in this paragraph (b).",
+  "571.307": "S1. Scope. This standard specifies requirements for the integrity of motor vehicle hydrogen fuel systems. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring from fires that result from hydrogen fuel leakage during vehicle operation and after motor vehicle crashes. \nS3. Application. This standard applies to each motor vehicle manufactured on or after September 1, 2028, that uses compressed hydrogen gas as a fuel source to propel the vehicle.",
+  "571.308": "S1. Scope. This standard specifies requirements for compressed hydrogen storage systems used in motor vehicles. \nS2. Purpose. The purpose of this standard is to reduce deaths and injuries occurring from fires that result from hydrogen fuel leakage during vehicle operation and to reduce deaths and injuries occurring from explosions resulting from the burst of pressurized hydrogen containers. \nS3. Application. This standard applies to each motor vehicle manufactured on or after September 1, 2028, that is equipped with compressed hydrogen gas as a fuel source to propel the vehicle. The standard does not apply to vehicles that are only equipped with cryo-compressed hydrogen storage systems and/or solid-state hydrogen storage system to propel the vehicle.",
+  "571.401": "§ 571.401 Standard No. 401; Interior trunk release. \nS1. Purpose and scope. This standard establishes the requirement for providing a trunk release mechanism that makes it possible for a person trapped inside the trunk compartment of a passenger car to escape from the compartment. \nS2. Application. This standard applies to passenger cars that have a trunk compartment. This standard does not apply to passenger cars with a back door. \nS3. Definitions. \n Back door means a door or door system on the back end of a passenger car through which cargo can be loaded or unloaded. The term includes the hinged back door on a hatchback or a station wagon. \n Trunk compartment. (a) Means a space that: \n(1) Is intended to be used for carrying luggage or cargo, \n(2) Is wholly separated from the occupant compartment of a passenger car by a permanently attached partition or by a fixed or fold-down seat back and/or partition, \n(3) Has a trunk lid, and \n(4) Is large enough so that the three-year-old child dummy described in Subpart C of Part 572 can be placed inside the trunk compartment, and the trunk lid can be closed and latched with all removable equipment furnished by the passenger car manufacturer stowed in accordance with label(s) on the passenger car or information in the passenger car owner's manual, or, if no information is provided, as located when the passenger car is delivered. (Note: For purposes of this standard, the Part 572 Subpart C test dummy need not be equipped with the accele",
+  "571.403": "S1. Scope. This standard specifies requirements for platform lifts used to assist persons with limited mobility in entering or leaving a vehicle. \nS2. Purpose. The purpose of this standard is to prevent injuries and fatalities to passengers and bystanders during the operation of platform lifts installed in motor vehicles. \nS3 Application. This standard applies to platform lifts manufactured on and after April 1, 2005, that are designed to carry standing passengers, who may be aided by canes or walkers, as well as persons seated in wheelchairs, scooters, and other mobility aids, into and out of motor vehicles.",
+  "571.404": "S1. Scope. This standard specifies requirements for vehicles equipped with platform lifts used to assist persons with limited mobility in entering or leaving a vehicle. \nS2. Purpose. The purpose of this standard is to prevent injuries and fatalities to passengers and bystanders during the operation of platform lifts installed in motor vehicles. \nS3 Application. This standard applies to motor vehicles manufactured on and after July 1, 2005, that are equipped with a platform lift designed to carry standing passengers who may be aided by canes or walkers, as well as persons seated in wheelchairs, scooters, and other mobility aids, into and out of the vehicle.",
+  "571.500": "S1. Scope. This standard specifies requirements for low-speed vehicles. \nS2. Purpose. The purpose of this standard is to ensure that low-speed vehicles operated on the public streets, roads, and highways are equipped with the minimum motor vehicle equipment appropriate for motor vehicle safety. \nS3. Applicability. This standard applies to low-speed vehicles."
+ }
+}

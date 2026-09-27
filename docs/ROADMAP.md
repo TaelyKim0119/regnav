@@ -20,6 +20,12 @@ and the backlog when work lands. Dates are KST.
 - Demo: https://huggingface.co/spaces/kim0192/regnav (Gradio SDK on ZeroGPU, `space_app.py`). Offline demo mode until the owner adds `NEBIUS_API_KEY` as a Space secret. Redeploys are uploaded by the owner (Files > Contribute > Upload files) from the folder built by `scripts/make_space.py --out space_upload`.
 - Submission drafts: `docs/submission/DEVPOST.md`, `DEVPOST_STORY.md`, `VIDEO_SCRIPT.md`.
 
+## Run environment facts
+
+- The cloud routine's sandbox has **no general web access** (eCFR, unece.org and ordinary sites are refused by the egress proxy; PyPI and GitHub work). All checks therefore run offline: `scripts/test_dryrun.py` and `scripts/accuracy_table.py` set `REGNAV_ECFR_OFFLINE=1` and read the committed snapshot `data/ecfr_snapshot.json` (49 CFR 571 index + scope excerpts of every standard, built by `scripts/make_ecfr_snapshot.py`, dated in the file). Rebuild the snapshot only from a machine with web access.
+- In the app, live eCFR is still preferred; if it is unreachable the review falls back to the snapshot and the report carries a note saying so.
+- Baseline on the snapshot (2026-09-27): candidate recall 24/25 (96%), must-review recall 14/25 (56%); held-out 9/10 and 5/10.
+
 ## Hard rules
 
 - Zero spending. Never call Nebius Token Factory or Tavily from automated runs (keep `NEBIUS_API_KEY` and `TAVILY_API_KEY` empty). Never raise the caps in `regnav/budget.py`.

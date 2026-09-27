@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT))
 if os.environ.get("NEBIUS_API_KEY"):
     sys.exit("refusing to run: unset NEBIUS_API_KEY (dry-run only)")
 os.environ["NEBIUS_API_KEY"] = ""
+os.environ.setdefault("REGNAV_ECFR_OFFLINE", "1")  # reproducible: committed eCFR snapshot, no network
 
 from app import EXAMPLES  # noqa: E402
 from regnav.pipeline import review  # noqa: E402
