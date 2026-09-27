@@ -4,11 +4,12 @@
 
 1. Copies only git-tracked files (so .env, notes/ and caches can never leak) into --out,
    with README.md = space/README.md front matter + the project README.
-2. Checks the Space contract: front matter has sdk: gradio and app_file: app.py (the
-   Gradio runtime runs `python app.py` and serves whatever listens on port 7860; our
-   FastAPI app defaults to 0.0.0.0:7860). Docker Spaces are a paid option on HF now.
-3. Boots `python app.py` from the built folder on a free port in dry-run mode and
-   checks /health and the home page, as the Space runtime would.
+2. Checks the Space contract: front matter has sdk: gradio and app_file: space_app.py.
+   Free HF accounts can only run Gradio Spaces on ZeroGPU (Docker and CPU basic are paid),
+   and ZeroGPU refuses to start without a registered @spaces.GPU function, so
+   space_app.py is a Gradio app that registers one (never called; RegNav needs no GPU).
+3. Boots `python space_app.py` from the built folder on a free port in dry-run mode and
+   checks the page and one review through the Gradio API, as the Space runtime would.
 
 Upload: push the --out folder to https://huggingface.co/spaces/<user>/regnav, then set
 NEBIUS_API_KEY as a Space *secret* (never in files). The spending caps in
@@ -71,11 +72,11 @@ def check_contract(out: Path) -> list[str]:
     meta = front_matter((out / "README.md").read_text(encoding="utf-8"))
     if meta.get("sdk") != "gradio":
         problems.append("README front matter: sdk must be gradio")
-    if meta.get("app_file") != "app.py":
-        problems.append("README front matter: app_file must be app.py")
-    app = (out / "app.py").read_text(encoding="utf-8")
-    if 'os.environ.get("PORT", "7860")' not in app or 'os.environ.get("HOST", "0.0.0.0")' not in app:
-        problems.append("app.py must listen on 0.0.0.0:7860 by default")
+    if meta.get("app_file") != "space_app.py":
+        problems.append("README front matter: app_file must be space_app.py")
+    app = (out / "space_app.py").read_text(encoding="utf-8")
+    if "@spaces.GPU" not in app or "demo.launch()" not in app:
+        problems.append("space_app.py must register a @spaces.GPU function and call demo.launch()")
     if (out / "data" / "budget.json").exists():
         problems.append("data/budget.json must not ship (the Space keeps its own daily counter)")
     for path in out.rglob("*"):
@@ -85,29 +86,32 @@ def check_contract(out: Path) -> list[str]:
     return problems
 
 
-def boot(out: Path, timeout: float = 60.0) -> None:
+def boot(out: Path, timeout: float = 120.0) -> None:
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))
         port = s.getsockname()[1]
-    env = dict(os.environ, PORT=str(port), HOST="127.0.0.1", NEBIUS_API_KEY="", TAVILY_API_KEY="")
-    proc = subprocess.Popen([sys.executable, "app.py"], cwd=out, env=env,
+    env = dict(os.environ, GRADIO_SERVER_PORT=str(port), GRADIO_SERVER_NAME="127.0.0.1",
+               NEBIUS_API_KEY="", TAVILY_API_KEY="", PYTHONIOENCODING="utf-8")
+    proc = subprocess.Popen([sys.executable, "space_app.py"], cwd=out, env=env,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         deadline = time.time() + timeout
         while True:
             try:
-                health = urllib.request.urlopen(f"http://127.0.0.1:{port}/health", timeout=3).read().decode()
+                home = urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=5).read().decode()
                 break
             except OSError:
                 if proc.poll() is not None or time.time() > deadline:
-                    raise SystemExit("app did not start:\n" + proc.stdout.read().decode(errors="replace")[-2000:])
-                time.sleep(0.5)
-        if '"ok":true' not in health.replace(" ", "") or "dry-run" not in health:
-            raise SystemExit(f"unexpected /health: {health}")
-        home = urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=10).read().decode()
+                    raise SystemExit("space app did not start:\n" + proc.stdout.read().decode(errors="replace")[-2000:])
+                time.sleep(1)
         if "RegNav" not in home:
             raise SystemExit("home page did not render")
-        print(f"boot ok on port {port}: {health}")
+        from gradio_client import Client
+        status, report = Client(f"http://127.0.0.1:{port}/", verbose=False).predict(
+            "Aftermarket brake pad set for passenger car disc brakes", api_name="/run_review")
+        if "Offline demo mode" not in status or "UN R90" not in report:
+            raise SystemExit(f"unexpected review output: {status[:200]} / {report[:300]}")
+        print(f"boot ok on port {port}: page renders, review returns {report.count(chr(10))} lines, UN R90 present")
     finally:
         proc.terminate()
         proc.wait(timeout=10)
