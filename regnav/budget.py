@@ -22,10 +22,20 @@ STATE = Path(__file__).resolve().parents[1] / "data" / "budget.json"
 _lock = threading.Lock()
 
 
+# Public demo on Hugging Face Spaces (HF sets SPACE_ID): anyone can press Review, so the
+# daily ceiling is lower and environment variables can only lower it further, never raise it.
+PUBLIC_DEMO_CEILING = (12, 60, 160_000)
+LOCAL_DEFAULTS = (12, 150, 400_000)
+
+
 def _limits() -> tuple[int, int, int]:
-    return (int(os.environ.get("REGNAV_MAX_CALLS_PER_REVIEW", 12)),
-            int(os.environ.get("REGNAV_MAX_CALLS_PER_DAY", 150)),
-            int(os.environ.get("REGNAV_MAX_TOKENS_PER_DAY", 400_000)))
+    on_space = bool(os.environ.get("SPACE_ID"))
+    defaults = PUBLIC_DEMO_CEILING if on_space else LOCAL_DEFAULTS
+    names = ("REGNAV_MAX_CALLS_PER_REVIEW", "REGNAV_MAX_CALLS_PER_DAY", "REGNAV_MAX_TOKENS_PER_DAY")
+    values = tuple(int(os.environ.get(n, d)) for n, d in zip(names, defaults))
+    if on_space:
+        values = tuple(min(v, c) for v, c in zip(values, PUBLIC_DEMO_CEILING))
+    return values
 
 
 def _today() -> str:

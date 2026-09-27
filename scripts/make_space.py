@@ -1,13 +1,14 @@
-"""Assemble and verify a Hugging Face Docker Space folder for RegNav. No Docker needed.
+"""Assemble and verify a Hugging Face Space folder for RegNav (Gradio SDK, CPU basic).
 
     NEBIUS_API_KEY= .venv/Scripts/python.exe -X utf8 scripts/make_space.py --out space_build
 
 1. Copies only git-tracked files (so .env, notes/ and caches can never leak) into --out,
    with README.md = space/README.md front matter + the project README.
-2. Checks the Space contract: front matter has sdk: docker and app_port 7860, the
-   Dockerfile exposes 7860 and runs `python app.py`, .dockerignore excludes secrets.
+2. Checks the Space contract: front matter has sdk: gradio and app_file: app.py (the
+   Gradio runtime runs `python app.py` and serves whatever listens on port 7860; our
+   FastAPI app defaults to 0.0.0.0:7860). Docker Spaces are a paid option on HF now.
 3. Boots `python app.py` from the built folder on a free port in dry-run mode and
-   checks /health and the home page, exactly as the container's CMD would.
+   checks /health and the home page, as the Space runtime would.
 
 Upload: push the --out folder to https://huggingface.co/spaces/<user>/regnav, then set
 NEBIUS_API_KEY as a Space *secret* (never in files). The spending caps in
@@ -27,6 +28,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = (".env", "notes/", "data/cache/", "proposal_text.txt")
+# not needed on a Gradio-SDK Space (kept in the repo for container deployments)
+SKIP = ("Dockerfile", ".dockerignore", "data/budget.json")
 
 
 def tracked_files() -> list[str]:
@@ -50,7 +53,7 @@ def front_matter(text: str) -> dict[str, str]:
 def build(out: Path) -> list[str]:
     if out.exists():
         shutil.rmtree(out)
-    files = [f for f in tracked_files() if f != "README.md" and not f.startswith("space/")]
+    files = [f for f in tracked_files() if f != "README.md" and not f.startswith("space/") and f not in SKIP]
     bad = [f for f in files if any(f == p or (p.endswith("/") and f.startswith(p)) for p in FORBIDDEN)]
     if bad:
         raise SystemExit(f"refusing: forbidden files are tracked: {bad}")
@@ -66,19 +69,15 @@ def build(out: Path) -> list[str]:
 def check_contract(out: Path) -> list[str]:
     problems = []
     meta = front_matter((out / "README.md").read_text(encoding="utf-8"))
-    if meta.get("sdk") != "docker":
-        problems.append("README front matter: sdk must be docker")
-    if meta.get("app_port") != "7860":
-        problems.append("README front matter: app_port must be 7860")
-    docker = (out / "Dockerfile").read_text(encoding="utf-8")
-    if "EXPOSE 7860" not in docker or "PORT=7860" not in docker:
-        problems.append("Dockerfile must default PORT to 7860 and EXPOSE 7860")
-    if 'CMD ["python", "app.py"]' not in docker:
-        problems.append("Dockerfile CMD must be python app.py")
-    ignore = (out / ".dockerignore").read_text(encoding="utf-8").split() if (out / ".dockerignore").exists() else []
-    for needed in (".env", "notes/"):
-        if needed not in ignore:
-            problems.append(f".dockerignore must exclude {needed}")
+    if meta.get("sdk") != "gradio":
+        problems.append("README front matter: sdk must be gradio")
+    if meta.get("app_file") != "app.py":
+        problems.append("README front matter: app_file must be app.py")
+    app = (out / "app.py").read_text(encoding="utf-8")
+    if 'os.environ.get("PORT", "7860")' not in app or 'os.environ.get("HOST", "0.0.0.0")' not in app:
+        problems.append("app.py must listen on 0.0.0.0:7860 by default")
+    if (out / "data" / "budget.json").exists():
+        problems.append("data/budget.json must not ship (the Space keeps its own daily counter)")
     for path in out.rglob("*"):
         rel = path.relative_to(out).as_posix()
         if rel == ".env" or rel.startswith("notes/"):
