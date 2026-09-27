@@ -54,7 +54,7 @@ def front_matter(text: str) -> dict[str, str]:
 def build(out: Path) -> list[str]:
     if out.exists():
         shutil.rmtree(out)
-    files = [f for f in tracked_files() if f != "README.md" and not f.startswith("space/") and f not in SKIP]
+    files = [f for f in tracked_files() if f != "README.md" and not f.startswith(("space/", "docs/")) and f not in SKIP]
     bad = [f for f in files if any(f == p or (p.endswith("/") and f.startswith(p)) for p in FORBIDDEN)]
     if bad:
         raise SystemExit(f"refusing: forbidden files are tracked: {bad}")
