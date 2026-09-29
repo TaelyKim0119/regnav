@@ -37,7 +37,7 @@ and the backlog when work lands. Dates are KST.
 
 | Due (KST) | Owner | Item | Status |
 |---|---|---|---|
-| 09-28 | owner | Check the two Nebius $25 credit emails | open |
+| 09-28 | owner | Check the two Nebius $25 credit emails | done 09-29 (both applied: Token Factory balance $50) |
 | 10-01 | Claude | Hosting prep, `scripts/make_space.py` | done 09-26 |
 | 10-03 | Claude | Accuracy table to 10 parts incl. 5 held-out | done 09-26 (candidate recall 24/25, must-review 14/25, dry-run) |
 | 10-05 | Claude | Demo URL | done 09-27 (HF Space above) |
