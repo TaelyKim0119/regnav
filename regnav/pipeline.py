@@ -50,6 +50,9 @@ class Report:
                 if v.clauses:
                     lines.append(f"  clauses: {', '.join(v.clauses)}  ")
                 lines.append(f"  {v.url}")
+                extra = [f"{label}: {link}" for label, link in v.sources if link != v.url]
+                if extra:
+                    lines.append(f"  also via Tavily: {'; '.join(extra)}")
             lines.append("")
         lines += compare.markdown(self.comparison)
         if self.web_hits:
@@ -103,6 +106,11 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     un_scopes = tavily_search.un_scopes(un_cands) if tavily_search.enabled() else {}
     un_jobs = [(reg.code, reg.title, reg.url, un_scopes.get(reg.code) or reg.scope or reg.title)
                for reg in un_cands]
+    # Independent of scope extraction: Tavily's search results often name the regulation's own
+    # official PDF (base text / latest amendment) even when the PDF's raw_content is empty, so
+    # this still upgrades the verdict's link from the generic range page to the actual text.
+    un_links = {reg.code: tavily_search.un_links(reg) for reg in un_cands} if tavily_search.enabled() else {}
+    un_links = {code: links for code, links in un_links.items() if links}
 
     fm_cands = fmvss_candidates(part, max_fmvss)
     if fm_named:
@@ -130,6 +138,11 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
                 "[not judged: lower-ranked candidate beyond the per-review call cap; listed for manual review]",
                 [], "reference")
         for code, title, url, _ in overflow]
+    for v in report.verdicts:
+        links = un_links.get(v.regulation)
+        if links:
+            v.sources = links
+            v.url = links[-1][1]  # newest amendment if found, else the base text
     report.comparison = compare.comparison(part, report.verdicts)
     if ecfr.used_snapshot:
         snap = ecfr.snapshot().get("date", "unknown date")

@@ -70,7 +70,9 @@ def render(report) -> str:
                 "|---|---|---|"]
         for v in items:
             clauses = f" Clauses: {', '.join(v.clauses)}." if v.clauses else ""
-            out.append(f"| [{_cell(v.regulation)}]({v.url}) {_cell(v.title)} | "
+            extra = [f"[{_cell(label)}]({link})" for label, link in v.sources if link != v.url]
+            also = f" ({', '.join(extra)})" if extra else ""
+            out.append(f"| [{_cell(v.regulation)}]({v.url}){also} {_cell(v.title)} | "
                        f"{v.applies}&nbsp;·&nbsp;{v.confidence:.2f} | {_cell(v.why)}{_cell(clauses)} |")
         out.append("")
     if report.comparison:

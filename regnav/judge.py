@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from typing import Literal
 
 from regnav.text import terms
@@ -36,6 +36,7 @@ class Verdict:
     why: str
     clauses: list[str]
     review_priority: Literal["must", "check", "reference"]
+    sources: list[tuple[str, str]] = field(default_factory=list)
 
     def to_dict(self):
         return asdict(self)

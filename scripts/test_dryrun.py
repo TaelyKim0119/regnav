@@ -164,6 +164,12 @@ def check_tavily_un_scope():
     assert scope and "light-signalling devices" in scope.lower(), scope
     print(f"ok tavily parse_scope: '{scope[:70]}...'")
 
+    links = tavily_search.pdf_links(fixture["results"], 148)
+    assert links == [["Base text (PDF)", "https://unece.org/sites/default/files/2021-05/R148e.pdf"],
+                      ["Amendment 5 (PDF)", "https://unece.org/sites/default/files/2023-06/R148am5e.pdf"]], links
+    assert tavily_search.pdf_links(fixture["results"], 14) == [], "R14 must not match R148's PDFs"
+    print(f"ok tavily pdf_links: base text + latest amendment found, independent of scope extraction")
+
     real_cache = tavily_search.CACHE
     tavily_search.CACHE = Path(tempfile.mkdtemp()) / "tavily_scope"
     calls = []
@@ -191,7 +197,7 @@ def check_tavily_un_scope():
         pipeline.judge_all = lambda part, jobs, **kw: captured.append(jobs) or [
             Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "check") for j in jobs]
         try:
-            pipeline.review("Light-signalling rear combination lamp for passenger cars", dry_run=True)
+            rep = pipeline.review("Light-signalling rear combination lamp for passenger cars", dry_run=True)
         finally:
             pipeline.judge_all = real_judge_all
     finally:
@@ -206,8 +212,11 @@ def check_tavily_un_scope():
     assert scope1 == scope2 and direct_calls == 1, (direct_calls, scope1, scope2)
     un_job = next(j for j in captured[0] if j[0] == "UN R148")
     assert "light-signalling devices" in un_job[3].lower(), un_job[3]
+    r148 = next(v for v in rep.verdicts if v.regulation == "UN R148")
+    assert r148.url == "https://unece.org/sites/default/files/2023-06/R148am5e.pdf", r148.url
+    assert r148.sources[0][1].endswith("R148e.pdf"), r148.sources
     print(f"ok tavily un_scope: fetched + cached (1 Tavily call for 2 direct lookups); "
-          f"pipeline feeds it to the UN R148 job")
+          f"pipeline feeds it to the UN R148 job and links straight to the amendment PDF")
 
 
 def check_comparison_table():

@@ -63,6 +63,9 @@
           <p>{{ v.why }}</p>
           {% if v.clauses %}<p class="conf">clauses: {{ v.clauses|join(", ") }}</p>{% endif %}
           <a href="{{ v.url }}" target="_blank" rel="noopener">{{ v.url }}</a>
+          {% for label, link in v.sources %}{% if link != v.url %}
+          <a href="{{ link }}" target="_blank" rel="noopener" class="conf">{{ label }}</a>
+          {% endif %}{% endfor %}
         </div>
         {% endfor %}
       </section>
