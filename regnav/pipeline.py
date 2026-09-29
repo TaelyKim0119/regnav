@@ -98,7 +98,11 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         reg = unece.BY_NUMBER.get(n)
         if reg and reg not in un_cands:
             un_cands.append(reg)
-    un_jobs = [(reg.code, reg.title, reg.url, reg.scope or reg.title) for reg in un_cands]
+    # unece.org blocks plain fetches with a bot check, so the fuller Scope paragraph (when
+    # available) comes from Tavily instead of the curated one-line scope; failures fall back.
+    un_scopes = tavily_search.un_scopes(un_cands) if tavily_search.enabled() else {}
+    un_jobs = [(reg.code, reg.title, reg.url, un_scopes.get(reg.code) or reg.scope or reg.title)
+               for reg in un_cands]
 
     fm_cands = fmvss_candidates(part, max_fmvss)
     if fm_named:

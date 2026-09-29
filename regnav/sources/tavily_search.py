@@ -1,17 +1,23 @@
-"""Optional web retrieval via Tavily: widens the candidate set beyond the seed catalogue.
+"""Optional web retrieval via Tavily: widens the candidate set beyond the seed catalogue,
+and fetches the actual Scope paragraph of each UN Regulation candidate (unece.org blocks
+plain HTTP fetches with a bot check, so Tavily is the only way RegNav reaches that text).
 
 Disabled automatically when TAVILY_API_KEY is not set.
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 from dataclasses import asdict, dataclass
+from pathlib import Path
 
 DOMAINS = ["unece.org", "ecfr.gov", "nhtsa.gov", "eur-lex.europa.eu", "law.go.kr", "globalautoregs.com"]
+CACHE = Path(__file__).resolve().parents[2] / "data" / "cache" / "tavily_scope"
 
 UN_RE = re.compile(r"\b(?:UN|ECE)\s*R(?:egulation)?\.?\s*(?:No\.?\s*)?(\d{1,3})\b", re.I)
 FMVSS_RE = re.compile(r"\bFMVSS\s*(?:No\.?\s*)?(\d{3})\b", re.I)
+SCOPE_RE = re.compile(r"(?:^|\n)\s*1\.?\s*Scope\b.{0,1500}?(?=\n\s*2\.\s|\Z)", re.I | re.S)
 
 
 @dataclass(frozen=True)
@@ -50,3 +56,52 @@ def mentioned_regulations(hits: list[WebHit]) -> tuple[set[int], set[str]]:
         un.update(int(m) for m in UN_RE.findall(text))
         fm.update(FMVSS_RE.findall(text))
     return un, fm
+
+
+def parse_scope(text: str, limit: int = 800) -> str | None:
+    """Pull the "1. Scope" paragraph out of a page or PDF's flattened text, if present."""
+    m = SCOPE_RE.search(text)
+    if not m:
+        return None
+    return re.sub(r"\s+", " ", m.group(0)).strip()[:limit]
+
+
+def un_scope(reg) -> str | None:
+    """The Scope paragraph of one UN Regulation, via a targeted Tavily search on unece.org.
+
+    Cached to data/cache/tavily_scope/ so a regulation is only ever fetched once. Returns
+    None (never raises) when Tavily is off, the search fails, or no Scope text is found;
+    callers fall back to the curated one-line scope in the catalogue.
+    """
+    if not enabled():
+        return None
+    cached = CACHE / f"{reg.code.replace(' ', '')}.json"
+    if cached.exists():
+        return json.loads(cached.read_text(encoding="utf-8"))["scope"]
+    try:
+        from tavily import TavilyClient
+        client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+        query = f'UN Regulation No. {reg.number} "1. Scope" annex'
+        r = client.search(query=query, max_results=3, search_depth="advanced",
+                           include_domains=["unece.org"], include_raw_content=True)
+    except Exception:
+        return None
+    scope = None
+    for hit in r.get("results", []):
+        scope = parse_scope(hit.get("raw_content") or hit.get("content") or "")
+        if scope:
+            break
+    if scope:
+        CACHE.mkdir(parents=True, exist_ok=True)
+        cached.write_text(json.dumps({"scope": scope}, ensure_ascii=False), encoding="utf-8")
+    return scope
+
+
+def un_scopes(regs: list) -> dict[str, str]:
+    """``un_scope`` for a list of UN candidates, skipping any that fail; {code: scope text}."""
+    out = {}
+    for reg in regs:
+        scope = un_scope(reg)
+        if scope:
+            out[reg.code] = scope
+    return out

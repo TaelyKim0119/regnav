@@ -4,6 +4,7 @@
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 import tempfile
@@ -150,6 +151,65 @@ def check_kmvss_scaffold():
 
 EXAMPLE = "LED rear lamp module, replacement tail lamp with stop and turn signal functions"
 
+def check_tavily_un_scope():
+    """Tavily is the only way RegNav reaches a UN Regulation's actual Scope paragraph:
+    unece.org itself refuses plain fetches (HTTP 403 / bot check). Stubs TavilyClient with
+    a hand-written fixture so this is fully offline; real network verification (an actual
+    Tavily key) is an owner/interactive step."""
+    import types
+    from regnav.sources import tavily_search, unece
+
+    fixture = json.loads((ROOT / "scripts" / "fixtures" / "tavily_un_scope_r148.json").read_text(encoding="utf-8"))
+    scope = tavily_search.parse_scope(fixture["results"][0]["raw_content"])
+    assert scope and "light-signalling devices" in scope.lower(), scope
+    print(f"ok tavily parse_scope: '{scope[:70]}...'")
+
+    real_cache = tavily_search.CACHE
+    tavily_search.CACHE = Path(tempfile.mkdtemp()) / "tavily_scope"
+    calls = []
+
+    class FakeClient:
+        def __init__(self, api_key):
+            pass
+
+        def search(self, **kw):
+            calls.append(kw)
+            return fixture
+
+    had_tavily = "tavily" in sys.modules
+    real_module = sys.modules.get("tavily")
+    sys.modules["tavily"] = types.SimpleNamespace(TavilyClient=FakeClient)
+    os.environ["TAVILY_API_KEY"] = "test-key-not-real"
+    try:
+        reg = unece.BY_NUMBER[148]
+        scope1 = tavily_search.un_scope(reg)
+        scope2 = tavily_search.un_scope(reg)  # cache hit: no second Tavily call
+        direct_calls = len(calls)
+
+        captured = []
+        real_judge_all = pipeline.judge_all
+        pipeline.judge_all = lambda part, jobs, **kw: captured.append(jobs) or [
+            Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "check") for j in jobs]
+        try:
+            pipeline.review("Light-signalling rear combination lamp for passenger cars", dry_run=True)
+        finally:
+            pipeline.judge_all = real_judge_all
+    finally:
+        os.environ.pop("TAVILY_API_KEY", None)
+        if had_tavily:
+            sys.modules["tavily"] = real_module
+        else:
+            del sys.modules["tavily"]
+        tavily_search.CACHE = real_cache
+
+    assert scope1 and "light-signalling devices" in scope1.lower(), scope1
+    assert scope1 == scope2 and direct_calls == 1, (direct_calls, scope1, scope2)
+    un_job = next(j for j in captured[0] if j[0] == "UN R148")
+    assert "light-signalling devices" in un_job[3].lower(), un_job[3]
+    print(f"ok tavily un_scope: fetched + cached (1 Tavily call for 2 direct lookups); "
+          f"pipeline feeds it to the UN R148 job")
+
+
 def check_comparison_table():
     from fastapi.testclient import TestClient
     import app as webapp
@@ -170,5 +230,6 @@ if __name__ == "__main__":
     check_parallel_order_and_budget()
     check_dry_review_and_api()
     check_kmvss_scaffold()
+    check_tavily_un_scope()
     check_comparison_table()
     print("all dry-run checks passed")
