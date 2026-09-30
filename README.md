@@ -3,7 +3,9 @@
 **Which regulations apply to this part?** Paste a part description; RegNav pulls the
 candidate standards from the primary sources (US FMVSS live from eCFR, UN Regulations
 under the 1958 Agreement), asks an NVIDIA Nemotron model on Nebius Token Factory to judge
-each candidate against its official scope text, and returns a prioritised review list:
+each candidate against its scope text (the eCFR text for FMVSS; for UN Regulations the EU
+Official Journal copy, since the authentic text is the UNECE original and unece.org refuses
+programs), and returns a prioritised review list:
 **Must review / Confirm / Reference only**, each with a confidence score, the reasoning,
 and a link to the official text.
 

@@ -35,7 +35,7 @@
 <body>
 <main>
   <h1>RegNav</h1>
-  <p class="sub">Which regulations apply to this automotive part? FMVSS (US, live from eCFR) + UN Regulations (1958 Agreement), each judged by NVIDIA Nemotron on Nebius Token Factory.</p>
+  <p class="sub">Which regulations apply to this automotive part? FMVSS (US, live from eCFR) + UN Regulations (1958 Agreement, Scope text from their EU Official Journal copies), each judged by NVIDIA Nemotron on Nebius Token Factory.</p>
   <form method="post" action="/review">
     <textarea name="part" placeholder="Describe the part, e.g. LED rear lamp module, replacement tail lamp with stop and turn signal functions">{{ part or "" }}</textarea>
     <button type="submit">Review</button>
@@ -62,6 +62,8 @@
           </div>
           <p>{{ v.why }}</p>
           {% if v.clauses %}<p class="conf">clauses: {{ v.clauses|join(", ") }}</p>{% endif %}
+          {% set src = report.un_sources.get(v.regulation) %}
+          {% if src %}<p class="conf">scope text: <a href="{{ src.url }}" target="_blank" rel="noopener">EU OJ copy {{ src.cite }}</a>{% for a in src.get("later", []) %} &middot; later OJ act: <a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.oj_ref or a.celex }}</a>{% endfor %}</p>{% endif %}
           <a href="{{ v.url }}" target="_blank" rel="noopener">{{ v.url }}</a>
           {% for label, link in v.sources %}{% if link != v.url %}
           <a href="{{ link }}" target="_blank" rel="noopener" class="conf">{{ label }}</a>

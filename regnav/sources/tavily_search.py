@@ -1,6 +1,8 @@
 """Optional web retrieval via Tavily: widens the candidate set beyond the seed catalogue,
-and fetches the actual Scope paragraph of each UN Regulation candidate (unece.org blocks
-plain HTTP fetches with a bot check, so Tavily is the only way RegNav reaches that text).
+finds each UN Regulation's own official PDF on unece.org (``un_links``; unece.org blocks
+plain HTTP fetches with a bot check), and is the fallback source of its Scope paragraph
+behind the committed EU Official Journal snapshot (data/unece_scopes.json): ``un_scope``
+text is only used for UN candidates the snapshot lacks.
 
 Disabled automatically when TAVILY_API_KEY is not set.
 """
@@ -111,7 +113,8 @@ def _un_lookup(reg) -> dict:
     try:
         from tavily import TavilyClient
         client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-        query = f'UN Regulation No. {reg.number} "1. Scope" annex'
+        # "13-H", not "13": UN R13-H (passenger-car braking) is a different regulation from R13
+        query = f'UN Regulation No. {reg.number}{reg.suffix} "1. Scope" annex'
         r = client.search(query=query, max_results=3, search_depth="basic",
                            include_domains=["unece.org"], include_raw_content=True)
     except Exception:
@@ -122,7 +125,9 @@ def _un_lookup(reg) -> dict:
         scope = parse_scope(hit.get("raw_content") or hit.get("content") or "")
         if scope:
             break
-    data = {"scope": scope, "pdf_links": pdf_links(results, reg.number)}
+    # pdf_links matches R<number>e.pdf names, which would pick R13's files for R13-H: no link
+    # beats the wrong regulation's text
+    data = {"scope": scope, "pdf_links": [] if reg.suffix else pdf_links(results, reg.number)}
     CACHE.mkdir(parents=True, exist_ok=True)
     cached.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     return data

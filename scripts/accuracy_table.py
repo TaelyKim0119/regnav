@@ -1,6 +1,6 @@
 """Run the app.py example parts plus five held-out parts in dry-run and write a recall table.
 
-    NEBIUS_API_KEY= .venv/Scripts/python.exe -X utf8 scripts/accuracy_table.py [out.md]
+    NEBIUS_API_KEY= TAVILY_API_KEY= .venv/Scripts/python.exe -X utf8 scripts/accuracy_table.py [out.md]
 
 EXPECTED lists the regulations a certification reviewer would expect to see for
 each example (draft reference set; to be confirmed by a domain reviewer). Recall
@@ -21,9 +21,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-if os.environ.get("NEBIUS_API_KEY"):
-    sys.exit("refusing to run: unset NEBIUS_API_KEY (dry-run only)")
-os.environ["NEBIUS_API_KEY"] = ""
+for _key in ("NEBIUS_API_KEY", "TAVILY_API_KEY"):
+    if os.environ.get(_key):
+        sys.exit(f"refusing to run: unset {_key} (dry-run only, no network calls)")
+    os.environ[_key] = ""  # present but empty: importing app runs load_dotenv(), which must not fill it
 os.environ.setdefault("REGNAV_ECFR_OFFLINE", "1")  # reproducible: committed eCFR snapshot, no network
 
 from app import EXAMPLES  # noqa: E402

@@ -9,3 +9,4 @@ notes/
 space_build/
 data/budget.json
 space_upload/
+.bkit/

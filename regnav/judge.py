@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from dataclasses import asdict, dataclass, field
 from typing import Literal
 
@@ -112,10 +113,11 @@ def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run:
 
 
 def _dry(part, regulation, title, url, scope) -> Verdict:
-    """Placeholder: title hits count double, scope hits single."""
+    """Placeholder: title hits count double, scope hits single (a leading "[source tag]"
+    line is citation, not scope wording, so it is not scored)."""
     words = terms(part)
     t = title.lower()
-    s = scope.lower()
+    s = re.sub(r"^\[[^\]\n]*\]\n", "", scope).lower()
     title_hits = sum(1 for w in words if w in t)
     scope_hits = sum(1 for w in words if w in s and w not in t)
     score = 2 * title_hits + scope_hits

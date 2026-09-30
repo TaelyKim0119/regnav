@@ -1,14 +1,139 @@
 """Curated catalogue of UN Regulations (1958 Agreement) most relevant to parts.
 
 Titles follow the official UNECE short titles; ``scope`` is a one-line paraphrase
-of the Scope clause of each regulation, used as first-pass evidence for the judge.
+of the Scope clause of each regulation, the last-resort evidence for the judge.
 The judge always links the official regulation page for the authoritative text.
+
+The actual Scope paragraph comes from data/unece_scopes.json (built by
+scripts/make_unece_scopes.py from the EU Official Journal republication of each UN
+Regulation, since unece.org refuses programs). OJ copies are EU documentation, not the
+authentic UNECE text, and can lag the current UNECE series; ``OjScope`` keeps the OJ
+reference and version line so every report can say which text was read.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+import json
+import re
+from dataclasses import asdict, dataclass
+from pathlib import Path
 
 from regnav.text import terms
+
+SCOPES = Path(__file__).resolve().parents[2] / "data" / "unece_scopes.json"
+OJ_NOTE = ("UN Regulation scope text comes from EU Official Journal copies (linked per regulation); "
+           "they can lag the current UNECE series of amendments, and only the original UNECE texts are authentic.")
+_scopes_cache: dict | None = None
+
+
+def scopes() -> dict:
+    """The committed OJ scope snapshot, loaded once ({} when the file is missing)."""
+    global _scopes_cache
+    if _scopes_cache is None:
+        _scopes_cache = json.loads(SCOPES.read_text(encoding="utf-8")) if SCOPES.exists() else {}
+    return _scopes_cache
+
+
+def amendment_level(version: str) -> str:
+    """The newest amendment an OJ version line names, e.g. "Supplement 3 to the original version
+    of the Regulation": the last entry naming a supplement or series, entry-into-force date
+    dropped. "Correction ..."/"Corrigendum ..." entries are skipped because they hide the level
+    (R87: "Supplement 14 ...; Correction 1 to Revision 2"). For an original text, its
+    "date of entry into force: ..."; '' when not given."""
+    names = [re.split(r"\s+[—–-]\s+Date of entry into force", e.strip())[0].strip()
+             for e in version.split(";") if e.strip()]
+    for name in reversed(names):
+        if re.search(r"\b(?:supplement|series)\b", name, re.I) and not re.match(r"correct|corrigend", name, re.I):
+            return name
+    name = names[-1] if names else ""
+    return name[0].lower() + name[1:] if name.lower().startswith("date of entry into force") else name
+
+
+@dataclass(frozen=True)
+class OjAct:
+    """A later OJ act for the same regulation (amendment-only act or corrigendum)."""
+    celex: str
+    kind: str  # "amendment" | "corrigendum" | "full" (a newer full text whose Scope was not parsed)
+    oj_ref: str
+    oj_date: str
+    version: str
+    paragraph_1: str  # "replaced" (the Scope shown is its text) | "amended in part" | "none" | "unread"
+    url: str
+
+    @property
+    def label(self) -> str:
+        """"Supplement 18 to the 04 series of amendments (OJ 2021)", or "corrigendum (OJ 2012)"."""
+        return f"{amendment_level(self.version) or self.kind} (OJ {self.oj_date[:4] or 'undated'})"
+
+
+@dataclass(frozen=True)
+class OjScope:
+    code: str
+    celex: str
+    oj_ref: str
+    oj_date: str
+    version: str  # the base act's own "Incorporating all valid text up to" line
+    scope: str
+    url: str  # EUR-Lex page of the OJ act
+    later: tuple[OjAct, ...] = ()  # later OJ acts for the regulation, oldest first
+    scope_from: str = ""  # CELEX of the later act whose new paragraph 1 is ``scope`` ('' = base act)
+
+    @property
+    def version_short(self) -> str:
+        """What the base OJ text incorporates, e.g. "incorporating up to Supplement 3 to the
+        original version of the Regulation"; for an original text its "date of entry into
+        force: ..."; '' when not given."""
+        level = amendment_level(self.version)
+        return level if not level or level.startswith("date of entry") else f"incorporating up to {level}"
+
+    @property
+    def later_note(self) -> str:
+        """Later OJ acts, e.g. "plus Supplement 18 to the 04 series of amendments (OJ 2021)"; an act
+        that rewrote the Scope, or changed it in a way the stored text does not show, says so."""
+        notes = []
+        for a in self.later:
+            if a.celex == self.scope_from:
+                notes.append(f"Scope as replaced by {a.label}")
+            elif a.paragraph_1 in ("amended in part", "unread"):
+                notes.append(f"plus {a.label}, which may change the Scope (not reflected here)")
+            else:
+                notes.append(f"plus {a.label}")
+        return "; ".join(notes)
+
+    @property
+    def cite(self) -> str:
+        """Human citation: "OJ L 347, 30.9.2021, p. 123, incorporating up to Supplement 3 ...",
+        then "; amended by OJ L 252, 15.7.2021, p. 7 (Supplement 18 ...)" per later act."""
+        verb = {"amendment": "amended by", "corrigendum": "corrected by"}
+        parts = [", ".join(x for x in (self.oj_ref or self.celex, self.version_short) if x)]
+        for a in self.later:
+            inner = ", ".join(x for x in (amendment_level(a.version),
+                                          "Scope text from this act" if a.celex == self.scope_from else "") if x)
+            parts.append(f"{verb.get(a.kind, 'see also')} {a.oj_ref or a.celex}" + (f" ({inner})" if inner else ""))
+        return "; ".join(parts)
+
+    @property
+    def tag(self) -> str:
+        """Source tag put in front of the scope text handed to the judge."""
+        year = self.oj_date[:4] or "undated"
+        return (f"[{self.code} Scope, OJ copy {year}" + (f", {self.version_short}" if self.version_short else "")
+                + (f"; {self.later_note}" if self.later else "") + "]")
+
+    def to_dict(self) -> dict:
+        d = asdict(self)
+        d.pop("scope")
+        return {**d, "cite": self.cite}
+
+
+def oj_scope(reg: UnReg) -> OjScope | None:
+    """The OJ Scope paragraph of one catalogue entry, or None when the snapshot lacks it."""
+    e = scopes().get("regulations", {}).get(reg.code)
+    if not e or e.get("status") != "ok" or not e.get("scope"):
+        return None
+    later = tuple(OjAct(a["celex"], a.get("kind", ""), a.get("oj_ref", ""), a.get("oj_date", ""),
+                        a.get("version", ""), a.get("paragraph_1", ""), a.get("url", ""))
+                  for a in e.get("later_oj_acts", []))
+    return OjScope(reg.code, e["celex"], e.get("oj_ref", ""), e.get("oj_date", ""),
+                   e.get("version", ""), e["scope"], e.get("url", ""), later, e.get("scope_from", ""))
 
 
 @dataclass(frozen=True)

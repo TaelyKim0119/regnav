@@ -1,0 +1,453 @@
+{
+ "source": "EU Official Journal (OJ) copies of UN Regulations, fetched from the EU Publications Office CELLAR (http://publications.europa.eu/resource/celex/<CELEX>, English XHTML); only the Scope section and citation data are kept",
+ "built": "2026-09-30",
+ "note": "EU Official Journal copies; only the original UNECE texts are authentic. OJ copies can lag the current UNECE series: check each entry's oj_date and version line.",
+ "regulations": {
+  "UN R10": {
+   "status": "ok",
+   "celex": "42022X2263",
+   "title": "UN Regulation No. 10 – Uniform provisions concerning the approval of vehicles with regard to electromagnetic compatibility [2022/2263]",
+   "oj_ref": "OJ L 302, 22.11.2022, p. 1",
+   "oj_date": "2022-11-22",
+   "version": "Supplement 1 to the 06 series of amendments – Date of entry into force: 25 September 2020",
+   "scope": "This Regulation applies to:\n1.1. Vehicles of categories L, M, N O, T, R and S with regard to electromagnetic compatibility;\n1.2. Components and separate technical units intended to be fitted in these vehicles with the limitation given in paragraph 3.2.1. with regard to electromagnetic compatibility.\n1.3. It covers:\n(a) Requirements regarding the immunity to radiated and conducted disturbances for functions related to direct control of the vehicle, related to driver, passenger and other road users' protection, related to disturbances, which would cause confusion to the driver or other road users, related to vehicle data bus functionality, related to disturbances, which would affect vehicle statutory data;\n(b) Requirements regarding the control of unwanted radiated and conducted emissions to protect the intended use of electrical or electronic equipment at own or adjacent vehicles or nearby, and the control of disturbances from accessories that may be retrofitted to the vehicle;\n(c) Additional requirements for vehicles and ESAs providing coupling systems for charging the REESS regarding the control of emissions and immunity from this connection between vehicle and power grid.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42022X2263"
+  },
+  "UN R13": {
+   "status": "ok",
+   "celex": "42026X0746",
+   "title": "UN Regulation No. 13 - Uniform provisions concerning the approval of vehicles of categories M, N and O with regard to braking [2026/746]",
+   "oj_ref": "OJ L, 2026/746, 13.4.2026",
+   "oj_date": "2026-04-13",
+   "version": "Supplement 1 to the 15 series of amendments - Date of entry into force: 11 January 2026",
+   "scope": "1.1. This Regulation applies to vehicles of categories M2, M3, N and O with regard to braking.\n1.2. This Regulation does not cover:\n1.2.1. Vehicles with a design speed not exceeding 25 km/h;\n1.2.2. Trailers which may not be coupled to power-driven vehicles with a design speed exceeding 25 km/h;\n1.2.3. Vehicles fitted for invalid drivers;\n1.2.4. Hinged drawbar dolly, as defined in paragraph 2.43.1.;\n1.2.5. Vehicles of Categories M2, M3 and N, which are not equipped with manual braking controls intended for use during normal operation.\n1.3. Subject to the applicable provisions of this Regulation, the equipment, devices, methods and conditions enumerated in Annex 1 are not covered by this Regulation.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X0746"
+  },
+  "UN R13-H": {
+   "status": "ok",
+   "celex": "42026X0502",
+   "title": "UN Regulation No 13-H – Uniform provisions concerning the approval of passenger cars with regard to braking [2026/502]",
+   "oj_ref": "OJ L, 2026/502, 13.4.2026",
+   "oj_date": "2026-04-13",
+   "version": "02 series of amendments – Date of entry into force: 12 June 2025",
+   "scope": "1.1. This Regulation applies to the braking of vehicles of categories M1 and N1.\n1.2. This Regulation does not cover:\n1.2.1. Vehicles with a design speed not exceeding 25 km/h;\n1.2.2. Vehicles fitted for invalid drivers;\n1.2.3. The approval of the Electronic Stability Control (ESC) and Brake Assist System(s) (BAS) of the vehicle.\n1.2.4. Vehicles which are not equipped with manual braking controls intended for use during normal operation.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X0502"
+  },
+  "UN R14": {
+   "status": "ok",
+   "celex": "42019X2141",
+   "title": "UN Regulation No 14 — Uniform provisions concerning the approval of vehicles with regard to safety-belt anchorages [2019/2141]",
+   "oj_ref": "OJ L 324, 13.12.2019, p. 14",
+   "oj_date": "2019-12-13",
+   "version": "09 series of amendments — Date of entry into force: 29 December 2018",
+   "scope": "This Regulation applies to:\nVehicles of categories M and N with regard to their anchorages for safety-belts intended for adult occupants of forward-facing or rearward-facing or side-facing seats.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42019X2141"
+  },
+  "UN R16": {
+   "status": "ok",
+   "celex": "42018X0629",
+   "title": "Regulation No 16 of the Economic Commission for Europe of the United Nations (UNECE) — Uniform provisions concerning the approval of: I.Safety-belts, restraint systems, child restraint systems and ISOFIX child restraint systems for occupants of power-driven vehicles;II.Vehicles equipped with safety-belts, safety-belt reminders, restraint systems, child restraint systems, ISOFIX child restraint systems and i-Size child restraint systems [2018/629]",
+   "oj_ref": "OJ L 109, 27.4.2018, p. 1",
+   "oj_date": "2018-04-27",
+   "version": "Supplement 2 to the 07 series of amendments — Date of entry into force: 19 July 2018",
+   "scope": "This Regulation applies to:\n1.1. Vehicles of category M, N, O, L2, L4, L5, L6, L7 and T, with regard to the installation of safety-belts and restraint systems which are intended for separate use, i.e. as individual fittings, by persons of adult build occupying forward-facing, rearward-facing or side-facing seats;\n1.2. Safety-belts and restraint systems which are intended for separate use, i.e. as individual fittings, by persons of adult build occupying forward-facing, rearward-facing or side-facing seats, and are designed for installation in vehicles of category M, N, O, L2, L4, L5, L6, L7 and T;\n1.3. Vehicles of category M1 and N1 with regard to the installation of child restraint systems, ISOFIX child restraint systems and i-Size child restraint systems;\n1.4. All seating positions in vehicle categories M and N fitted with safety belt with regard to safety belt reminder.\n1.5. At the request of the manufacturer, it also applies to the installation of child restraint systems and ISOFIX child restraint systems designated for installation in vehicles of categories M2 and M3.\n1.6. At the request of the manufacturer, it also applies to safety-belts designated for installation on side-facing seats in vehicles of category M3 (Class II, III and B).\n1.7. At the request of the manufacturer, it also applies to installing i-Size child restraint systems, in case i-Size seating positions are defined by the vehicle manufacturer.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X0629"
+  },
+  "UN R17": {
+   "status": "ok",
+   "celex": "42023X0406",
+   "title": "UN Regulation No 17 – Uniform provisions concerning the approval of vehicles with regard to the seats, their anchorages and any head restraints [2023/406]",
+   "oj_ref": "OJ L 62, 27.2.2023, p. 1",
+   "oj_date": "2023-02-27",
+   "version": "10 series of amendments – Date of entry into force: 9 June 2021",
+   "scope": "This Regulation applies to:\n(a) Vehicles of categories M1 and N with regard to the strength of seats and their anchorages and with regard to their head restraints;\n(b) Vehicles of categories M2 and M3 with regard to seats not covered by Regulation No 80, in respect of the strength of seats and their anchorages, and in respect of their head restraints;\n(c) Vehicles of category M1 with regard to the design of the rear parts of seat backs and the design of devices intended to protect the occupants from the danger resulting from the displacement of luggage in a frontal impact.\nIt does not apply to vehicles with regard to side-facing or rearward-facing seats, or to any head restraint fitted to these seats, with the exception vehicles of category M2 and M3 of classes A and I, subject to the provisions of paragraph 5.1.1.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42023X0406"
+  },
+  "UN R26": {
+   "status": "ok",
+   "celex": "42022X0082",
+   "title": "UN Regulation No 26 – Uniform provisions concerning the approval of vehicles with regard to their external projections [2022/82]",
+   "oj_ref": "OJ L 13, 20.1.2022, p. 51",
+   "oj_date": "2022-01-20",
+   "version": "04 series of amendments – Date of entry into force: 25 September 2020",
+   "scope": "1.1. This Regulation applies to external projections of category M1 vehicles. It does not apply to exterior devices for indirect vision or to the ball of towing devices.\n1.2. The purpose of this Regulation is to reduce the risk or seriousness of bodily injury to a person hit by the bodywork or brushing against it in the event of a collision. This is valid both when the vehicle is stationary and in motion.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42022X0082"
+  },
+  "UN R28": {
+   "status": "ok",
+   "celex": "42011X1206(02)",
+   "title": "Regulation No 28 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of audible warning devices and of motor vehicles with regard to their audible signals",
+   "oj_ref": "OJ L 323, 6.12.2011, p. 33",
+   "oj_date": "2011-12-06",
+   "version": "Supplement 3 to the original version of the Regulation — Date of entry into force: 28 December 2000",
+   "scope": "This Regulation applies to:\n1.1. audible warning devices (AWD), supplied with direct or alternating current or compressed air, which are intended for fitting to motor vehicles of categories L3 to 5, M and N, excluding mopeds (categories L1 and L2);\n1.2. the audible signals of motor vehicles listed in 1.1.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42011X1206(02)"
+  },
+  "UN R30": {
+   "status": "ok",
+   "celex": "42008X0730(01)",
+   "title": "Regulation No 30 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of pneumatic tyres for motor vehicles and their trailers",
+   "oj_ref": "OJ L 201, 30.7.2008, p. 70",
+   "oj_date": "2008-07-30",
+   "version": "Supplement 15 to the 02 series of amendments — Date of entry into force: 10 November 2007",
+   "scope": "This Regulation covers new pneumatic tyres designed primarily for vehicles of categories M1, N1, O1 and O2.\nIt does not apply to tyres designed primarily for:\n(a) the equipment for vintage cars;\n(b) competitions.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42008X0730(01)",
+   "scope_from": "42011X1123(01)",
+   "later_oj_acts": [
+    {
+     "celex": "42011X1123(01)",
+     "kind": "amendment",
+     "oj_ref": "OJ L 307, 23.11.2011, p. 1",
+     "oj_date": "2011-11-23",
+     "version": "Supplement 16 to the 02 series of amendments — Date of entry into force: 17 March 2010",
+     "paragraph_1": "replaced",
+     "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42011X1123(01)"
+    }
+   ]
+  },
+  "UN R43": {
+   "status": "ok",
+   "celex": "42014X0212(01)",
+   "title": "Regulation No 43 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of safety glazing materials and their installation on vehicles",
+   "oj_ref": "OJ L 42, 12.2.2014, p. 1",
+   "oj_date": "2014-02-12",
+   "version": "Supplement 2 to the 01 series of amendments — Date of entry into force: 3 November 2013",
+   "scope": "This Regulation applies to:\n(a) Safety glazing materials intended for installation as windscreens or other panes, or as partitioning, on vehicles of category L with bodywork, M, N, O, and T;\n(b) Vehicles of category M, N and O with regard to the installation of these materials;\nIn both cases, to the exclusion of glazing for lighting and light-signalling devices and instrument panels, of special bullet-proof glazing and of double-windows.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42014X0212(01)"
+  },
+  "UN R44": {
+   "status": "ok",
+   "celex": "42020X1223",
+   "title": "UN Regulation No 44 – Uniform provisions concerning the approval of restraining devices for child occupants of power-driven vehicles (‘Child Restraint Systems’) [2020/1223]",
+   "oj_ref": "OJ L 285, 1.9.2020, p. 1",
+   "oj_date": "2020-09-01",
+   "version": "Supplement 17 to the 04 series of amendments – Date of entry into force: 29 May 2020",
+   "scope": "1.1. This Regulation applies to child restraint systems which are suitable for installation in power-driven vehicles having three or more wheels, and which are not intended for use with folding (tip-up) or with side-facing seats.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42020X1223",
+   "later_oj_acts": [
+    {
+     "celex": "42021X1162",
+     "kind": "amendment",
+     "oj_ref": "OJ L 252, 15.7.2021, p. 7",
+     "oj_date": "2021-07-15",
+     "version": "Supplement 18 to the 04 series of amendments – Date of entry into force: 9 June 2021",
+     "paragraph_1": "none",
+     "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1162"
+    }
+   ]
+  },
+  "UN R46": {
+   "status": "ok",
+   "celex": "42014X0808(02)",
+   "title": "Regulation No 46 of the Economic Commission for Europe of the United Nations (UNECE) — Uniform provisions concerning the approval of devices for indirect vision and of motor vehicles with regard to the installation of these devices",
+   "oj_ref": "OJ L 237, 8.8.2014, p. 24",
+   "oj_date": "2014-08-08",
+   "version": "Supplement 3 to the 03 series of amendments — Date of entry into force: 9 October 2014; Supplement 1 to the 04 series of amendments — Date of entry into force: 9 October 2014",
+   "scope": "This Regulation applies:\n(a) To compulsory and optional devices for indirect vision, set out in the table under paragraph 15.2.1.1.1 of this Regulation for vehicles of category M and N and to compulsory and optional devices for indirect vision mentioned in paragraphs 15.2.1.1.3 and 15.2.1.1.4 of this Regulation for vehicles of category L with bodywork at least partly enclosing the driver;\n(b) To the installation of devices for indirect visions on vehicles of categories M and N and on vehicles of category L with bodywork at least partly enclosing the driver.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42014X0808(02)"
+  },
+  "UN R48": {
+   "status": "ok",
+   "celex": "42021X1718",
+   "title": "UN Regulation No 48 – Uniform provisions concerning the approval of vehicles with regard to the installation of lighting and light-signalling devices [2021/1718]",
+   "oj_ref": "OJ L 347, 30.9.2021, p. 1",
+   "oj_date": "2021-09-30",
+   "version": "Supplement 1 to the 07 series of amendments - Date of entry into force: 30 September 2021",
+   "scope": "This Regulation applies to vehicles of categories M, N, and to their trailers (category O) with regard to the installation of lighting and light-signalling devices.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1718"
+  },
+  "UN R51": {
+   "status": "ok",
+   "celex": "42018X0798",
+   "title": "Regulation No 51 of the Economic Commission for Europe of the United Nations (UNECE) — Uniform provisions concerning the approval of motor vehicles having at least four wheels with regard to their sound emissions [2018/798]",
+   "oj_ref": "OJ L 138, 4.6.2018, p. 1",
+   "oj_date": "2018-06-04",
+   "version": "Supplement 2 to the 03 series of amendments — Date of entry into force: 10 February 2018",
+   "scope": "This Regulation contains provisions on the sound emitted by motor vehicles and applies to vehicles of categories M and N.\nThe specifications in this Regulation are intended to reproduce the sound levels which are generated by vehicles during normal driving in urban traffic.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X0798"
+  },
+  "UN R54": {
+   "status": "ok",
+   "celex": "42008X0711(01)",
+   "title": "Regulation No 54 of the Economic Commission for Europe of the United Nations (UNECE) — Uniform provisions concerning the approval of pneumatic tyres for commercial vehicles and their trailers",
+   "oj_ref": "OJ L 183, 11.7.2008, p. 41",
+   "oj_date": "2008-07-11",
+   "version": "Supplement 16 to the original version of the Regulation — Date of entry into force: 13 November 2004",
+   "scope": "This Regulation covers new pneumatic tyres designed primarily for vehicles of categories M2, M3, N, O3 and O4. However, it does not apply to tyre types identified by speed category symbols corresponding to speeds below 80 km/h.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42008X0711(01)",
+   "scope_from": "42011X1123(02)",
+   "later_oj_acts": [
+    {
+     "celex": "42011X1123(02)",
+     "kind": "amendment",
+     "oj_ref": "OJ L 307, 23.11.2011, p. 2",
+     "oj_date": "2011-11-23",
+     "version": "Supplement 17 to the original version of the Regulation — Date of entry into force: 17 March 2010",
+     "paragraph_1": "replaced",
+     "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42011X1123(02)"
+    }
+   ]
+  },
+  "UN R58": {
+   "status": "ok",
+   "celex": "42019X0272",
+   "title": "Regulation No 58 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of: I.Rear underrun protective devices (RUPDs)II.Vehicles with regard to the installation of an RUPD of an approved typeIII.Vehicles with regard to their rear underrun protection (RUP) [2019/272]",
+   "oj_ref": "OJ L 49, 20.2.2019, p. 1",
+   "oj_date": "2019-02-20",
+   "version": "03 series of amendments to the Regulation – Date of entry into force: 18 June 2016",
+   "scope": "1.1. This Regulation applies to:\n1.1.1. PART I: the RUPDs which are intended to be fitted to vehicles of categories M, N and O;\n1.1.2. PART II: the installation on vehicles of categories M, N and O of RUPDs which have been type approved to Part I of this Regulation;\n1.1.3. PART III: vehicles of categories M, N and O equipped with an RUPD which has not been separately approved according to Part I of this Regulation or so designed and/or equipped that its component parts can be regarded as totally or partially fulfilling the function of the RUPD;\n1.1.4. Vehicles of categories M1, M2, M3, N1, O1 and O2 on grounds of rear underrun protection.\n1.2. This Regulation does not apply to:\n1.2.1. Tractive units for articulated vehicles;\n1.2.2. Trailers specially designed and constructed for the carriage of very long loads of indivisible length, such as timber, steel bars, etc.;\n1.3. Vehicles where any RUPD (e.g. fixed, removable, foldable, adjustable, etc.) is incompatible with their use on traffic roads may be partly or fully exempted from this Regulation, subject to the decision of the Type Approval Authority.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42019X0272"
+  },
+  "UN R59": {
+   "status": "ok",
+   "celex": "42025X0844",
+   "title": "UN Regulation No 59 – Uniform provisions concerning the approval of replacement silencing systems [2025/844]",
+   "oj_ref": "OJ L, 2025/844, 30.4.2025",
+   "oj_date": "2025-04-30",
+   "version": "03 series of amendments – Date of entry into force: 25 September 2020",
+   "scope": "This Regulation covers exhaust replacement silencing systems for vehicles of categories M1 and N1.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42025X0844"
+  },
+  "UN R64": {
+   "status": "ok",
+   "celex": "42010X1126(01)",
+   "title": "Regulation No 64 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of vehicles with regard to their equipment which may include: a temporary-use spare unit, run-flat tyres and/or a run-flat system, and/or a tyre pressure monitoring system",
+   "oj_ref": "OJ L 310, 26.11.2010, p. 18",
+   "oj_date": "2010-11-26",
+   "version": "02 series of amendments — Date of entry into force: 19 August 2010; Corrigendum 1 to the 02 series of amendments — Date of entry into force: 19 August 2010",
+   "scope": "This Regulation applies to the approval of vehicles of category M1 and N1 when equipped with:\n(a) a temporary use spare unit; and/or\n(b) run-flat tyres and/or a run-flat system; and/or\n(c) a tyre pressure monitoring system.\nFor the purposes of this Regulation, spare wheel and tyre substitute units in the form of run-flat tyres or a run-flat system in a totally deflated condition, are to be treated as being temporary use spare units as defined in paragraph 2.10 of the Regulation.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42010X1126(01)"
+  },
+  "UN R87": {
+   "status": "ok",
+   "celex": "42010X0630(03)",
+   "title": "Regulation No 87 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of daytime running lamps for power-driven vehicles",
+   "oj_ref": "OJ L 164, 30.6.2010, p. 46",
+   "oj_date": "2010-06-30",
+   "version": "Supplement 14 to the original version of the Regulation — Date of entry into force: 24 October 2009; Correction 1 to Revision 2 — Date of entry into force: 11 November 2009",
+   "scope": "This Regulation applies to daytime running lamps for vehicles of category L, M, N and T.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42010X0630(03)",
+   "later_oj_acts": [
+    {
+     "celex": "42012X0107(05)",
+     "kind": "amendment",
+     "oj_ref": "OJ L 4, 7.1.2012, p. 24",
+     "oj_date": "2012-01-07",
+     "version": "Supplement 15 to the original version of the Regulation — Date of entry into force: 9 December 2010",
+     "paragraph_1": "none",
+     "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42012X0107(05)"
+    }
+   ]
+  },
+  "UN R90": {
+   "status": "ok",
+   "celex": "42018X1706",
+   "title": "Regulation No 90 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of replacement brake lining assemblies, drum-brake linings and discs and drums for power-driven vehicles and their trailers [2018/1706]",
+   "oj_ref": "OJ L 290, 16.11.2018, p. 54",
+   "oj_date": "2018-11-16",
+   "version": "Supplement 4 to the 02 series of amendments — Date of entry into force: 16 October 2018",
+   "scope": "1.1. This Regulation applies to the basic braking function of the following replacement parts:\n1.1.1. Replacement brake lining assemblies intended for use in friction brakes forming part of a braking system of vehicles of category M, N, L and O which have a type approval in accordance with Regulation No 13, 13-H or 78.\n1.1.2. Replacement drum brake linings designed to be riveted to a brake shoe for fitment to and use on vehicles of category M3, N2, N3, O3 or O4 having a type approval in accordance with Regulation No 13.\n1.1.3. The replacement brake lining assemblies used for separate parking brake systems being independent of the vehicle service brake system will be subject only to the technical prescriptions defined in Annex 8 of this Regulation.\n1.1.4. Replacement brake drums and discs intended for use in friction brakes forming part of a braking system of vehicles of category M, N and O which have a type approval in accordance with Regulation No 13 or Regulation No 13-H.\n1.1.5. Replacement brake discs intended for use in friction brakes forming part of a braking system of vehicles of categories L1, L2, L3, L4 and L5, which have a type approval in accordance with Regulation No 78.\n1.2. Original brake discs, brake drums, brake lining assemblies and drum brake linings fitted at time of manufacturing of the vehicle and original replacement brake discs, brake drums, brake lining assemblies and drum brake linings intended for the servicing of the vehicle are not subject to this Regulation.\n1.3. This Regulation does not apply to ‘Special parts’, as defined in paragraph 2.3.4.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X1706"
+  },
+  "UN R94": {
+   "status": "ok",
+   "celex": "42026X1075",
+   "title": "UN Regulation No 94 – Uniform provisions concerning the approval of vehicles with regard to the protection of the occupants in the event of a frontal collision [2026/1075]",
+   "oj_ref": "OJ L, 2026/1075, 22.5.2026",
+   "oj_date": "2026-05-22",
+   "version": "Supplement 1 to the 05 series of amendments – Date of entry into force: 12 June 2025",
+   "scope": "This Regulation applies to vehicles of category M1 of a total permissible mass not exceeding 3 500 kg and to vehicles of category N1 of a total permissible mass not exceeding 2 500 kg; other vehicles may be approved at the request of the manufacturer.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X1075"
+  },
+  "UN R95": {
+   "status": "ok",
+   "celex": "42026X1095",
+   "title": "UN Regulation No. 95 – Uniform provisions concerning the approval of vehicles with regard to the protection of the occupants in the event of a lateral collision [2026/1095]",
+   "oj_ref": "OJ L, 2026/1095, 5.6.2026",
+   "oj_date": "2026-06-05",
+   "version": "Supplement 1 to the 06 series of amendments – Date of entry into force: 12 June 2025",
+   "scope": "This Regulation applies to vehicles of category M1 with a maximum permissible mass not exceeding 3 500 kg, vehicles of category M1 with a maximum permissible mass exceeding 3 500 kg where the \"R\" point of the lowest seat is not more than 700 mm from ground level when the vehicle is in the condition corresponding to the reference mass defined in paragraph 2.10. of this Regulation, and to vehicles of category N1.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X1095"
+  },
+  "UN R100": {
+   "status": "ok",
+   "celex": "42026X1695",
+   "title": "UN Regulation No 100 – Uniform provisions concerning the approval of vehicles with regard to specific requirements for the electric power train [2026/1695]",
+   "oj_ref": "OJ L, 2026/1695, 17.8.2026",
+   "oj_date": "2026-08-17",
+   "version": "05 series of amendments – Date of entry into force: 26 September 2025",
+   "scope": "1.1. Part I: Safety requirements with respect to the electric power train of road vehicles of categories M, N and O, with a maximum design speed exceeding 25 km/h, equipped with electric power train, excluding vehicles permanently connected to the grid. However, for vehicles of category O, with batteries which are charged by (one of) the vehicle’s e-axle(s), the requirements in part I of this UN Regulation shall apply, including those for the REESS (i.e. such batteries are considered as REESS even though they may not provide propulsion).\nPart I of this regulation does not cover:\n(a) Post-crash safety requirements of road vehicles.\n(b) High voltage components and systems which are not galvanically connected to the high voltage bus of the electric power train.\n(c) High voltage electricity connection between the towing vehicle and the trailer(s).\n1.2. Part II: Safety requirements with respect to the Rechargeable Electrical Energy Storage System (REESS), of road vehicles of categories M, N and O equipped with electric power train, excluding vehicles permanently connected to the grid. Part II of this Regulation does not apply to a battery whose primary use is to supply power for starting the engine and/or lighting and/or other vehicle auxiliaries’ systems.\nHowever, for vehicles of category O, with batteries which are charged by (one of) the vehicle’s e-axle(s), the requirements in part II of this UN Regulation shall apply, including those for the REESS (i.e. such batteries are considered as REESS even though they may not provide propulsion.\n1.3. Part III: Requirements with respect to the installation of an approved Rechargeable Electrical Energy Storage System (REESS) to the road vehicles of categories M, N and O equipped with electric power train, excluding vehicles permanently connected to the grid.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X1695"
+  },
+  "UN R110": {
+   "status": "ok",
+   "celex": "42015X0630(01)",
+   "title": "Regulation No 110 of the Economic Commission for Europe of the United Nations (UNECE) — Uniform provisions concerning the approval of: I.specific components of motor vehicles using compressed natural gas (CNG) and/or liquefied natural gas (LNG) in their propulsion system;II.vehicles with regard to the installation of specific components of an approved type for the use of compressed natural gas (CNG) and/or liquefied natural gas (LNG) in their propulsion system [2015/999]",
+   "oj_ref": "OJ L 166, 30.6.2015, p. 1",
+   "oj_date": "2015-06-30",
+   "version": "Supplement 2 to 01 series of amendments — Date of entry into force: 9 October 2014",
+   "scope": "This Regulation applies to:\n1.1. Part I\nSpecific components for vehicles of category M and N using compressed natural gas (CNG) and/or liquefied natural gas (LNG) in their propulsion system;\n1.2. Part II\nVehicles of category M and N with regard to the installation of specific components, for the use of compressed natural gas (CNG) and/or liquefied natural gas (LNG) for propulsion, of an approved type.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42015X0630(01)"
+  },
+  "UN R115": {
+   "status": "ok",
+   "celex": "42014X1107(02)",
+   "title": "Regulation No 115 of the Economic Commission for Europe of the United Nations (UN/ECE) Uniform provisions concerning the approval of: I. specific LPG (liquefied petroleum gases) retrofit systems to be installed in motor vehicles for the use of LPG in their propulsion system; — II. specific CNG (compressed natural gas) retrofit systems to be installed in motor vehicles for the use of CNG in their propulsion system",
+   "oj_ref": "OJ L 323, 7.11.2014, p. 91",
+   "oj_date": "2014-11-07",
+   "version": "Supplement 6 to the original version of the Regulation — Date of entry into force: 10 June 2014",
+   "scope": "This Regulation applies to:\n1.1. Part I:\nSpecific LPG retrofit systems to be installed in motor vehicles for the use of LPG in the propulsion system.\nPart II:\nSpecific CNG retrofit systems to be installed in motor vehicles for the use of CNG in the propulsion system.\n1.2. This Regulation applies when the retrofit systems manufacturer keep the initial characteristics of the whole system, for the specific vehicle family for which the approval has been granted.\n1.3. This Regulation does not apply to the procedures, checks and inspections aimed at verifying the correct installation of the retrofit systems on vehicles, since this matter relies on the competence of the Contracting Party where the vehicle is registered.\n1.4. This Regulation applies to retrofit systems intended to be fitted on vehicles of categories M and N, with the exception of:\n(a) Vehicles type-approved pursuant to Regulation No 83, series of amendments 00 or 01 or 02 or 03 or 04 series,\n(b) Vehicles type-approved pursuant to Regulation No 49, series of amendments 00 or 01 or 02 or 03 series,\n(c) Vehicles type-approved pursuant to Council Directive 70/220/EEC up to and including the amending Directive 96/69/EC of the European Parliament and if the Council,\n(d) Vehicles type-approved pursuant to Council Directive 88/77/EEC up to and including the amending Directive 96/1/EC of the European Parliament and of the Council.\n1.5. The requirements for the different categories (M1, N1 or others) are defined in paragraphs 2 to 7.\nOnce the retrofit system is installed in the vehicle, the modified vehicle shall fulfil all the provisions of the Regulation for which the type-approval has been initially granted.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42014X1107(02)"
+  },
+  "UN R117": {
+   "status": "ok",
+   "celex": "42025X1453",
+   "title": "UN Regulation No 117 – Uniform provisions concerning the approval of tyres with regard to rolling sound emissions and/or to adhesion on wet surfaces and/or to rolling resistance [2025/1453]",
+   "oj_ref": "OJ L, 2025/1453, 7.8.2025",
+   "oj_date": "2025-08-07",
+   "version": "Supplement 2 to the 04 series of amendments – Date of entry into force: 10 January 2025",
+   "scope": "1.1. This Regulation applies to new pneumatic tyres* of classes C1, C2 and C3 in new state with regard to their sound emissions, rolling resistance and to adhesion performance on wet surfaces (wet adhesion) and for class C1 tyres in worn state with regard to adhesion performance on wet surfaces (wet adhesion). It also applies to C1 tyres in new state with regards to their tyre abrasion as defined in paragraph 1.3. of this UN Regulation. It does not, however, apply to:\n* For the purpose of this Regulation \"tyres\" means \"pneumatic tyres”.\n1.1.1. Tyres designed as \"Temporary use spare tyres\" and marked \"Temporary use only\";\n1.1.2. Tyres having a nominal rim diameter code ≤ 10 (or ≤ 254 mm) or ≥ 25 (or ≥ 635 mm);\n1.1.3. Tyres designed for competition;\n1.1.4. Tyres intended to be fitted to road vehicles of categories other than M, N and O;\n1.1.5. Tyres fitted with additional devices to improve traction properties (e.g. studded tyres);\n1.1.6. Tyres with a speed category less than 80 km/h (speed category symbol F);\n1.1.7. Tyres designed only to be fitted to vehicles registered for the first time before 1 October 2000.\n1.1.8. Professional off-road tyres.\n1.2. Contracting Parties shall issue or accept approvals to rolling sound and/or adhesion of tyres in new state on wet surfaces and/or adhesion of tyres in worn state on wet surfaces and/or rolling resistance.\n1.3. In the case of class C1 tyres, except ice grip tyres and tyres having a nominal rim diameter code ≤ 13, approval shall be supplemented with information on the abrasion level according to paragraphs 5.7 to 5.9 of this Regulation.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42025X1453"
+  },
+  "UN R124": {
+   "status": "ok",
+   "celex": "42006X1227(08)R(01)",
+   "title": "Corrigendum to Regulation No 124 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of wheels for passenger cars and their trailers ( OJ L 375, 27.12.2006 )",
+   "oj_ref": "OJ L 70, 9.3.2007, p. 413",
+   "oj_date": "2007-03-09",
+   "version": "",
+   "scope": "This Regulation covers new replacement wheels designed for vehicles in categories M1, M1G, O1 and O2.\nIt does not apply to original equipment wheels or vehicle manufacturer's replacement wheels as defined in paragraphs 2.3. and 2.4.1. It does not apply to ‘Special wheels’, as defined in paragraph 2.5., which shall remain subjected to national approval.\nThis Regulation comprises requirements for wheel manufacture and installation.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42006X1227(08)R(01)"
+  },
+  "UN R128": {
+   "status": "ok",
+   "celex": "42018X1998",
+   "title": "Regulation No 128 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of light emitting diode (LED) light sources for use in approved lamp units on power-driven vehicles and their trailers [2018/1998]",
+   "oj_ref": "OJ L 320, 17.12.2018, p. 63",
+   "oj_date": "2018-12-17",
+   "version": "Supplement 7 to the original version of the Regulation — Date of entry into force: 16 October 2018",
+   "scope": "This Regulation applies to LED light sources shown in Annex 1 and intended for use in approved lamps of power-driven vehicles and of their trailers.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X1998"
+  },
+  "UN R129": {
+   "status": "ok",
+   "celex": "42026X1534",
+   "title": "UN Regulation No. 129 - Uniform provisions concerning the approval of Enhanced Child Restraint Systems used on board of motor vehicles [2026/1534]",
+   "oj_ref": "OJ L, 2026/1534, 28.8.2026",
+   "oj_date": "2026-08-28",
+   "version": "Supplement 4 to the 04 series of amendments – Date of entry into force: 4 June 2026",
+   "scope": "This Regulation applies to the following child restraint systems for child occupants of power driven vehicles:\n(a) Integral Universal ISOFIX Enhanced Child Restraint Systems (i-Size);\n(b) Integral Specific vehicle ISOFIX Enhanced Child Restraint Systems;\n(c) Non-integral Universal Enhanced Child Restraint Systems (i-Size booster seat);\n(d) Non-integral Specific vehicle Enhanced Child Restraint Systems (Specific vehicle booster seat);\n(e) Integral Universal Belted Enhanced Child Restraint Systems;\n(f) Integral Specific vehicle Belted Enhanced Child Restraint Systems;\n(g) Non-integral Universal Enhanced Child Restraint Systems without a backrest (Universal booster cushion);\n(h) Non-integral Specific vehicle Enhanced Child Restraint Systems without a backrest (Specific vehicle booster cushion).",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42026X1534"
+  },
+  "UN R139": {
+   "status": "ok",
+   "celex": "42018X1591",
+   "title": "Regulation No 139 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of passenger cars with regard to Brake Assist Systems (BAS) [2018/1591]",
+   "oj_ref": "OJ L 269, 26.10.2018, p. 1",
+   "oj_date": "2018-10-26",
+   "version": "Supplement 1 to the original version of the Regulation – Date of entry into force: 29 December 2018",
+   "scope": "1.1. This Regulation applies to the approval of vehicles of category M1 and N1 with regard to their brake assist system.\n1.2. This Regulation does not cover:\n1.2.1. Vehicles with a design speed not exceeding 25 km/h;\n1.2.2. Vehicles fitted for invalid drivers.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X1591"
+  },
+  "UN R140": {
+   "status": "ok",
+   "celex": "42018X1592",
+   "title": "Regulation No 140 of the Economic Commission for Europe of the United Nations (UN/ECE) — Uniform provisions concerning the approval of passenger cars with regard to Electronic Stability Control (ESC) Systems [2018/1592]",
+   "oj_ref": "OJ L 269, 26.10.2018, p. 17",
+   "oj_date": "2018-10-26",
+   "version": "Supplement 2 to the original version of the Regulation — Date of entry into force: 29 December 2018",
+   "scope": "1.1. This Regulation applies to the approval of vehicles of category M1 and N1 with regard to their electronic stability control system.\n1.2. This Regulation does not cover:\n1.2.1. Vehicles with a design speed not exceeding 25 km/h;\n1.2.2. Vehicles fitted for invalid drivers.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42018X1592"
+  },
+  "UN R141": {
+   "status": "ok",
+   "celex": "42021X1463",
+   "title": "UN Regulation No 141 – Uniform provisions concerning the approval of vehicles with regard to their Tyre Pressure Monitoring Systems (TPMS) (2021/1463)",
+   "oj_ref": "OJ L 323, 13.9.2021, p. 1",
+   "oj_date": "2021-09-13",
+   "version": "01 series of amendments – Date of entry into force: 30 September 2021",
+   "scope": "This Regulation applies to the approval of vehicles of category: M1 up to a maximum mass of 3 500 kg, M2, M3, N1, N2, N3, O3 and O4, when equipped with a tyre pressure monitoring system.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1463"
+  },
+  "UN R148": {
+   "status": "ok",
+   "celex": "42021X1719",
+   "title": "UN Regulation No 148 – Uniform provisions concerning the approval of light-signalling devices (lamps) for power-driven vehicles and their trailers [2021/1719]",
+   "oj_ref": "OJ L 347, 30.9.2021, p. 123",
+   "oj_date": "2021-09-30",
+   "version": "Supplement 3 to the original version of the Regulation — Date of entry into force: 30 September 2021",
+   "scope": "This Regulation applies to the following lamps:\nRear-registration plate illuminating lamps\nDirection indicator lamps\nPosition lamps\nStop lamps\nEnd-outline marker lamps\nReversing lamps\nManoeuvring lamps\nRear fog lamps\nParking lamps\nDaytime running lamps\nSide marker lamps",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1719"
+  },
+  "UN R149": {
+   "status": "ok",
+   "celex": "42021X1720",
+   "title": "UN Regulation No 149 – Uniform provisions concerning the approval of road illumination devices (lamps) and systems for power-driven vehicles [2021/1720]",
+   "oj_ref": "OJ L 347, 30.9.2021, p. 173",
+   "oj_date": "2021-09-30",
+   "version": "Supplement 3 to the original version of the Regulation — Date of entry into force: 30 September 2021",
+   "scope": "This Regulation applies to the following road illumination devices:\nHeadlamps emitting a driving-beam and/or an asymmetrical passing-beam for vehicles of categories L, M, N and T\nAdaptive front-lighting systems (AFS) for vehicles of categories M and N\nHeadlamps emitting a driving-beam and/or a symmetrical passing-beam for vehicles of categories L and T\nFront fog lamps for vehicles of categories L3, L4, L5, L7, M, N and T\nCornering lamps for vehicles of categories M, N and T",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1720"
+  },
+  "UN R150": {
+   "status": "ok",
+   "celex": "42021X1721",
+   "title": "UN Regulation No 150 – Uniform provisions concerning the approval of retro-reflective devices and markings for power-driven vehicles and their trailers [2021/1721]",
+   "oj_ref": "OJ L 347, 30.9.2021, p. 297",
+   "oj_date": "2021-09-30",
+   "version": "Supplement 3 to the original version of the Regulation — Date of entry into force: 30 September 2021",
+   "scope": "This Regulation applies to retro-reflective devices as:\nRetro-reflectors of the Classes IA, IB, IIIA, IIIB and IVA\nRetro-reflective Markings of the Classes C, D, E and F\nRetro-reflective Marking Plates for Heavy and Long Vehicles of the Classes 1, 2, 3, 4 and 5\nRetro-reflective Marking Plates for Slow Moving Vehicles of the Classes 1 and 2\nAdvance Warning Triangles of Type 1 and 2",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1721"
+  },
+  "UN R151": {
+   "status": "ok",
+   "celex": "42020X1596",
+   "title": "UN Regulation No 151 – Uniform provisions concerning the approval of motor vehicles with regard to the Blind Spot Information System for the Detection of Bicycles [2020/1596]",
+   "oj_ref": "OJ L 360, 30.10.2020, p. 48",
+   "oj_date": "2020-10-30",
+   "version": "Supplement 1 to the original version of the Regulation – Date of entry into force: 25 September 2020",
+   "scope": "1.1. This Regulation applies to the blind spot information system of vehicles of categories N2 (> 8 t of technically permissible maximum mass) and N3. Vehicles of categories N2 (≤ 8 t of technically permissible maximum mass), M2 and M3 may be approved at the request of the manufacturer.\n1.2. The requirements of this Regulation are so worded as to apply to vehicles which are developed for right-hand traffic. In vehicles that are developed for left-hand traffic, these requirements shall be applied by inverting the criteria, when appropriate.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42020X1596"
+  },
+  "UN R152": {
+   "status": "ok",
+   "celex": "42024X2497",
+   "title": "UN Regulation No 152 – Uniform provisions concerning the approval of motor vehicles with regard to the Advanced Emergency Braking System (AEBS) for M1 and N1 vehicles [2024/2497]",
+   "oj_ref": "OJ L, 2024/2497, 27.9.2024",
+   "oj_date": "2024-09-27",
+   "version": "Supplement 3 to the 02 series of amendments – Date of entry into force: 24 September 2023",
+   "scope": "This Regulation applies to the approval of vehicles of Category M1 and N1 with regard to an on-board system to\n(a) Avoid or mitigate the severity of a rear-end in lane collision with a passenger car,\n(b) Avoid or mitigate the severity of an impact with a pedestrian.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42024X2497"
+  },
+  "UN R155": {
+   "status": "ok",
+   "celex": "42025X0005",
+   "title": "UN Regulation No. 155 - Uniform provisions concerning the approval of vehicles with regards to cyber security and cyber security management system [2025/5]",
+   "oj_ref": "OJ L, 2025/5, 10.1.2025",
+   "oj_date": "2025-01-10",
+   "version": "Supplement 3 to the original version of the Regulation – Date of entry into force: 10 January 2025",
+   "scope": "1.1. This Regulation applies to vehicles, with regard to cyber security, of Categories L, M, N and O, if fitted with at least one electronic control unit.\n1.2. This Regulation is without prejudice to other UN Regulations, regional or national legislations governing the access by authorized parties to the vehicle, its data, functions and resources, and conditions of such access. It is also without prejudice to the application of national and regional legislation on privacy and the protection of natural persons with regard to the processing of their personal data.\n1.3. This Regulation is without prejudice to other UN Regulations, national or regional legislation governing the development and installation/system integration of replacement parts and components, physical and digital, with regards to cybersecurity.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42025X0005"
+  },
+  "UN R156": {
+   "status": "ok",
+   "celex": "42021X0388",
+   "title": "UN Regulation No 156 – Uniform provisions concerning the approval of vehicles with regards to software update and software updates management system [2021/388]",
+   "oj_ref": "OJ L 82, 9.3.2021, p. 60",
+   "oj_date": "2021-03-09",
+   "version": "Date of entry into force: 22 January 2021",
+   "scope": "1.1. This Regulation applies to vehicles of Categories M, N, O, R, S and T that permit software updates.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X0388"
+  },
+  "UN R157": {
+   "status": "ok",
+   "celex": "42021X0389",
+   "title": "UN Regulation No 157 – Uniform provisions concerning the approval of vehicles with regards to Automated Lane Keeping Systems [2021/389]",
+   "oj_ref": "OJ L 82, 9.3.2021, p. 75",
+   "oj_date": "2021-03-09",
+   "version": "Date of entry into force: 22 January 2021",
+   "scope": "1.1. This Regulation applies to the type approval of vehicles of Category M1 with regards to their Automated Lane Keeping System.",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X0389"
+  }
+ }
+}

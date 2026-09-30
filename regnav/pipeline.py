@@ -23,6 +23,9 @@ class Report:
     web_hits: list[tavily_search.WebHit] = field(default_factory=list)
     comparison: list[compare.Row] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    # UN code -> citation of the EU OJ text whose Scope the judge read (unece.OjScope.to_dict()),
+    # only for candidates that were judged
+    un_sources: dict[str, dict] = field(default_factory=dict)
 
     def bucket(self, prio: str) -> list[Verdict]:
         return sorted((v for v in self.verdicts if v.review_priority == prio), key=lambda v: -v.confidence)
@@ -32,7 +35,8 @@ class Report:
                 "verdicts": [v.to_dict() for v in self.verdicts],
                 "web_hits": [h.to_dict() for h in self.web_hits],
                 "comparison": [r.to_dict() for r in self.comparison],
-                "warnings": list(self.warnings)}
+                "warnings": list(self.warnings),
+                "un_sources": dict(self.un_sources)}
 
     def markdown(self) -> str:
         lines = [f"# RegNav review - {self.part}", "", f"_mode: {self.mode}_", "",
@@ -49,6 +53,10 @@ class Report:
                 lines.append(f"  {v.why}  ")
                 if v.clauses:
                     lines.append(f"  clauses: {', '.join(v.clauses)}  ")
+                src = self.un_sources.get(v.regulation)
+                if src:
+                    links = " ; ".join([src["url"]] + [a["url"] for a in src.get("later", [])])
+                    lines.append(f"  scope text: EU OJ copy {src['cite']} - {links}  ")
                 lines.append(f"  {v.url}")
                 extra = [f"{label}: {link}" for label, link in v.sources if link != v.url]
                 if extra:
@@ -101,10 +109,15 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         reg = unece.BY_NUMBER.get(n)
         if reg and reg not in un_cands:
             un_cands.append(reg)
-    # unece.org blocks plain fetches with a bot check, so the fuller Scope paragraph (when
-    # available) comes from Tavily instead of the curated one-line scope; failures fall back.
-    un_scopes = tavily_search.un_scopes(un_cands) if tavily_search.enabled() else {}
-    un_jobs = [(reg.code, reg.title, reg.url, un_scopes.get(reg.code) or reg.scope or reg.title)
+    # unece.org blocks programs, so the UN Scope text comes, best first, from: the committed
+    # EU Official Journal snapshot (tagged with its OJ date and version line), Tavily's Scope
+    # text (used only for candidates the snapshot lacks), then the curated one-line summary.
+    oj = {reg.code: unece.oj_scope(reg) for reg in un_cands}
+    missing = [reg for reg in un_cands if oj[reg.code] is None]
+    un_scopes = tavily_search.un_scopes(missing) if missing and tavily_search.enabled() else {}
+    un_jobs = [(reg.code, reg.title, reg.url,
+                f"{oj[reg.code].tag}\n{oj[reg.code].scope}" if oj[reg.code]
+                else un_scopes.get(reg.code) or reg.scope or reg.title)
                for reg in un_cands]
     # Independent of scope extraction: Tavily's search results often name the regulation's own
     # official PDF (base text / latest amendment) even when the PDF's raw_content is empty, so
@@ -143,10 +156,16 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         if links:
             v.sources = links
             v.url = links[-1][1]  # newest amendment if found, else the base text
+    # Cite the OJ text only under verdicts that actually read it: a candidate beyond the call
+    # cap, denied by the budget or lost to a judge error was never evaluated on that Scope.
+    judged = {v.regulation for v in report.verdicts if not v.why.startswith(("[not judged", "[judge error"))}
+    report.un_sources = {code: o.to_dict() for code, o in oj.items() if o and code in judged}
     report.comparison = compare.comparison(part, report.verdicts)
     if ecfr.used_snapshot:
         snap = ecfr.snapshot().get("date", "unknown date")
         report.warnings.append(f"US FMVSS text came from the bundled eCFR snapshot ({snap}); eCFR was not reachable.")
+    if report.un_sources:
+        report.warnings.append(unece.OJ_NOTE)
     return report
 
 

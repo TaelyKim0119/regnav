@@ -72,8 +72,12 @@ def render(report) -> str:
             clauses = f" Clauses: {', '.join(v.clauses)}." if v.clauses else ""
             extra = [f"[{_cell(label)}]({link})" for label, link in v.sources if link != v.url]
             also = f" ({', '.join(extra)})" if extra else ""
+            src = report.un_sources.get(v.regulation)
+            text = (f"<br>Scope text: [EU OJ copy {_cell(src['cite'])}]({src['url']})."
+                    + "".join(f" Later OJ act: [{_cell(a['oj_ref'] or a['celex'])}]({a['url']})."
+                              for a in src.get("later", [])) if src else "")
             out.append(f"| [{_cell(v.regulation)}]({v.url}){also} {_cell(v.title)} | "
-                       f"{v.applies}&nbsp;·&nbsp;{v.confidence:.2f} | {_cell(v.why)}{_cell(clauses)} |")
+                       f"{v.applies}&nbsp;·&nbsp;{v.confidence:.2f} | {_cell(v.why)}{_cell(clauses)}{text} |")
         out.append("")
     if report.comparison:
         out += compare.markdown(report.comparison) + [""]
@@ -98,8 +102,9 @@ with gr.Blocks(title="RegNav") as demo:
         "# RegNav\n"
         "**Which regulations apply to this automotive part?** RegNav pulls candidate standards from "
         "primary sources (US FMVSS live from eCFR, UN Regulations under the 1958 Agreement, Korean KMVSS), "
-        "asks NVIDIA Nemotron to judge each one against its official scope text, and returns a prioritised, "
-        "cited review list.")
+        "asks NVIDIA Nemotron to judge each one against its scope text (the eCFR text for FMVSS; for UN "
+        "Regulations the EU Official Journal copy, since the authentic text is the UNECE original), and "
+        "returns a prioritised, cited review list.")
     status = gr.Markdown(_status_line())
     with gr.Row():
         part = gr.Textbox(label="Part description", lines=2, scale=5,
