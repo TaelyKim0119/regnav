@@ -51,7 +51,7 @@ and the backlog when work lands. Dates are KST.
 | 10-18 | owner | Read the video script, mark lines to say in own words | open |
 | 10-20 | owner | Record the 3-minute video | open |
 | 10-21 | owner | Upload to YouTube, send the link | open |
-| 10-22 | owner | Add `NEBIUS_API_KEY` as a Space secret so judges see live Nemotron verdicts | open |
+| 10-22 | owner | Add `NEBIUS_API_KEY` as a Space secret so judges see live Nemotron verdicts. Rules: a project "runs on Token Factory" only if it makes a runtime call to the Token Factory inference API, so the demo must stay live with the key and credits **through judging (12-01..12-15 PT)**; demo hosting outside Nebius (HF Space) is allowed | open |
 | 10-23 | owner | Click Submit on Devpost (Claude: pre-submit checklist, tag v1.0) | open |
 
 ## Improvement backlog (ranked by prize impact)
