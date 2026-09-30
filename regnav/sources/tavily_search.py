@@ -69,34 +69,47 @@ def parse_scope(text: str, limit: int = 800) -> str | None:
 
 
 def pdf_links(results: list[dict], number: int) -> list[list[str]]:
-    """Official regulation PDFs named in Tavily's search results: unece.org publishes each UN
-    Regulation as ``R<number>e.pdf`` (base text) and ``R<number>am<N>e.pdf`` (amendment N).
+    """Official regulation PDFs named in Tavily's search results. unece.org publishes each UN
+    Regulation as ``R<number>e.pdf`` (base text) / ``R<number>am<N>e.pdf`` (amendment N) for
+    regulations still on their original text, and, once a regulation has been consolidated,
+    as ``R<number>r<rev>e.pdf`` (revision ``rev`` base text) / ``R<number>r<rev>am<N>e.pdf``
+    (amendment N on top of revision ``rev``), sometimes with a trailing ``_<n>`` re-upload
+    suffix before ``.pdf``. A live-key check (2026-09-30, see docs/ROADMAP.md) found e.g.
+    ``R090r3e.pdf`` / ``R090r3am11e.pdf`` and ``R048r13e.pdf`` / ``R048r14am6e.pdf`` - the base
+    text and the latest amendment need not even share the same revision, since an amendment can
+    be published as a new revision of its own.
 
-    A live-key check (2026-09-29, see docs/ROADMAP.md) found Tavily's ``raw_content`` for these
-    PDFs is empty, so the Scope paragraph usually can't be extracted from them - but the search
-    still surfaces the correct PDF URLs. Kept as a separate signal from ``parse_scope`` so a
-    verdict still gets the regulation's own official text link even when scope extraction fails.
+    A live-key check (2026-09-29) found Tavily's ``raw_content`` for these PDFs is empty, so the
+    Scope paragraph usually can't be extracted from them - but the search still surfaces the
+    correct PDF URLs. Kept as a separate signal from ``parse_scope`` so a verdict still gets the
+    regulation's own official text link even when scope extraction fails.
     """
-    pat = re.compile(rf"(?<!\d)R0*{number}(?:am(\d+))?[a-z]*\.pdf$", re.I)
-    base = None
-    best_amend: tuple[int, str] | None = None
+    pat = re.compile(rf"(?<!\d)R0*{number}(?:r(\d+))?(?:am(\d+))?[a-z]*(?:_\d+)?\.pdf(?:\?\S*)?$", re.I)
+    best_base: tuple[int, str] | None = None  # (revision, url); highest revision wins
+    best_amend: tuple[int, int, str] | None = None  # (revision, amendment, url); highest pair wins
     for hit in results:
         url = hit.get("url", "")
         m = pat.search(url)
         if not m:
             continue
-        amend = m.group(1)
+        revision = int(m.group(1)) if m.group(1) else 0
+        amend = m.group(2)
         if amend is None:
-            base = base or url
+            if best_base is None or revision > best_base[0]:
+                best_base = (revision, url)
         else:
             n = int(amend)
-            if best_amend is None or n > best_amend[0]:
-                best_amend = (n, url)
+            if best_amend is None or (revision, n) > best_amend[:2]:
+                best_amend = (revision, n, url)
     out = []
-    if base:
-        out.append(["Base text (PDF)", base])
+    if best_base:
+        revision, url = best_base
+        label = f"Revision {revision} base text (PDF)" if revision else "Base text (PDF)"
+        out.append([label, url])
     if best_amend:
-        out.append([f"Amendment {best_amend[0]} (PDF)", best_amend[1]])
+        revision, n, url = best_amend
+        rev_part = f" to revision {revision}" if revision else ""
+        out.append([f"Amendment {n}{rev_part} (PDF)", url])
     return out
 
 

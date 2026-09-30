@@ -178,6 +178,22 @@ def check_tavily_un_scope():
     assert tavily_search.pdf_links(fixture["results"], 14) == [], "R14 must not match R148's PDFs"
     print(f"ok tavily pdf_links: base text + latest amendment found, independent of scope extraction")
 
+    # Revision-numbered filenames (live-key check 2026-09-30, docs/ROADMAP.md item 1a):
+    # older regulations are republished as R<n>r<rev>e.pdf / R<n>r<rev>am<N>e.pdf, and the
+    # base text and the latest amendment need not share a revision.
+    r90 = json.loads((ROOT / "scripts" / "fixtures" / "tavily_pdf_links_r90.json").read_text(encoding="utf-8"))
+    assert tavily_search.pdf_links(r90["results"], 90) == [
+        ["Revision 3 base text (PDF)", "https://unece.org/sites/default/files/2022-03/R090r3e.pdf"],
+        ["Amendment 11 to revision 3 (PDF)", "https://unece.org/sites/default/files/2023-01/R090r3am11e.pdf"],
+    ], tavily_search.pdf_links(r90["results"], 90)
+
+    r48 = json.loads((ROOT / "scripts" / "fixtures" / "tavily_pdf_links_r48.json").read_text(encoding="utf-8"))
+    assert tavily_search.pdf_links(r48["results"], 48) == [
+        ["Revision 13 base text (PDF)", "https://unece.org/sites/default/files/2021-02/R048r13e.pdf"],
+        ["Amendment 6 to revision 14 (PDF)", "https://unece.org/sites/default/files/2023-09/R048r14am6e.pdf"],
+    ], tavily_search.pdf_links(r48["results"], 48)
+    print("ok tavily pdf_links: revision-numbered filenames (R090r3e.pdf, R048r14am6e.pdf) parsed too")
+
     real_cache = tavily_search.CACHE
     tavily_search.CACHE = Path(tempfile.mkdtemp()) / "tavily_scope"
     calls = []

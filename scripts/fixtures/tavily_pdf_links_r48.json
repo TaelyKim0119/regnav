@@ -1,0 +1,23 @@
+{
+  "note": "Filenames from the live-key check 2026-09-30 (docs/ROADMAP.md, item 1a): the base text and the latest amendment are published under different revision numbers (r13 base, r14 amendment 6) - the amendment is its own revision, not a same-revision patch.",
+  "results": [
+    {
+      "title": "Addenda to the 1958 Agreement - Regulations 41-60",
+      "url": "https://unece.org/transport/standards/transport/vehicle-regulations-wp29/addenda-1958-agreement-regulations-41-60",
+      "content": "Consolidated list of Regulations Nos. 41 to 60 annexed to the 1958 Agreement.",
+      "raw_content": ""
+    },
+    {
+      "title": "R048r13e.pdf",
+      "url": "https://unece.org/sites/default/files/2021-02/R048r13e.pdf",
+      "content": "Regulation No. 48 - Revision 13, consolidated text.",
+      "raw_content": ""
+    },
+    {
+      "title": "R048r14am6e.pdf",
+      "url": "https://unece.org/sites/default/files/2023-09/R048r14am6e.pdf",
+      "content": "Regulation No. 48 - Revision 14, 6 series of amendments.",
+      "raw_content": ""
+    }
+  ]
+}
