@@ -119,6 +119,10 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
                 f"{oj[reg.code].tag}\n{oj[reg.code].scope}" if oj[reg.code]
                 else un_scopes.get(reg.code) or reg.scope or reg.title)
                for reg in un_cands]
+    # Web-named UN Regulations outside the curated catalogue become candidates too, judged on
+    # the Tavily snippet alone (the job's scope text says this evidence is weaker).
+    known_un_numbers = {reg.number for reg in unece.CATALOGUE}
+    un_jobs += tavily_search.uncatalogued_un_jobs(report.web_hits, known_un_numbers)
     # Independent of scope extraction: Tavily's search results often name the regulation's own
     # official PDF (base text / latest amendment) even when the PDF's raw_content is empty, so
     # this still upgrades the verdict's link from the generic range page to the actual text.

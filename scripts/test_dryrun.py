@@ -371,6 +371,36 @@ def check_unece_oj_snapshot():
           f"markdown + template show the EUR-Lex source; {space_note}")
 
 
+def check_uncatalogued_un_candidate():
+    """Backlog item 2: a UN Regulation number a web search names but RegNav's curated catalogue
+    (regnav.sources.unece.CATALOGUE) doesn't have still becomes a judged candidate, on the
+    Tavily snippet alone (today it was silently dropped). Offline: stubs ``tavily_search.search``
+    instead of the Tavily client, since this feature only needs the search results, not a key."""
+    from regnav.sources import tavily_search, unece
+
+    assert 79 not in unece.BY_NUMBER, "test needs a genuinely uncatalogued UN Regulation number"
+    hit = tavily_search.WebHit("Steering equipment type approval", "https://unece.org/some-page",
+                                "Vehicles must comply with UN Regulation No. 79 concerning steering equipment.")
+
+    jobs = tavily_search.uncatalogued_un_jobs([hit], {reg.number for reg in unece.CATALOGUE})
+    assert len(jobs) == 1 and jobs[0][0] == "UN R79", jobs
+    assert jobs[0][1] == "Not in RegNav's curated catalogue (named by web search)" and jobs[0][2] == hit.url
+    assert jobs[0][3].startswith("[UN R79: not in RegNav's curated catalogue"), jobs[0][3]
+    assert "steering equipment" in jobs[0][3].lower()
+    assert tavily_search.uncatalogued_un_jobs([hit], {79}) == [], "a catalogued number must not take this path"
+
+    real_search = tavily_search.search
+    tavily_search.search = lambda part, max_results=5: [hit]
+    try:
+        rep = pipeline.review("Steering column replacement part", dry_run=True)
+    finally:
+        tavily_search.search = real_search
+    un79 = next((v for v in rep.verdicts if v.regulation == "UN R79"), None)
+    assert un79 is not None and "[dry-run]" in un79.why, rep.verdicts
+    assert "UN R79" not in rep.un_sources, "no OJ citation exists for an uncatalogued regulation"
+    print("ok uncatalogued UN candidate: web-named UN R79 (outside the curated catalogue) judged on the Tavily snippet")
+
+
 def check_comparison_table():
     from fastapi.testclient import TestClient
     import app as webapp
@@ -393,5 +423,6 @@ if __name__ == "__main__":
     check_kmvss_scaffold()
     check_tavily_un_scope()
     check_unece_oj_snapshot()
+    check_uncatalogued_un_candidate()
     check_comparison_table()
     print("all dry-run checks passed")

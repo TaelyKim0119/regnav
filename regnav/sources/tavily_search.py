@@ -174,3 +174,24 @@ def un_scopes(regs: list) -> dict[str, str]:
         if scope:
             out[reg.code] = scope
     return out
+
+
+def uncatalogued_un_jobs(hits: list[WebHit], known_numbers: set[int]) -> list[tuple[str, str, str, str]]:
+    """Judge jobs for UN Regulation numbers a web search named that RegNav's curated catalogue
+    (``regnav.sources.unece.CATALOGUE``) doesn't have - about twenty 1958 Agreement regulations
+    fall outside the ~38 curated entries, and until now they were dropped even when a web search
+    named them for this part (roadmap backlog item 2). There is no catalogue scope or OJ text for
+    these, so the only evidence is the Tavily snippet that named the number; the job's scope text
+    says so up front, for the judge and for the report."""
+    out: dict[int, tuple[str, str, str, str]] = {}
+    for h in hits:
+        text = f"{h.title} {h.snippet}"
+        for m in UN_RE.finditer(text):
+            n = int(m.group(1))
+            if n in known_numbers or n in out:
+                continue
+            tag = (f"[UN R{n}: not in RegNav's curated catalogue; the only evidence is a web search "
+                   "snippet naming it, not an official scope text - verify against the UNECE text]")
+            out[n] = (f"UN R{n}", "Not in RegNav's curated catalogue (named by web search)", h.url,
+                      f"{tag}\n{h.title}: {h.snippet}")
+    return list(out.values())
