@@ -20,8 +20,12 @@ def terms(text: str) -> list[str]:
     return out
 
 
-# British part names -> US regulatory vocabulary used in FMVSS titles (tyre/tire, wheel/rim).
-US_TERMS = {"tyre": "tire", "tyres": "tires", "wheel": "rim", "wheels": "rims"}
+# Colloquial/British part names -> the regulatory vocabulary FMVSS titles actually use
+# (tyre/tire, wheel/rim; windscreen/windshield/glass -> glazing, the FMVSS 205 term).
+US_TERMS = {
+    "tyre": "tire", "tyres": "tires", "wheel": "rim", "wheels": "rims",
+    "windscreen": "glazing", "windshield": "glazing", "glass": "glazing",
+}
 
 
 def us_terms(words: list[str]) -> list[str]:
