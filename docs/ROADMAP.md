@@ -18,6 +18,7 @@ and the backlog when work lands. Dates are KST.
 
 - Repo: https://github.com/TaelyKim0119/regnav (MIT)
 - Demo: https://huggingface.co/spaces/kim0192/regnav (Gradio SDK on ZeroGPU, `space_app.py`). Offline demo mode until the owner adds `NEBIUS_API_KEY` as a Space secret. Redeploys are uploaded by the owner (Files > Contribute > Upload files) from the folder built by `scripts/make_space.py --out space_upload`.
+- **Sleep risk (seen 2026-10-03):** the free Space was found asleep ("This Space is sleeping due to inactivity"; free hardware sleeps after about 48 h without visitors). Waking it took about 2 minutes of "Building...". A judge who lands on a sleeping Space must click "Restart this Space" and wait. Mitigations: the Devpost text and README say so in one line; the owner opens the demo the day before submission and every 1-2 days during judging (12-01..12-15 PT).
 - Submission drafts: `docs/submission/DEVPOST.md`, `DEVPOST_STORY.md`, `VIDEO_SCRIPT.md`.
 
 ## Run environment facts
