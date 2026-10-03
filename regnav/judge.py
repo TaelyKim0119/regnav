@@ -13,7 +13,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Literal
 
 from regnav.i18n import norm, tr
-from regnav.text import terms
+from regnav.text import terms, us_terms
 
 SYSTEM = """You are a regulatory applicability reviewer for automotive parts.
 Given ONE part description and ONE regulation (title + scope excerpt), decide whether the
@@ -139,8 +139,11 @@ def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run:
 
 def _dry(part, regulation, title, url, scope, lang="en") -> Verdict:
     """Placeholder: title hits count double, scope hits single (a leading "[source tag]"
-    line is citation, not scope wording, so it is not scored)."""
-    words = terms(part)
+    line is citation, not scope wording, so it is not scored). ``us_terms`` maps colloquial
+    part vocabulary onto the regulatory text's own wording (glass/windscreen -> glazing,
+    tyre -> tire, wheel -> rim) the same way candidate retrieval already does, so real legal
+    scope text (e.g. "safety glazing materials") scores a part that says "glass windscreen"."""
+    words = us_terms(terms(part))
     t = title.lower()
     s = re.sub(r"^\[[^\]\n]*\]\n", "", scope).lower()
     title_hits = sum(1 for w in words if w in t)
