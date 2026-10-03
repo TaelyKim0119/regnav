@@ -1,9 +1,11 @@
 """Offline checks for RegNav. Makes no Nebius or Tavily calls.
 
     NEBIUS_API_KEY= TAVILY_API_KEY= .venv/Scripts/python.exe -X utf8 scripts/test_dryrun.py
+    ... scripts/test_dryrun.py --update-english-baseline   # only after an intended English output change
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -97,7 +99,7 @@ def check_parallel_order_and_budget():
     live, active, peak = [], [0], [0]
     lock = threading.Lock()
 
-    def fake_judge(part, regulation, title, url, scope, dry_run=False, budget=None):
+    def fake_judge(part, regulation, title, url, scope, dry_run=False, budget=None, **kw):
         allowed = budget.allow(100)
         with lock:
             active[0] += 1
@@ -415,7 +417,201 @@ def check_comparison_table():
     print(f"ok comparison: {len(rep.comparison)} topic row(s), UI table rendered")
 
 
+ENGLISH_BASELINE = ROOT / "scripts" / "fixtures" / "english_outputs_baseline.json"
+
+
+def _sha(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
+def _space_app():
+    try:
+        import space_app
+    except ImportError:  # gradio is a Space-only dependency
+        return None
+    return space_app
+
+
+def english_digests(parts) -> dict:
+    space = _space_app()
+    out = {}
+    for p in parts:
+        rep = pipeline.review(p, dry_run=True)
+        out[p] = {"markdown": _sha(rep.markdown()), "json": _sha(json.dumps(rep.to_dict(), ensure_ascii=False)),
+                  "render": _sha(space.render(rep)) if space else None}
+    return out
+
+
+def check_english_unchanged():
+    """English output (``lang`` left at its default) is byte-identical to the output recorded
+    before Korean support existed (scripts/fixtures/english_outputs_baseline.json: the accuracy
+    table's 10 parts plus 5 more): report markdown, the API JSON and the Gradio render."""
+    from regnav import ko
+    fx = json.loads(ENGLISH_BASELINE.read_text(encoding="utf-8"))
+    now = english_digests(fx["parts"])
+    diff = [(p[:40], k) for p, d in fx["parts"].items() for k, v in d.items()
+            if now[p][k] is not None and now[p][k] != v]
+    assert not diff, (f"English output changed vs the pre-Korean baseline: {diff[:4]}. If that is intended, run "
+                      "scripts/test_dryrun.py --update-english-baseline and explain the change in the devlog.")
+    first = next(iter(fx["parts"]))
+    assert pipeline.review(first, dry_run=True, lang="en").markdown() == pipeline.review(first, dry_run=True).markdown()
+    # text without Hangul passes through the glossary untouched, and its JSON gets no new keys
+    assert all(ko.to_english(p) == p and not ko.unknown_words(p) for p in fx["parts"])
+    assert not {"query", "lang"} & set(pipeline.review(first, dry_run=True).to_dict())
+    render = "and Gradio render " if _space_app() else ""
+    print(f"ok english unchanged: markdown, JSON {render}of {len(now)} parts byte-identical to the pre-Korean baseline")
+
+
+def check_korean_input():
+    """A Korean (or mixed Korean/English) part description is turned into English search terms by
+    the offline glossary in regnav/ko.py before retrieval; the report keeps the original text."""
+    from regnav import i18n, ko
+    from regnav.sources import kmvss, unece
+
+    def must_check(rep):
+        return {v.regulation for v in rep.verdicts if v.review_priority in ("must", "check")}
+
+    # each Korean demo example yields the same must/check candidate set as its English twin
+    for en, kr in zip(i18n.EXAMPLES["en"], i18n.EXAMPLES["ko"]):
+        e, k = pipeline.review(en, dry_run=True), pipeline.review(kr, dry_run=True, lang="ko")
+        assert must_check(e) == must_check(k), (kr, sorted(must_check(e) ^ must_check(k)))
+        assert {v.regulation for v in e.bucket("must")} == {v.regulation for v in k.bucket("must")}, kr
+        assert k.part == kr and k.query and not ko.has_hangul(k.query), (k.part, k.query)
+    # mixed Korean + English: English words are kept as written, Korean terms are added in place
+    mixed = "LED 후미등 module with 제동등 and turn signal"
+    assert ko.to_english(mixed) == "LED tail lamp module with stop lamp and turn signal", ko.to_english(mixed)
+    regs = {v.regulation for v in pipeline.review(mixed, dry_run=True).verdicts}
+    assert {"UN R148", "UN R48", "FMVSS 108"} <= regs, regs
+    # particles, optional spaces inside compounds, longest key first, no fusing of short words
+    assert ko.to_english("브레이크패드") == ko.to_english("브레이크 패드") == "brake pad"
+    assert ko.to_english("후미등의 렌즈") == "tail lamp lens" and ko.to_english("타이어용") == "tyre"
+    assert ko.to_english("제동등") == "stop lamp" and ko.to_english("스티어링 휠") == "steering wheel"
+    assert ko.to_english("루프 캐리어") == "roof rack" and "electric" not in ko.to_english("전 기능 포함")
+    # every Korean keyword of the UN catalogue and the KMVSS topics reaches its own entry
+    for reg in unece.CATALOGUE:
+        for kw in filter(ko.has_hangul, reg.keywords):
+            assert reg in [r for r, _ in unece.search(ko.to_english(kw), limit=99)], (reg.code, kw, ko.to_english(kw))
+    for topic in kmvss.SEED:
+        for kw in filter(ko.has_hangul, topic.keywords):
+            assert topic in [t for t, _ in kmvss.search(ko.to_english(kw), limit=99)], (topic.key, kw)
+    # words the glossary does not know are named in a note (the live judge still reads them)
+    rep = pipeline.review("후미등 실링 개선품", dry_run=True, lang="ko")
+    assert ko.unknown_words("후미등 실링 개선품") == ["실링", "개선품"]
+    assert "용어집에 없는 단어" in rep.warnings[0] and "실링, 개선품" in rep.warnings[0], rep.warnings
+    # Korean report labels; regulation codes and titles stay as they are
+    rep = pipeline.review(i18n.EXAMPLES["ko"][1], dry_run=True, lang="ko")
+    md, d = rep.markdown(), rep.to_dict()
+    assert md.startswith(f"# RegNav 검토 - {i18n.EXAMPLES['ko'][1]}") and "## 필수 검토 (" in md and "## 확인 필요 (" in md
+    assert "적용 여부: 해당 / 신뢰도" in md and "_검색어 (한글 용어집으로 바꾼 영문): " in md and "> 알림: " in md
+    assert "| 주제 | FMVSS (미국) | UN R (1958 협정) | KMVSS (한국) |" in md and "(필수 검토)" in md
+    assert "Replacement brake lining assemblies" in md and "정본은 UNECE 원문뿐" in md
+    assert all(v.why.startswith("[dry-run] 제목 용어") for v in rep.verdicts)
+    assert d["lang"] == "ko" and d["query"] == rep.query and d["part"] == i18n.EXAMPLES["ko"][1]
+    print(f"ok korean input: 5 Korean examples = English must/check sets; mixed text, particles, compounds; "
+          f"{sum(1 for r in unece.CATALOGUE for k in r.keywords if ko.has_hangul(k))} UN + "
+          f"{sum(1 for t in kmvss.SEED for k in t.keywords if ko.has_hangul(k))} KMVSS Korean keywords reach "
+          f"their entries; Korean report labels")
+
+
+def check_korean_judge_and_caps():
+    """Live-judge prompt per language (stubbed client, no network) and the Korean placeholder
+    rationales: English prompts are unchanged; "ko" adds one system line asking for a Korean
+    rationale; a Korean part goes in as written plus its English terms; caps are untouched."""
+    import types
+    from regnav import i18n, ko
+    from regnav import judge as J
+
+    assert budget.LOCAL_DEFAULTS == (12, 150, 400_000) and budget.PUBLIC_DEMO_CEILING == (12, 60, 160_000)
+    sent = []
+
+    class Completions:
+        def create(self, **kw):
+            sent.append(kw)
+            reply = {"applies": "yes", "confidence": 0.9, "why": "적용범위가 후미등(rear lamps)을 명시함",
+                     "clauses": [], "review_priority": "must"}
+            msg = types.SimpleNamespace(content=json.dumps(reply, ensure_ascii=False))
+            return types.SimpleNamespace(choices=[types.SimpleNamespace(message=msg)])
+
+    real_client = J._client
+    J._client = lambda: types.SimpleNamespace(chat=types.SimpleNamespace(completions=Completions()))
+    kr = i18n.EXAMPLES["ko"][0]
+    try:
+        J.judge(EXAMPLE, "UN R148", "Light-signalling devices", "u", "scope")
+        v = J.judge(kr, "UN R148", "Light-signalling devices", "u", "scope", lang="ko", query=ko.to_english(kr))
+    finally:
+        J._client = real_client
+    (e_sys, e_user), (k_sys, k_user) = [(c["messages"][0]["content"], c["messages"][1]["content"]) for c in sent]
+    assert e_sys == J.SYSTEM and e_user == (f"PART: {EXAMPLE}\n\nREGULATION: UN R148 - Light-signalling devices"
+                                            "\nURL: u\n\nSCOPE EXCERPT:\nscope"), e_user
+    assert k_sys == J.SYSTEM + "\n" + J.KO_LINE and k_sys.count("\n") == J.SYSTEM.count("\n") + 1
+    assert k_user.startswith(f"PART: {kr}\nPART (English terms from RegNav's Korean glossary): {ko.to_english(kr)}\n\n")
+    assert all(c["max_tokens"] == J.MAX_TOKENS for c in sent) and v.why.startswith("적용범위가") and v.review_priority == "must"
+
+    class Deny:
+        def allow(self, est):
+            return False
+    denied = J.judge(kr, "UN R148", "t", "u", "s", budget=Deny(), lang="ko", query=ko.to_english(kr))
+    assert denied.why.startswith("[미판정") and denied.why.startswith(J.UNJUDGED) and denied.confidence == 0.0
+    # live trim in Korean: the tail beyond the call cap gets the Korean "not judged" note, is never
+    # cited as having read the OJ text, and judge_all receives the language and the English terms
+    seen = []
+    real_judge_all = pipeline.judge_all
+    pipeline.judge_all = lambda part, jobs, **kw: seen.append(kw) or [
+        Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "must") for j in jobs]
+    os.environ["REGNAV_MAX_CALLS_PER_REVIEW"] = "3"
+    try:
+        rep = pipeline.review(kr, dry_run=False, lang="ko")
+    finally:
+        pipeline.judge_all = real_judge_all
+        os.environ.pop("REGNAV_MAX_CALLS_PER_REVIEW", None)
+    tail = [v for v in rep.verdicts if v.why.startswith("[미판정")]
+    assert tail and seen[0]["lang"] == "ko" and seen[0]["query"] == ko.to_english(kr), seen
+    assert not set(rep.un_sources) & {v.regulation for v in tail}
+    print("ok korean judge: English prompt unchanged; 'ko' adds one rationale line; Korean part + English terms; "
+          "same max_tokens and caps; Korean not-judged notes")
+
+
+def check_korean_ui_and_api():
+    from fastapi.testclient import TestClient
+    import app as webapp
+    from regnav import i18n
+
+    client = TestClient(webapp.app)
+    kr = i18n.EXAMPLES["ko"][1]
+    d = client.post("/api/review", json={"part": kr, "lang": "ko"}).json()
+    assert d["lang"] == "ko" and d["part"] == kr and "brake pad" in d["query"]
+    assert any(v["regulation"] == "UN R90" for v in d["verdicts"]) and "정본은 UNECE 원문뿐" in d["warnings"][-1]
+    assert client.post("/api/review", json={"part": kr, "lang": "fr"}).status_code == 422
+    d_en = client.post("/api/review", json={"part": kr}).json()  # Korean part, English report (the default)
+    assert "lang" not in d_en and d_en["query"] == d["query"] and d_en["verdicts"][0]["why"].startswith("[dry-run] ")
+    assert [v["regulation"] for v in d_en["verdicts"]] == [v["regulation"] for v in d["verdicts"]]
+    space = _space_app()
+    if space is None:
+        print("ok korean api: lang=ko report, lang=en default; space UI skipped (no gradio)")
+        return
+    status, out = space.run_review(kr, "ko")
+    assert "오프라인 데모 모드" in status and "오늘 모델 호출" in status, status
+    assert "#### 필수 검토 (" in out and "| 규정 | 판정 | 근거 (적용범위 문안 기준) |" in out and "UN R90" in out
+    assert "_검색어 (한글 용어집으로 바꾼 영문): " in out and "(필수 검토)" in out and "형식승인 결정이 아닙니다" in out
+    intro, status_ko, box, button, examples, source = space.switch_language("ko")
+    assert intro.startswith("# RegNav\n**이 자동차 부품에는") and box.label == "부품 설명" and button.value == "검토"
+    # Gradio rebuilds the Dataset from its original components with these samples (prop update)
+    assert [s[0] for s in examples.raw_samples] == i18n.EXAMPLES["ko"] and source.startswith("소스 코드")
+    assert space.pick_example(1, "ko") == kr and space.pick_example(1, "en") == i18n.EXAMPLES["en"][1]
+    status_en, out_en = space.run_review(i18n.EXAMPLES["en"][1])
+    assert "Offline demo mode" in status_en and "#### Must review (" in out_en and "필수" not in out_en
+    print("ok korean ui+api: API lang=ko / default en; Gradio switch relabels page, Korean examples and report")
+
+
 if __name__ == "__main__":
+    if "--update-english-baseline" in sys.argv:
+        if _space_app() is None:
+            sys.exit("refusing: the baseline includes the Gradio render, install gradio first")
+        fx = json.loads(ENGLISH_BASELINE.read_text(encoding="utf-8"))
+        fx["parts"] = english_digests(fx["parts"])
+        ENGLISH_BASELINE.write_text(json.dumps(fx, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print(f"rewrote {ENGLISH_BASELINE.name}; record why English output changed in the devlog")
+        sys.exit(0)
     check_un_links_and_cap_trim()
     check_ecfr_snapshot_and_outage()
     check_parallel_order_and_budget()
@@ -425,4 +621,8 @@ if __name__ == "__main__":
     check_unece_oj_snapshot()
     check_uncatalogued_un_candidate()
     check_comparison_table()
+    check_english_unchanged()
+    check_korean_input()
+    check_korean_judge_and_caps()
+    check_korean_ui_and_api()
     print("all dry-run checks passed")

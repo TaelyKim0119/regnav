@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import Literal
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Form, Request
@@ -10,6 +11,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
+from regnav import i18n
 from regnav.budget import status as budget_status
 from regnav.pipeline import ORDER, review
 
@@ -17,13 +19,7 @@ load_dotenv()
 app = FastAPI(title="RegNav", description="Automotive parts regulation applicability review assistant")
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 
-EXAMPLES = [
-    "LED rear lamp module, replacement tail lamp with stop and turn signal functions",
-    "Aftermarket brake pad set for passenger car disc brakes",
-    "Replacement alloy wheel 18 inch for passenger cars",
-    "Child restraint system, i-Size booster seat with ISOFIX",
-    "Tyre pressure monitoring sensor, aftermarket TPMS kit",
-]
+EXAMPLES = i18n.EXAMPLES["en"]
 
 
 def _dry() -> bool:
@@ -57,11 +53,15 @@ class ReviewIn(BaseModel):
     part: str = Field(max_length=2000)
     max_fmvss: int = Field(6, ge=0, le=10)
     max_unece: int = Field(6, ge=0, le=10)
+    # Report language ("ko": Korean labels and notes, and a Korean rationale from the live judge).
+    # The part itself may be Korean in either language.
+    lang: Literal["en", "ko"] = "en"
 
 
 @app.post("/api/review")
 def review_api(body: ReviewIn):
-    rep = review(body.part.strip(), dry_run=_dry(), max_fmvss=body.max_fmvss, max_unece=body.max_unece)
+    rep = review(body.part.strip(), dry_run=_dry(), max_fmvss=body.max_fmvss, max_unece=body.max_unece,
+                 lang=body.lang)
     return JSONResponse(rep.to_dict())
 
 

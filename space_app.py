@@ -5,6 +5,10 @@ refuses to start unless at least one @spaces.GPU function is registered at start
 RegNav needs no GPU (the model runs on Nebius Token Factory), so the one GPU function
 below is registered and never called. Locally, `spaces` is absent and it is skipped.
 
+The page has an English / 한국어 switch (English by default): it changes the labels, the
+example buttons and the report language, and in live mode asks Nemotron for a Korean
+rationale. Part descriptions may be written in English, Korean or both, in either mode.
+
     python space_app.py            # local, http://127.0.0.1:7860
 The FastAPI app (app.py) stays the full web UI + JSON API for container deployments.
 """
@@ -15,9 +19,9 @@ import os
 import gradio as gr
 from dotenv import load_dotenv
 
-from regnav import compare
+from regnav import compare, i18n
 from regnav.budget import status as budget_status
-from regnav.pipeline import ORDER, review
+from regnav.pipeline import order, review
 
 load_dotenv()
 
@@ -30,28 +34,22 @@ try:  # ZeroGPU start-up requirement only; RegNav never uses the GPU.
 except ImportError:
     spaces = None
 
-EXAMPLES = [
-    "LED rear lamp module, replacement tail lamp with stop and turn signal functions",
-    "Aftermarket brake pad set for passenger car disc brakes",
-    "Replacement alloy wheel 18 inch for passenger cars",
-    "Child restraint system, i-Size booster seat with ISOFIX",
-    "Tyre pressure monitoring sensor, aftermarket TPMS kit",
-]
+EXAMPLES = i18n.EXAMPLES["en"]
+EXAMPLES_KO = i18n.EXAMPLES["ko"]  # the same five parts, written in Korean
+LANGUAGES = [("English", "en"), ("한국어", "ko")]  # English is the default: judges are international
 MODEL = os.environ.get("REGNAV_MODEL", "nvidia/nemotron-3-super-120b-a12b")
-BADGE = {"must": "Must review", "check": "Confirm", "reference": "Reference only"}
 
 
 def _live() -> bool:
     return bool(os.environ.get("NEBIUS_API_KEY"))
 
 
-def _status_line() -> str:
+def _status_line(lang: str = "en") -> str:
     b = budget_status()
-    mode = f"**Live**: NVIDIA Nemotron (`{MODEL}`) on Nebius Token Factory" if _live() else (
-        "**Offline demo mode**: keyword placeholder verdicts (no model calls). "
-        "The live judge runs NVIDIA Nemotron on Nebius Token Factory.")
-    return (f"{mode}  \nToday's model calls: {b['calls_today']} of {b['max_calls_per_day']} "
-            f"(public demo cap, {b['max_calls_per_review']} per review)")
+    mode = i18n.tr(lang, "status_live", model=MODEL) if _live() else i18n.tr(lang, "status_offline")
+    calls = i18n.tr(lang, "status_calls", calls=b["calls_today"], max_day=b["max_calls_per_day"],
+                    max_review=b["max_calls_per_review"])
+    return f"{mode}  \n{calls}"
 
 
 def _cell(text: str) -> str:
@@ -59,62 +57,83 @@ def _cell(text: str) -> str:
 
 
 def render(report) -> str:
+    """The report as Markdown, labels in ``report.lang``; regulation names, titles and quoted
+    scope text stay in their original language."""
+    lang = report.lang
     out = [f"### {_cell(report.part)}", ""]
-    out += [f"> Note: {_cell(w)}" for w in report.warnings] + ([""] if report.warnings else [])
-    for prio, label in ORDER:
+    if report.query:  # Korean input: show the English search terms the glossary produced
+        out += [i18n.tr(lang, "query", query=_cell(report.query)), ""]
+    out += ["> " + i18n.tr(lang, "note", text=_cell(w)) for w in report.warnings] + ([""] if report.warnings else [])
+    for prio, label in order(lang):
         items = report.bucket(prio)
         if not items:
             continue
         out += [f"#### {label} ({len(items)})", "",
-                "| Regulation | Verdict | Why (from the scope text) |",
+                i18n.tr(lang, "table_header"),
                 "|---|---|---|"]
         for v in items:
-            clauses = f" Clauses: {', '.join(v.clauses)}." if v.clauses else ""
+            clauses = i18n.tr(lang, "ui_clauses", clauses=", ".join(v.clauses)) if v.clauses else ""
             extra = [f"[{_cell(label)}]({link})" for label, link in v.sources if link != v.url]
             also = f" ({', '.join(extra)})" if extra else ""
             src = report.un_sources.get(v.regulation)
-            text = (f"<br>Scope text: [EU OJ copy {_cell(src['cite'])}]({src['url']})."
-                    + "".join(f" Later OJ act: [{_cell(a['oj_ref'] or a['celex'])}]({a['url']})."
+            text = (i18n.tr(lang, "ui_scope_src", cite=_cell(src["cite"]), url=src["url"])
+                    + "".join(i18n.tr(lang, "ui_later", ref=_cell(a["oj_ref"] or a["celex"]), url=a["url"])
                               for a in src.get("later", [])) if src else "")
             out.append(f"| [{_cell(v.regulation)}]({v.url}){also} {_cell(v.title)} | "
-                       f"{v.applies}&nbsp;·&nbsp;{v.confidence:.2f} | {_cell(v.why)}{_cell(clauses)}{text} |")
+                       f"{i18n.applies(lang, v.applies)}&nbsp;·&nbsp;{v.confidence:.2f} | "
+                       f"{_cell(v.why)}{_cell(clauses)}{text} |")
         out.append("")
     if report.comparison:
-        out += compare.markdown(report.comparison) + [""]
+        out += compare.markdown(report.comparison, lang) + [""]
     if report.web_hits:
-        out += [f"#### Web evidence via Tavily ({len(report.web_hits)})", ""]
+        out += ["#### " + i18n.tr(lang, "web_heading", n=len(report.web_hits)), ""]
         out += [f"- [{_cell(h.title)}]({h.url})" for h in report.web_hits] + [""]
-    out.append("_Review assistant output: candidates and evidence for a qualified reviewer, "
-               "not legal advice and not a type-approval decision._")
+    out.append(i18n.tr(lang, "ui_footer"))
     return "\n".join(out)
 
 
-def run_review(part: str):
+def run_review(part: str, lang: str = "en"):
+    """One review. ``part`` may be English, Korean or mixed; ``lang`` ("en" or "ko") is the
+    report language and, in live mode, the language of Nemotron's rationale."""
+    lang = i18n.norm(lang)
     part = (part or "").strip()[:2000]
     if not part:
-        return _status_line(), "Describe a part, for example one of the examples below."
-    report = review(part, dry_run=not _live())
-    return _status_line(), render(report)
+        return _status_line(lang), i18n.tr(lang, "empty")
+    report = review(part, dry_run=not _live(), lang=lang)
+    return _status_line(lang), render(report)
+
+
+def switch_language(lang: str):
+    """Relabel the page; the description being typed and the last report stay as they are."""
+    lang = i18n.norm(lang)
+    return (i18n.tr(lang, "intro"), _status_line(lang),
+            gr.Textbox(label=i18n.tr(lang, "part_label"), placeholder=i18n.tr(lang, "part_placeholder")),
+            gr.Button(i18n.tr(lang, "button")),
+            gr.Dataset(samples=[[e] for e in i18n.EXAMPLES[lang]], label=i18n.tr(lang, "examples")),
+            i18n.tr(lang, "source"))
+
+
+def pick_example(index: int, lang: str) -> str:
+    return i18n.EXAMPLES[i18n.norm(lang)][index]
 
 
 with gr.Blocks(title="RegNav") as demo:
-    gr.Markdown(
-        "# RegNav\n"
-        "**Which regulations apply to this automotive part?** RegNav pulls candidate standards from "
-        "primary sources (US FMVSS live from eCFR, UN Regulations under the 1958 Agreement, Korean KMVSS), "
-        "asks NVIDIA Nemotron to judge each one against its scope text (the eCFR text for FMVSS; for UN "
-        "Regulations the EU Official Journal copy, since the authentic text is the UNECE original), and "
-        "returns a prioritised, cited review list.")
+    lang = gr.Radio(LANGUAGES, value="en", label="Language / 언어", container=False)
+    intro = gr.Markdown(i18n.tr("en", "intro"))
     status = gr.Markdown(_status_line())
     with gr.Row():
-        part = gr.Textbox(label="Part description", lines=2, scale=5,
-                          placeholder="e.g. LED rear lamp module, replacement tail lamp with stop and turn signal functions")
-        go = gr.Button("Review", variant="primary", scale=1)
-    gr.Examples(EXAMPLES, inputs=part, label="Examples")
+        part = gr.Textbox(label=i18n.tr("en", "part_label"), lines=2, scale=5,
+                          placeholder=i18n.tr("en", "part_placeholder"))
+        go = gr.Button(i18n.tr("en", "button"), variant="primary", scale=1)
+    examples = gr.Dataset(components=[part], samples=[[e] for e in EXAMPLES], type="index",
+                          label=i18n.tr("en", "examples"))
     result = gr.Markdown()
-    go.click(run_review, inputs=part, outputs=[status, result])
-    part.submit(run_review, inputs=part, outputs=[status, result])
-    gr.Markdown("Source code (MIT): https://github.com/TaelyKim0119/regnav")
+    source = gr.Markdown(i18n.tr("en", "source"))
+    examples.click(pick_example, inputs=[examples, lang], outputs=part, api_visibility="private")
+    lang.change(switch_language, inputs=lang, outputs=[intro, status, part, go, examples, source],
+                api_visibility="private")
+    go.click(run_review, inputs=[part, lang], outputs=[status, result], api_name="run_review")
+    part.submit(run_review, inputs=[part, lang], outputs=[status, result], api_visibility="private")
 
 if __name__ == "__main__":
     demo.launch()

@@ -1,0 +1,81 @@
+{
+ "note": "SHA-256 (first 16 hex) of RegNav's English dry-run outputs (offline: eCFR snapshot, no Tavily), recorded from commit d615a18, before Korean support was added. scripts/test_dryrun.py checks that English output (lang left at its default) is byte-identical to this. If an intended change alters English output, regenerate with `scripts/test_dryrun.py --update-english-baseline` and say why in the devlog.",
+ "commit": "d615a18",
+ "parts": {
+  "LED rear lamp module, replacement tail lamp with stop and turn signal functions": {
+   "markdown": "03cd4189ff99c6c5",
+   "json": "1570e6a5e87a19ec",
+   "render": "e20bec00b150d877"
+  },
+  "Aftermarket brake pad set for passenger car disc brakes": {
+   "markdown": "96efe23af7bb28a1",
+   "json": "35296aa17df9276b",
+   "render": "ddecf0ebb31cdb15"
+  },
+  "Replacement alloy wheel 18 inch for passenger cars": {
+   "markdown": "fa66650fafdb7d76",
+   "json": "55f5c027025cd924",
+   "render": "d9b60f4a5e983c6b"
+  },
+  "Child restraint system, i-Size booster seat with ISOFIX": {
+   "markdown": "a30f647ca1df882b",
+   "json": "c2307c22a1f8b12c",
+   "render": "21711c2249fea8da"
+  },
+  "Tyre pressure monitoring sensor, aftermarket TPMS kit": {
+   "markdown": "c295aada9ecc5e75",
+   "json": "93be836cabca0548",
+   "render": "eb7fffd12e125fa7"
+  },
+  "Laminated safety glass windscreen, replacement for passenger cars": {
+   "markdown": "a77727710ed80e60",
+   "json": "110f223ac055c875",
+   "render": "389936105c6a4a9a"
+  },
+  "Seat belt assembly with retractor for front seats of passenger cars": {
+   "markdown": "183053b32d708d0f",
+   "json": "b28d70dee16adfa3",
+   "render": "078026f79f58bd75"
+  },
+  "Pneumatic radial tyre for passenger cars, size 205/55 R16": {
+   "markdown": "26fa08f719df6d8b",
+   "json": "71473d8c9d1245bd",
+   "render": "56304cf90556e0c8"
+  },
+  "Exterior rear-view mirror, replacement for passenger cars": {
+   "markdown": "58aae3a6f81d4b67",
+   "json": "5bc1578c146d2d6b",
+   "render": "95e6394f680ba6d3"
+  },
+  "Replacement exhaust silencer (muffler) for passenger cars": {
+   "markdown": "fcadcb683f8c2d22",
+   "json": "55ef075e590c11ff",
+   "render": "a6d13110b962f899"
+  },
+  "Light-signalling rear combination lamp for passenger cars": {
+   "markdown": "d9c4f79982669627",
+   "json": "f98f2b38260c9a06",
+   "render": "16d32c229584c55a"
+  },
+  "Replacement pneumatic tyre for passenger cars": {
+   "markdown": "7707b645741d31f6",
+   "json": "7fdae57f783b7b65",
+   "render": "50e72416e114ce39"
+  },
+  "Steering column replacement part": {
+   "markdown": "a929b94c93c9a376",
+   "json": "4557b10c539e2c41",
+   "render": "4c8803b1d6899037"
+  },
+  "Horn for passenger cars, 12 V electric disc horn": {
+   "markdown": "ed66826fc146e139",
+   "json": "7c29190f3b2b9776",
+   "render": "f9658ad6792818e3"
+  },
+  "EV traction battery pack, high voltage REESS": {
+   "markdown": "410daea42386ee4c",
+   "json": "afc18265110f6d7b",
+   "render": "e3a9179ff5ec1f98"
+  }
+ }
+}

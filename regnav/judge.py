@@ -12,6 +12,7 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Literal
 
+from regnav.i18n import norm, tr
 from regnav.text import terms
 
 SYSTEM = """You are a regulatory applicability reviewer for automotive parts.
@@ -22,6 +23,11 @@ regulation plausibly applies to certifying or approving that part. Answer ONLY J
 Rules: "yes" only when the scope names the part class or its function; "no" when the scope is
 clearly about a different component or vehicle system; "unclear" when the scope is generic.
 Confidence must reflect how directly the scope wording matches the part. Never invent clause numbers."""
+# The one extra instruction line when the user chose Korean output (lang="ko").
+KO_LINE = ('Write the "why" text in Korean (한국어); keep the JSON keys and the "applies" and '
+           '"review_priority" values in English, and quote scope wording in its original language.')
+# Rationale prefixes of verdicts that were never actually judged (either language).
+UNJUDGED = ("[not judged", "[judge error", "[미판정", "[판정 오류")
 
 APPLIES = ("yes", "no", "unclear")
 PRIORITY = ("must", "check", "reference")
@@ -71,10 +77,21 @@ def _extract_json(text: str) -> dict:
     raise ValueError("no JSON object in reply")
 
 
-def _ask(client, user: str) -> dict:
+def system_prompt(lang: str = "en") -> str:
+    return SYSTEM + ("\n" + KO_LINE if norm(lang) == "ko" else "")
+
+
+def user_prompt(part: str, regulation: str, title: str, url: str, scope: str, query: str | None = None) -> str:
+    """The judge's user message. A Korean description goes in as written (Nemotron reads Korean),
+    followed by the English search terms RegNav derived from it, when they differ."""
+    hint = f"\nPART (English terms from RegNav's Korean glossary): {query}" if query and query != part else ""
+    return f"PART: {part}{hint}\n\nREGULATION: {regulation} - {title}\nURL: {url}\n\nSCOPE EXCERPT:\n{scope[:2500]}"
+
+
+def _ask(client, user: str, system: str = SYSTEM) -> dict:
     """Call Nemotron with JSON mode; fall back to plain text + extraction if the model rejects it."""
     model = os.environ.get("REGNAV_MODEL", MODEL)
-    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+    messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     try:
         r = client.chat.completions.create(model=model, temperature=0.1, max_tokens=MAX_TOKENS,
                                            response_format={"type": "json_object"}, messages=messages)
@@ -85,21 +102,29 @@ def _ask(client, user: str) -> dict:
     return _extract_json(r.choices[0].message.content or "")
 
 
-def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run: bool = False, budget=None) -> Verdict:
+def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run: bool = False, budget=None,
+          lang: str = "en", query: str | None = None) -> Verdict:
+    """``part`` is the description as the user wrote it; ``query`` is its English search text
+    (``regnav.ko.to_english``; differs from ``part`` only for Korean input). The dry-run
+    placeholder scores the English terms; the live judge reads the original plus the English
+    terms. ``lang`` picks the language of RegNav's own rationale strings and, live, asks the
+    judge for a Korean "why" (one extra system line; same max_tokens and budget caps)."""
     if dry_run:
-        return _dry(part, regulation, title, url, scope)
-    est_tokens = (len(SYSTEM) + len(part) + len(title) + min(len(scope), 2500)) // 4 + 600
+        return _dry(query or part, regulation, title, url, scope, lang)
+    system = system_prompt(lang)
+    user = user_prompt(part, regulation, title, url, scope, query)
+    hint = len(user) - len(user_prompt(part, regulation, title, url, scope))
+    hangul = sum(1 for ch in part if "가" <= ch <= "힣")  # ~1 token per Hangul syllable, not 1/4
+    est_tokens = (len(system) + len(part) + hint + len(title) + min(len(scope), 2500)) // 4 + 600 + hangul
     if budget is not None and not budget.allow(est_tokens):
         # Not judged: never present a keyword guess as a verdict.
-        return Verdict(regulation, title, url, "unclear", 0.0,
-                       "[not judged: per-review or daily call cap reached; candidate listed for manual review]",
-                       [], "reference")
+        return Verdict(regulation, title, url, "unclear", 0.0, tr(lang, "why_cap"), [], "reference")
     try:
         client = _client()
-        user = f"PART: {part}\n\nREGULATION: {regulation} - {title}\nURL: {url}\n\nSCOPE EXCERPT:\n{scope[:2500]}"
-        data = _ask(client, user)
+        data = _ask(client, user, system)
     except Exception as e:  # keep the report usable when one call fails
-        return Verdict(regulation, title, url, "unclear", 0.0, f"[judge error] {type(e).__name__}: {e}"[:200], [], "check")
+        return Verdict(regulation, title, url, "unclear", 0.0,
+                       tr(lang, "why_error", err=f"{type(e).__name__}: {e}")[:200], [], "check")
     applies = data.get("applies", "unclear")
     prio = data.get("review_priority", "check")
     try:
@@ -112,7 +137,7 @@ def judge(part: str, regulation: str, title: str, url: str, scope: str, dry_run:
                    prio if prio in PRIORITY else "check")
 
 
-def _dry(part, regulation, title, url, scope) -> Verdict:
+def _dry(part, regulation, title, url, scope, lang="en") -> Verdict:
     """Placeholder: title hits count double, scope hits single (a leading "[source tag]"
     line is citation, not scope wording, so it is not scored)."""
     words = terms(part)
@@ -125,4 +150,4 @@ def _dry(part, regulation, title, url, scope) -> Verdict:
     applies = "yes" if title_hits >= 1 and score >= 2 else "unclear" if score >= 1 else "no"
     prio = "must" if conf >= 0.8 else "check" if conf >= 0.5 else "reference"
     return Verdict(regulation, title, url, applies, round(conf, 2),
-                   f"[dry-run] {title_hits} title / {scope_hits} scope term hits; live mode asks Nemotron", [], prio)
+                   tr(lang, "why_dry", t=title_hits, s=scope_hits), [], prio)

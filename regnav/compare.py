@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from regnav import i18n, ko
 from regnav.sources import kmvss, unece
 
 # topic key -> (UN Regulations, FMVSS standards) covering the same subject
@@ -66,7 +67,7 @@ def un_url(code: str) -> str:
 def comparison(part: str, verdicts=()) -> list[Row]:
     judged = {v.regulation: v.review_priority for v in verdicts}
     rows = []
-    for topic, _ in kmvss.search(part):
+    for topic, _ in kmvss.search(ko.to_english(part)):  # Korean text via its English glossary terms
         un_codes, fm_codes = EQUIVALENTS.get(topic.key, ((), ()))
         rows.append(Row(
             topic=topic.title,
@@ -77,16 +78,20 @@ def comparison(part: str, verdicts=()) -> list[Row]:
     return rows
 
 
-def markdown(rows: list[Row]) -> list[str]:
+def markdown(rows: list[Row], lang: str = "en") -> list[str]:
+    """The comparison table; headings and the judged-priority tags follow ``lang``
+    ("ko": 필수 검토/확인 필요/참고), regulation codes stay as they are."""
     if not rows:
         return []
+    korean = i18n.norm(lang) == "ko"
+
+    def tag(prio: str) -> str:
+        return i18n.priority("ko", prio) if korean else prio
 
     def cells(items: list[Cell]) -> str:
-        return "<br>".join(f"[{c.code}]({c.url})" + (f" ({c.judged})" if c.judged else "") for c in items) or "-"
+        return "<br>".join(f"[{c.code}]({c.url})" + (f" ({tag(c.judged)})" if c.judged else "") for c in items) or "-"
 
-    lines = ["## Comparison: FMVSS / UN R / KMVSS", "",
-             "_Same subject in three regimes (curated equivalence, not an applicability verdict); "
-             "(must/check/reference) marks codes judged above._", "",
-             "| Topic | FMVSS (US) | UN R (1958 Agreement) | KMVSS (Korea) |", "|---|---|---|---|"]
+    lines = ["## " + i18n.tr(lang, "cmp_heading"), "", i18n.tr(lang, "cmp_note"), "",
+             i18n.tr(lang, "cmp_header"), "|---|---|---|---|"]
     lines += [f"| {r.topic} | {cells(r.fmvss)} | {cells(r.unece)} | {cells(r.kmvss)} |" for r in rows]
     return lines + [""]
