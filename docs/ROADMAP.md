@@ -27,6 +27,7 @@ and the backlog when work lands. Dates are KST.
 - In the app, live eCFR is still preferred; if it is unreachable the review falls back to the snapshot and the report carries a note saying so.
 - UN Regulation Scope text is read first from the committed `data/unece_scopes.json` (EU Official Journal copies via CELLAR, built by `scripts/make_unece_scopes.py`, dated in the file). Tavily `un_scope` is asked live only for UN candidates missing from that snapshot, which today is none of the 40 catalogue entries; offline checks stub Tavily.
 - Baseline on the snapshot (2026-10-03): candidate recall 25/25 (100%), must-review recall 14/25 (56%); held-out 10/10 and 5/10.
+- **Korean support (2026-10-03, owner request "한글 호환될 수 있게 해줘"):** Korean or mixed part descriptions are turned into English search terms by the offline glossary `regnav/ko.py` (714 terms + 36 filler words, longest match first, particles and optional spaces handled; no API call) before retrieval; the report keeps the original text and the live judge reads it plus the English terms. Report language is a separate choice (demo English / 한국어 switch, API/CLI `lang`, English default); in Korean mode the live judge gets one extra system line asking for a Korean "why" (same max_tokens and caps). Accuracy table, Korean column (the 10 parts as a reviewer writes them in Korean): **candidate recall 25/25 (100%), must-review recall 13/25 (52%)**, vs English 25/25 (100%), 14/25 (56%); before this change Korean input got 14/25 (56%) and 0/25. The 5 Korean demo examples give exactly the English must/confirm/reference sets. The one must-review gap (held-out seat belt: UN R16 is "Must review" in English, "Confirm" in Korean) comes from the dry-run placeholder judge counting the English plural "seats" as an extra scope term, not from retrieval; left alone rather than tuned. English output is byte-identical to before (15 parts: markdown, JSON, Gradio render; digests in `scripts/fixtures/english_outputs_baseline.json`, checked by `scripts/test_dryrun.py`).
 
 ## Hard rules
 
@@ -42,6 +43,8 @@ and the backlog when work lands. Dates are KST.
 | 09-28 | owner | Check the two Nebius $25 credit emails | done 09-29 (both applied: Token Factory balance $50) |
 | 10-01 | Claude | Hosting prep, `scripts/make_space.py` | done 09-26 |
 | 10-03 | Claude | Accuracy table to 10 parts incl. 5 held-out | done 09-26 (candidate recall 24/25, must-review 14/25, dry-run) |
+| 10-03 | Claude | Korean input + English/한국어 report switch (owner request) | done 10-03 (see Run environment facts) |
+| 10-04 | owner | Upload the rebuilt `space_upload/` folder to the HF Space so the demo gets the 한국어 switch | open |
 | 10-05 | Claude | Demo URL | done 09-27 (HF Space above) |
 | 10-06 | Claude | KMVSS article numbers | partial: 8/9 topics; automotive EMC article TODO; blocked without a 법제처 API key (owner signup) and general web access, both unavailable to the cloud routine (checked 10-03) |
 | 10-08 | owner | Review the expected regulations for 5 parts in `scripts/accuracy_table.py` (1 h) | open |

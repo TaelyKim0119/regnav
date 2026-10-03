@@ -35,6 +35,8 @@ part description
 * `regnav/sources/unece.py` - curated UN Regulation catalogue with EN/KO keywords
 * `regnav/judge.py` - one structured Nemotron call per (part, regulation)
 * `regnav/pipeline.py` - candidate selection and report assembly
+* `regnav/ko.py` - offline Korean -> English automotive-parts glossary for Korean input
+* `regnav/i18n.py` - English (default) and Korean report and UI strings
 * `app.py` - FastAPI web UI + JSON API; `cli.py` - terminal usage
 
 ## Run
@@ -61,6 +63,18 @@ JSON API:
 curl -X POST http://127.0.0.1:8000/api/review -H "Content-Type: application/json" \
      -d "{\"part\": \"Aftermarket brake pad set for passenger car disc brakes\"}"
 ```
+
+## Korean (한국어)
+
+Part descriptions can be written in Korean, English or both. Before retrieval, Korean terms
+are turned into English search terms by an offline glossary (`regnav/ko.py`, about 700
+automotive-part terms: no API call), so the offline demo works too. The report shows the
+original text, and the live judge reads it as written, with the English terms as a hint.
+Words the glossary does not know are listed in a note. The report language is a separate
+choice: the demo's English / 한국어 switch, `"lang": "ko"` in the JSON API, or
+`python cli.py "<part>" --lang=ko`. In Korean mode RegNav's labels and notes are Korean and
+the live judge writes its rationale in Korean; regulation names, numbers and quoted scope
+text stay in their original language. English is the default everywhere.
 
 ## Deploy (Docker / Hugging Face Spaces)
 
