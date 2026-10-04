@@ -81,9 +81,21 @@ TEXT = {
         "status_offline": ("**Offline demo mode**: keyword placeholder verdicts (no model calls). "
                            "The live judge runs NVIDIA Nemotron on Nebius Token Factory."),
         "status_calls": "Today's model calls: {calls} of {max_day} (public demo cap, {max_review} per review)",
+        "how_heading": "How it works",
+        "how_body": (
+            "1. Type or paste a part description below (English, Korean or both), or pick an example.\n"
+            "2. RegNav retrieves candidate standards from their official text: US FMVSS live from eCFR, "
+            "UN Regulations from the EU Official Journal copy (the authentic text is the UNECE original), "
+            "Korean KMVSS from the curated catalogue.\n"
+            "3. NVIDIA Nemotron on Nebius Token Factory judges each candidate against its scope text "
+            "(offline demo mode uses keyword placeholder verdicts instead, with the same report shape).\n"
+            "4. You get a prioritised, cited list - **Must review / Confirm / Reference only** - each with "
+            "a confidence score, the reasoning, and a link to the official text. When the same part topic "
+            "exists in more than one regime, a comparison table follows the verdicts."),
         "part_label": "Part description",
         "part_placeholder": "e.g. LED rear lamp module, replacement tail lamp with stop and turn signal functions",
         "button": "Review",
+        "button_loading": "Reviewing...",
         "examples": "Examples",
         "empty": "Describe a part, for example one of the examples below.",
         "table_header": "| Regulation | Verdict | Why (from the scope text) |",
@@ -134,9 +146,20 @@ TEXT = {
         "status_offline": ("**오프라인 데모 모드**: 키워드 기반 자리표시 판정입니다(모델 호출 없음). "
                            "라이브 모드에서는 Nebius Token Factory의 NVIDIA Nemotron이 판정합니다."),
         "status_calls": "오늘 모델 호출: {calls} / {max_day}회 (공개 데모 한도, 검토당 {max_review}회)",
+        "how_heading": "사용 방법",
+        "how_body": (
+            "1. 아래에 부품 설명을 입력하거나 붙여넣으세요 (영어, 한글 또는 혼용 가능). 예시를 눌러도 됩니다.\n"
+            "2. RegNav가 공식 원문에서 후보 기준을 찾습니다: 미국 FMVSS는 eCFR에서 실시간으로, UN 규정은 EU 관보(OJ) "
+            "사본에서(정본은 UNECE 원문), 한국 KMVSS는 선별한 카탈로그에서 가져옵니다.\n"
+            "3. Nebius Token Factory의 NVIDIA Nemotron이 각 후보를 그 적용범위(Scope) 문안과 대조해 판정합니다 "
+            "(오프라인 데모 모드에서는 모델 호출 없이 키워드 기반 자리표시 판정을 같은 형식으로 보여줍니다).\n"
+            "4. **필수 검토 / 확인 필요 / 참고** 순으로 정리된, 출처가 달린 목록을 받습니다. 각 항목에는 신뢰도, "
+            "판정 근거, 공식 원문 링크가 붙습니다. 같은 부품 주제가 두 규제 체계 이상에 걸리면 판정 목록 뒤에 "
+            "비교표가 이어집니다."),
         "part_label": "부품 설명",
         "part_placeholder": "예: LED 리어램프 모듈, 제동등·방향지시등 기능을 갖춘 교체용 후미등",
         "button": "검토",
+        "button_loading": "검토 중...",
         "examples": "예시",
         "empty": "부품을 설명해 주세요. 아래 예시를 눌러도 됩니다.",
         "table_header": "| 규정 | 판정 | 근거 (적용범위 문안 기준) |",

@@ -138,16 +138,29 @@ def switch_language(lang: str):
             gr.Textbox(label=i18n.tr(lang, "part_label"), placeholder=i18n.tr(lang, "part_placeholder")),
             gr.Button(i18n.tr(lang, "button")),
             gr.Dataset(samples=[[e] for e in i18n.EXAMPLES[lang]], label=i18n.tr(lang, "examples")),
-            i18n.tr(lang, "source"))
+            i18n.tr(lang, "source"),
+            gr.Accordion(label=i18n.tr(lang, "how_heading")), i18n.tr(lang, "how_body"))
 
 
 def pick_example(index: int, lang: str) -> str:
     return i18n.EXAMPLES[i18n.norm(lang)][index]
 
 
+def start_review(lang: str):
+    """Button state while a review runs: disabled, relabelled so the wait is visible (not just
+    Gradio's generic pending overlay on the output panels)."""
+    return gr.Button(value=i18n.tr(i18n.norm(lang), "button_loading"), interactive=False)
+
+
+def end_review(lang: str):
+    return gr.Button(value=i18n.tr(i18n.norm(lang), "button"), interactive=True)
+
+
 with gr.Blocks(title="RegNav") as demo:
     lang = gr.Radio(LANGUAGES, value="en", label="Language / 언어", container=False)
     intro = gr.Markdown(i18n.tr("en", "intro"))
+    with gr.Accordion(i18n.tr("en", "how_heading"), open=False) as how:
+        how_body = gr.Markdown(i18n.tr("en", "how_body"))
     status = gr.Markdown(_status_line())
     with gr.Row():
         part = gr.Textbox(label=i18n.tr("en", "part_label"), lines=2, scale=5,
@@ -158,10 +171,14 @@ with gr.Blocks(title="RegNav") as demo:
     result = gr.Markdown()
     source = gr.Markdown(i18n.tr("en", "source"))
     examples.click(pick_example, inputs=[examples, lang], outputs=part, api_visibility="private")
-    lang.change(switch_language, inputs=lang, outputs=[intro, status, part, go, examples, source],
+    lang.change(switch_language, inputs=lang, outputs=[intro, status, part, go, examples, source, how, how_body],
                 api_visibility="private")
-    go.click(run_review, inputs=[part, lang], outputs=[status, result], api_name="run_review")
-    part.submit(run_review, inputs=[part, lang], outputs=[status, result], api_visibility="private")
+    go.click(start_review, inputs=lang, outputs=go, api_visibility="private") \
+      .then(run_review, inputs=[part, lang], outputs=[status, result], api_name="run_review") \
+      .then(end_review, inputs=lang, outputs=go, api_visibility="private")
+    part.submit(start_review, inputs=lang, outputs=go, api_visibility="private") \
+        .then(run_review, inputs=[part, lang], outputs=[status, result], api_visibility="private") \
+        .then(end_review, inputs=lang, outputs=go, api_visibility="private")
 
 if __name__ == "__main__":
     demo.launch()
