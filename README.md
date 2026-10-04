@@ -38,6 +38,7 @@ part description
 * `regnav/ko.py` - offline Korean -> English automotive-parts glossary for Korean input
 * `regnav/i18n.py` - English (default) and Korean report and UI strings
 * `regnav/ko_scopes.py` + `data/scopes_ko.json` - unofficial Korean reference translations of the Scope texts quoted in Korean reports
+* `regnav/clauses.py` + `data/clause_compare/` + `data/clause_texts/` - clause-level comparison for curated part topics (first: rear signal lamps): for each requirement (number, colour, height, intensity, ...) the US FMVSS, UN R and Korean KMVSS clause, value, verbatim quote and the difference; every quote is re-checked verbatim against the stored official text by `scripts/test_dryrun.py`
 * `app.py` - FastAPI web UI + JSON API; `cli.py` - terminal usage
 
 ## Run

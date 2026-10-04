@@ -418,6 +418,42 @@ def check_comparison_table():
     print(f"ok comparison: {len(rep.comparison)} topic row(s), UI table rendered")
 
 
+def check_clause_comparison():
+    """Clause-level comparison (regnav.clauses): every quote of every curated topic is verbatim in its stored source
+    text; the LED rear lamp example (English and Korean) gets the rear signal lamp topic in markdown, JSON and the
+    Gradio render; a part without a topic gets no new key; a tampered quote is caught."""
+    import copy
+    from regnav import clauses
+    tops = clauses.topics()
+    assert tops, "no clause topics"
+    for t in tops:
+        assert clauses.problems(t) == [], clauses.problems(t)[:3]
+        for fn in t["functions"]:
+            for row in fn["rows"]:
+                assert all(row[k] for k in ("us", "un", "kr")), (t["id"], fn["id"], row["item"])
+    led_en = "LED rear lamp module, replacement tail lamp with stop and turn signal functions"
+    led_ko = "LED 리어램프 모듈, 제동등·방향지시등 기능을 갖춘 교체용 후미등"
+    en = pipeline.review(led_en, dry_run=True)
+    ko_rep = pipeline.review(led_ko, dry_run=True, lang="ko")
+    assert en.clause_topics == ["rear_signal_lamps"] == ko_rep.clause_topics, (en.clause_topics, ko_rep.clause_topics)
+    assert "## Clause comparison: Rear signal lamps" in en.markdown() and "## 조문 비교: 후방 신호등" in ko_rep.markdown()
+    assert en.to_dict()["clause_compare"][0]["id"] == "rear_signal_lamps"
+    brake = pipeline.review("Aftermarket brake pad set for passenger car disc brakes", dry_run=True)
+    assert brake.clause_topics == [] and "clause_compare" not in brake.to_dict()
+    space = _space_app()
+    if space:
+        assert "<summary>Original text</summary>" in space.render(en) and "<summary>원문</summary>" in space.render(ko_rep)
+    bad = copy.deepcopy(tops[0])
+    cell = bad["functions"][0]["rows"][1]["us"][0]
+    cell["quote"] = cell["quote"] + " and blue"
+    assert clauses.problems(bad), "a tampered quote must be caught"
+    n_cells = sum(len(r[k]) for t in tops for f in t["functions"] for r in f["rows"] for k in ("us", "un", "kr"))
+    n_quotes = sum(1 for t in tops for f in t["functions"] for r in f["rows"] for k in ("us", "un", "kr")
+                   for c in r[k] if c.get("quote"))
+    print(f"ok clause comparison: {len(tops)} topic(s), {n_cells} cells, {n_quotes} quotes verbatim in the stored "
+          f"official texts; LED example (EN + KO) shows it, brake pads do not; tampered quote caught")
+
+
 ENGLISH_BASELINE = ROOT / "scripts" / "fixtures" / "english_outputs_baseline.json"
 
 
@@ -1026,7 +1062,8 @@ def check_scope_translation_data():
         assert md.count("적용 범위 (참고 번역, 비공식: 법적 효력은 원문):") == len(rep.scope_quotes), part
         assert "번역본이 없어" not in md and "버전이 달라" not in md, part
         if space:
-            assert space.render(rep).count("<details>") == len(rep.scope_quotes), part
+            toggle = "<details><summary>" + i18n.tr("ko", "ui_scope_toggle") + "</summary>"
+            assert space.render(rep).count(toggle) == len(rep.scope_quotes), part  # clause quotes have their own
     assert {"UN R90", "FMVSS 135"} <= quoted and any(i.endswith("a") for i in quoted), sorted(quoted)
     english = pipeline.review(parts[0], dry_run=True)
     assert english.scope_quotes == {} and "적용 범위" not in english.markdown()
@@ -1059,6 +1096,7 @@ if __name__ == "__main__":
     check_unece_oj_snapshot()
     check_uncatalogued_un_candidate()
     check_comparison_table()
+    check_clause_comparison()
     check_english_unchanged()
     check_korean_input()
     check_korean_judge_and_caps()

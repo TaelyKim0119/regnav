@@ -1,0 +1,1005 @@
+{
+ "id": "rear_signal_lamps",
+ "title_ko": "후방 신호등 (후미등·제동등·방향지시등)",
+ "title_en": "Rear signal lamps (tail, stop, rear turn signal)",
+ "trigger": {
+  "codes": [
+   "FMVSS 108",
+   "UN R148",
+   "UN R48"
+  ],
+  "en": [
+   "tail lamp",
+   "taillamp",
+   "tail light",
+   "rear lamp",
+   "stop lamp",
+   "brake light",
+   "turn signal",
+   "direction indicator",
+   "rear combination lamp"
+  ],
+  "ko": [
+   "후미등",
+   "제동등",
+   "브레이크등",
+   "방향지시등",
+   "리어램프",
+   "리어 램프",
+   "테일램프"
+  ]
+ },
+ "sources": {
+  "FMVSS 108": {
+   "label": "49 CFR 571.108 (eCFR, 2026-10-01)",
+   "url": "https://www.ecfr.gov/current/title-49/section-571.108",
+   "tables_from": "https://www.govinfo.gov/content/pkg/CFR-2024-title49-vol6/pdf/CFR-2024-title49-vol6-sec571-108.pdf",
+   "text": "fmvss_108.txt"
+  },
+  "UN R48": {
+   "label": "UN R48, OJ L 347, 30.9.2021, p. 1 (Supplement 1 to the 07 series of amendments - Date of entry into force: 30 September 2021)",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1718",
+   "text": "un_r48.txt"
+  },
+  "UN R148": {
+   "label": "UN R148, OJ L 347, 30.9.2021, p. 123 (Supplement 3 to the original version of the Regulation — Date of entry into force: 30 September 2021)",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:42021X1719",
+   "text": "un_r148.txt"
+  },
+  "KMVSS": {
+   "label": "자동차 및 자동차부품의 성능과 기준에 관한 규칙 (2026-07-10 (시행; 국토교통부령 제1602호, 2026-07-10 일부개정). 별표 6의14·6의15·6의16·6의17은 2026-06-05 개정(국토교통부령 제1593호))",
+   "url": "https://www.law.go.kr/법령/자동차및자동차부품의성능과기준에관한규칙",
+   "text": "kmvss_lamps.txt"
+  }
+ },
+ "note_ko": "조문과 원문 인용은 공식 원문에서 가져와 글자 그대로인지 프로그램으로 확인했습니다. 수치 요약·차이 설명은 검토 보조용이며 법률 자문이 아닙니다. 미국 광도 표는 원문에서 그림으로만 제공되어 2024년 연간판 표를 읽어 옮겼습니다.",
+ "note_en": "Clauses and quotes come from the official texts and are checked verbatim by the program. Value summaries and difference notes are review aids, not legal advice. The US photometry tables exist only as images; their values were read from the 2024 annual CFR edition.",
+ "functions": [
+  {
+   "id": "rear_position_lamp",
+   "title_ko": "후미등 (후방 위치등)",
+   "title_en": "Tail lamp (rear position lamp)",
+   "rows": [
+    {
+     "item": "number",
+     "label_ko": "개수",
+     "label_en": "Number",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.2.1",
+       "quote": "Taillamps 2 Red",
+       "value_en": "2",
+       "value_ko": "2개"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.2",
+       "quote": "Two.",
+       "value_en": "Two rear position lamps (a pair: one left, one right, cf. the definition of 'pair' in R48 2.4.10)",
+       "value_ko": "후미등 2개(좌/우 한 쌍; R48 2.4.10 'pair' 정의 참조)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제42조제1호",
+       "quote": "자동차의 뒷면에는 다음 각 호의 기준에 적합한 후미등을 설치하여야 한다. ... 1. 좌ㆍ우에 각각 1개를 설치할 것. 다만, 다음 각 목의 자동차에는 다음 각 목의 구분에 따른 기준에 따라 후미등을 설치할 수 있다.",
+       "value_en": "One tail lamp on each side (left/right) of the rear; passenger cars are not among the categories allowed extra tail lamps.",
+       "value_ko": "자동차 뒷면 좌·우에 각각 1개의 후미등(승용자동차는 추가 설치 예외 대상 아님)."
+      }
+     ],
+     "diff_ko": "같음: 좌우 1개씩 2개",
+     "diff_en": "Same: two (one each side)"
+    },
+    {
+     "item": "colour",
+     "label_ko": "색",
+     "label_en": "Colour",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.2.2",
+       "quote": "Taillamps 2 Red",
+       "value_en": "red",
+       "value_ko": "적색"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.2.5",
+       "quote": "The colour of light emitted shall be red. This requirement shall also apply within the range of variable luminous intensity produced by: (a) Rear position lamps of category R2;",
+       "value_en": "Red, also over the whole intensity range of a variable (R2) lamp",
+       "value_ko": "적색; 가변 광도(R2)의 전체 광도 범위에서도 적색이어야 함"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제42조제2호",
+       "quote": "2. 등광색은 적색일 것",
+       "value_en": "Tail lamp colour: red.",
+       "value_ko": "후미등의 등광색은 적색."
+      }
+     ],
+     "diff_ko": "같음: 적색",
+     "diff_en": "Same: red"
+    },
+    {
+     "item": "position_width",
+     "label_ko": "가로 위치",
+     "label_en": "Lateral position",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.2.3",
+       "quote": "Taillamps 2 Red On the rear, at the same height, symmetrically about the vertical centerline, as far apart as practicable",
+       "value_en": "rear, same height, symmetric, as far apart as practicable",
+       "value_ko": "후면, 같은 높이, 좌우 대칭, 가능한 한 멀리 떨어지게"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.4.1",
+       "quote": "In width: that point on the apparent surface in the direction of the reference axis which is farthest from the vehicle's median longitudinal plane shall not be more than 400 mm from the extreme outer edge of the vehicle. This condition shall not apply to the optional rear lamps.",
+       "value_en": "Outermost point of the apparent surface at most 400 mm from the vehicle's extreme outer edge (not applied to optional lamps)",
+       "value_ko": "겉보기 면(apparent surface)에서 중심 종단면으로부터 가장 먼 점이 차량 최외측 가장자리에서 400 mm 이내 (선택 램프는 제외)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호가목1)가)",
+       "quote": "후미등의 발광면 외측 끝은 자동차 최외측으로부터 400밀리미터 이하일 것. 다만, 추가로 부착되는 경우는 제외한다.",
+       "value_en": "Outer edge of the illuminating surface within 400 mm of the vehicle's outermost edge (additional lamps excepted).",
+       "value_ko": "후미등 발광면 외측 끝은 차량 최외측에서 400mm 이내(추가 부착 후미등 제외)."
+      }
+     ],
+     "diff_ko": "UN·한국은 '차량 바깥 끝에서 400 mm 이내'라는 수치 기준이 있고, 미국은 '가능한 한 멀리'만 규정",
+     "diff_en": "UN and Korea: outer edge within 400 mm of the vehicle edge; US: only 'as far apart as practicable'"
+    },
+    {
+     "item": "position_height",
+     "label_ko": "설치 높이",
+     "label_en": "Mounting height",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.2.4",
+       "quote": "as far apart as practicable Not less than 15 inches, nor more than 72 inches Steady burning. Must be activated when the headlamps are activated",
+       "value_en": "15-72 in (381-1829 mm) above ground",
+       "value_ko": "지상 15~72인치(381~1,829 mm)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.4.2",
+       "quote": "In height: above the ground, not less than 350 mm nor more than 1 500 mm (2 100 mm if the shape of the bodywork makes it impossible to keep within 1 500 mm and if the optional lamps are not installed).",
+       "value_en": "350 mm minimum, 1 500 mm maximum above ground (up to 2 100 mm if bodywork shape makes 1 500 mm impossible and no optional lamps are fitted)",
+       "value_ko": "지상 높이 최소 350 mm, 최대 1 500 mm (차체 형상상 불가능하고 선택 램프가 없으면 2 100 mm까지)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호가목2)가)",
+       "quote": "후미등의 발광면은 공차상태에서 지상 350밀리미터 이상 1,500밀리미터 이하일 것. 다만, 차체구조상 불가능한 경우에는 2,100밀리미터 이하에 설치할 수 있다.",
+       "value_en": "Illuminating surface 350-1,500 mm above ground in the unladen condition (up to 2,100 mm if the body structure makes this impossible).",
+       "value_ko": "발광면 높이: 공차상태 지상 350~1,500mm(차체구조상 불가능하면 2,100mm 이하)."
+      }
+     ],
+     "diff_ko": "미국 381~1,829 mm vs UN·한국 350~1,500 mm(차체상 불가 시 2,100 mm): 미국 상한이 더 높음",
+     "diff_en": "US 381-1,829 mm vs UN/Korea 350-1,500 mm (2,100 mm if the body prevents it): the US upper limit is higher"
+    },
+    {
+     "item": "geometric_visibility",
+     "label_ko": "관측 각도",
+     "label_en": "Visibility",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S6.4.3",
+       "quote": "S6.4.3 Visibility options. A manufacturer must certify compliance of each lamp function to one of the following visibility requirement options",
+       "value_en": "lens-area option (1250 sq mm over the Table V-b pattern) or luminous-intensity option (Table V-c)",
+       "value_ko": "발광면적 옵션(표 V-b 범위에서 1,250 mm² 이상) 또는 광도 옵션(표 V-c) 중 택일"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.5.1",
+       "quote": "Horizontal angle: 45° inwards and 80° outwards. However, where a lamp is mounted below 750 mm (measured according to the provisions of paragraph 5.8.1. above), the inward angle of 45° may be reduced to 20° under the H plane.",
+       "value_en": "Horizontal: 45 deg inwards and 80 deg outwards (inward angle may be 20 deg under the H plane if mounted below 750 mm)",
+       "value_ko": "수평각: 안쪽 45°, 바깥쪽 80° (750 mm 미만 장착 시 H 평면 아래의 안쪽 각도는 20°로 감축 가능)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호나목1)",
+       "quote": "후미등의 발광면은 내측 45도 외측 80도 이하 어느 범위에서도 관측될 것. 다만, 후미등의 기준축이 지상에서 750밀리미터 미만인 경우에는 발광면은 수평면 아래 내측 20도 이하 어느 범위에서도 관측될 수 있어야 한다.",
+       "value_en": "Horizontal: visible within 45 deg inboard and 80 deg outboard (if reference axis < 750 mm above ground, also visible 20 deg below the horizontal plane inboard).",
+       "value_ko": "수평각: 내측 45도, 외측 80도 이하에서 관측(기준축이 지상 750mm 미만이면 수평면 아래 내측 20도 이하에서도 관측)."
+      }
+     ],
+     "diff_ko": "UN·한국은 각도(안쪽 45°·바깥 80°, 상하 15°)로, 미국은 발광면적 또는 광도 옵션 중 택일로 규정",
+     "diff_en": "UN/Korea: angles (45 deg in, 80 deg out, 15 deg up/down); US: a lens-area or an intensity option"
+    },
+    {
+     "item": "electrical_connection",
+     "label_ko": "점등 조건",
+     "label_en": "Activation",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.2.5",
+       "quote": "Steady burning. Must be activated when the headlamps are activated in a steady burning state or the parking lamps on passenger cars and MPVs, trucks, and buses less than 80 inches in overall width are activated.",
+       "value_en": "steady; on with headlamps or parking lamps",
+       "value_ko": "상시 점등; 전조등 또는 주차등과 함께 켜짐"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.7",
+       "quote": "In accordance with paragraph 5.11.",
+       "value_en": "Rear position lamps are wired according to 5.11 (switched ON/OFF together with the front position lamps etc.)",
+       "value_ko": "후미등은 5.11에 따라 결선(전방 위치등 등과 동시에 점등/소등)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호라목1)",
+       "quote": "후미등ㆍ끝단표시등ㆍ옆면표시등ㆍ번호등과 동시에 점등 및 소등되는 구조일 것",
+       "value_en": "The tail lamp must switch on and off together with the end-outline, side-marker and number-plate lamps.",
+       "value_ko": "후미등은 끝단표시등·옆면표시등·번호등과 동시에 점등·소등되는 구조."
+      }
+     ],
+     "diff_ko": "대체로 같음: 전조등·차폭등과 함께 켜짐(한국은 후미등·방향지시등 결합 시 방향지시 중 후미등 소등도 허용)",
+     "diff_en": "Broadly the same: on with the headlamps / position lamps (Korea also lets a combined tail/turn lamp switch the tail function off while indicating)"
+    },
+    {
+     "item": "tell_tale",
+     "label_ko": "작동 표시",
+     "label_en": "Tell-tale",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.2.8",
+       "quote": "S7.2.8 Indicator. No requirement.",
+       "value_en": "no requirement",
+       "value_ko": "요건 없음"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.8",
+       "quote": "Circuit-closed tell-tale mandatory. It shall be combined with that of the front position lamps. This requirement does not apply when light-signalling system operates according to paragraph 6.19.7.4. However, a tell-tale indicating failure is mandatory if required by the component regulation.",
+       "value_en": "Circuit-closed tell-tale mandatory, combined with the front position lamp tell-tale (not required if operated per 6.19.7.4); failure tell-tale mandatory if the device regulation requires it",
+       "value_ko": "회로 폐쇄형 표시등 의무, 전방 위치등 표시등과 통합(6.19.7.4 방식이면 불필요); 장치 규정이 요구하면 고장 표시등 의무"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호마목1)",
+       "quote": "차폭등과 결합되어 작동상태를 알려주는 비점멸식 표시장치 또는 계기판넬 조명으로 설치할 것. 이 경우, 주간주행등이 점등된 상태에서는 후미등 표시장치가 작동되지 않을 수 있다.",
+       "value_en": "Tell-tale: non-flashing indicator combined with the front position lamp, or instrument-panel lighting (may be inactive while DRL are on).",
+       "value_ko": "작동 표시: 차폭등과 결합된 비점멸식 표시장치 또는 계기판 조명(주간주행등 점등 중에는 후미등 표시장치 비작동 가능)."
+      }
+     ],
+     "diff_ko": "미국은 요건 없음, UN·한국은 작동 표시 필요(차폭등 표시와 겸용 가능)",
+     "diff_en": "US: none; UN/Korea: a tell-tale is required (may be shared with the front position lamps)"
+    },
+    {
+     "item": "photometry",
+     "label_ko": "광도",
+     "label_en": "Luminous intensity",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.2.13 + Table VIII",
+       "quote": "S7.2.13 Photometry. Each taillamp must be designed to conform to the photometry requirements of Table VIII, when tested according to the procedure of S14.2.1",
+       "value_en": "Table VIII: H-V min 2.0 cd (1 lighted section), max 18 cd (1 section); 20 / 25 cd for 2 / 3 sections; max applies at H or above",
+       "value_ko": "표 VIII: H-V 최소 2.0 cd(1구획), 최대 18 cd(1구획), 2·3구획은 최대 20·25 cd; 최대치는 수평선(H) 이상에서 적용",
+       "transcribed": "Table VIII values read from the table image (CFR 2024 edition)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.2.1",
+       "quote": "Table 4 Luminous intensities for rear position and rear end-outline marker lamps ... R1 or RM1 (steady) 4 17 8,5",
+       "value_en": "R1 (steady): minimum 4 cd on the axis (H-V); maximum 17 cd in any direction for a single lamp, 8,5 cd for a lamp marked 'D'",
+       "value_ko": "R1(정광도): 기준축(H-V) 최소 4 cd; 임의 방향 최대 17 cd(단일 램프), 'D' 표시 램프 8,5 cd"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제2호가목",
+       "quote": "고정광도│4 이상 │17 이하 │8.5 이하 ... 가변광도│4 이상 │42 이하 │21 이하",
+       "value_en": "Minimum 4 cd; maximum (single lamp / D-lamp): fixed intensity 17 / 8.5 cd, variable intensity 42 / 21 cd. Table rows quoted as exported (cells separated by │).",
+       "value_ko": "최소 4cd; 최대(단일 등화/D-등화): 고정광도 17/8.5cd, 가변광도 42/21cd."
+      }
+     ],
+     "diff_ko": "최소: 미국 2.0 cd vs UN·한국 4 cd / 최대: 미국 18 cd vs UN·한국 17 cd → 미국 기준만 맞춘 2~4 cd 램프는 UN·한국 기준 미달",
+     "diff_en": "Minimum: US 2.0 cd vs UN/Korea 4 cd; maximum: US 18 cd vs UN/Korea 17 cd: a 2-4 cd lamp built to the US table fails UN/Korea"
+    },
+    {
+     "item": "apparent_surface",
+     "label_ko": "발광면",
+     "label_en": "Illuminating surface",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.2.6",
+       "quote": "S7.2.6 Effective projected luminous lens area. No requirement.",
+       "value_en": "no requirement",
+       "value_ko": "요건 없음"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.10.5",
+       "quote": "To be considered visible, the lamp shall provide an unobstructed view of the apparent surface of at least 12.5 square centimetres. The illuminating surface area of any retro-reflector that does not transmit light shall be excluded.",
+       "value_en": "Minimum visible apparent surface 12,5 cm2 (unnumbered closing sentence of 6.10.5, after 6.10.5.2)",
+       "value_ko": "겉보기 면이 가려지지 않고 보이는 면적이 최소 12.5 cm2 (6.10.5.2 뒤의 번호 없는 문장)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호나목3)다)",
+       "quote": "빛을 투과하지 않는 반사기의 조명면을 제외하고 후미등의 발광면은 12.5제곱센티미터 이상일 것",
+       "value_en": "Illuminating surface (excluding non-light-transmitting reflector area) >= 12.5 cm2 — stated as a condition of the reduced-angle option when side-marker lamps are fitted.",
+       "value_ko": "발광면(반사기 조명면 제외)은 12.5cm2 이상 — 승용자동차에 옆면표시등이 있어 완화 관측각도를 적용하는 경우의 조건으로 명시됨."
+      }
+     ],
+     "diff_ko": "미국은 요건 없음, UN·한국은 최소 12.5 cm²(관측 조건과 연계)",
+     "diff_en": "US: none; UN/Korea: at least 12.5 cm2 (tied to the visibility condition)"
+    },
+    {
+     "item": "markings",
+     "label_ko": "부품 표시",
+     "label_en": "Markings",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S6.5.1.2",
+       "quote": "Each original equipment or replacement lamp or reflective device specified in Table I, except for a headlamp, or an item of associated equipment specified in S9 may be marked with the symbol “DOT” which constitutes a certification that it conforms to the requirements of this standard.",
+       "value_en": "optional DOT mark = self-certification",
+       "value_ko": "‘DOT’ 표시 가능(제조사 자기인증의 표시)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "3.3.2",
+       "quote": "The approval marking shall consist of: 3.3.2.1. A circle surrounding the letter \"E\" followed by the distinguishing number of the country which has granted approval. 3.3.2.2. The approval number prescribed in paragraph 3.2.3.2.",
+       "value_en": "Approval marking = circled E + country number, then the approval number",
+       "value_ko": "승인 마크 = 원으로 둘러싼 E와 승인국 번호, 이어서 승인번호"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "",
+       "quote": "",
+       "value_en": "No part marking rule found",
+       "value_ko": "부품 표시 규정 없음(조사 범위)",
+       "none": true
+      }
+     ],
+     "diff_ko": "미국은 'DOT' 표시 선택(제조사 자기인증), UN은 E 승인 마크 필수, 한국 기준 본문에는 부품 표시 규정이 없음",
+     "diff_en": "US: optional 'DOT' (self-certification); UN: E approval mark required; Korea: no part marking rule found"
+    },
+    {
+     "item": "replacement_or_approval",
+     "label_ko": "교체품·인증",
+     "label_en": "Replacement / approval",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S6.7.1.1",
+       "quote": "S6.7.1.1 Each replacement lamp, reflective device, or item of associated equipment, including a combination lamp, must: (a) Be designed to conform to meet all requirements specified in this standard for that type of lamp",
+       "value_en": "a replacement (incl. combination) lamp must meet the standard for every function and include all functions of the lamp it replaces",
+       "value_ko": "교체용(복합 등화 포함)은 기능마다 이 기준을 충족하고, 대체하는 등화의 기능을 모두 갖춰야 함"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "3.2.2",
+       "quote": "When two or more lamps are part of the same unit of grouped, combined or reciprocally incorporated lamps, approval may be granted only if each of these lamps satisfy the provisions set out in this Regulation or in another Regulation.",
+       "value_en": "A combined unit is approved only if every function in it satisfies R148 (or another lamp Regulation)",
+       "value_ko": "결합 유닛은 그 안의 모든 기능이 R148(또는 다른 램프 규정)을 충족할 때에만 승인 가능"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제112조의4",
+       "quote": "자동차(초소형자동차는 제외한다)에 사용되는 전조등은 별표 6의3부터 별표 6의5까지의 광도기준 및 별표 6의22의 색도기준에 적합하여야 한다.",
+       "value_en": "The only lighting part with a stand-alone part standard (Chapter 3-2) is the headlamp; rear position, stop and turn-signal lamps are not named in Art. 112-4 (they are covered through the vehicle standards of Chapter 2).",
+       "value_ko": "제3장의2(부품의 안전기준)의 \"등화장치\"는 전조등만 규정한다. 후미등·제동등·방향지시등은 제112조의4에 열거되어 있지 않다(제2장 차량기준의 대상)."
+      }
+     ],
+     "diff_ko": "미국은 교체품 조항(S6.7)이 명시적, UN은 기능별 형식승인(결합 램프는 기능마다), 한국은 부품 안전기준의 '등화장치'에 전조등만 열거 → 후미등은 차량 기준(제42조)으로 판단하는 것으로 보임(실무 확인 필요)",
+     "diff_en": "US: an explicit replacement-equipment clause (S6.7); UN: type approval per function; Korea: the part safety standard lists only headlamps as lighting, so tail lamps fall under the vehicle rule (art. 42) - to confirm"
+    }
+   ]
+  },
+  {
+   "id": "stop_lamp",
+   "title_ko": "제동등",
+   "title_en": "Stop lamp",
+   "rows": [
+    {
+     "item": "number",
+     "label_ko": "개수",
+     "label_en": "Number",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.3.1",
+       "quote": "Stop Lamps 2 Red",
+       "value_en": "2",
+       "value_ko": "2개"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.7.2",
+       "quote": "Two S1 or S2 category devices and one S3 or S4 category device on all categories of vehicles.",
+       "value_en": "Two S1/S2 stop lamps (plus one S3/S4 centre high-mounted lamp)",
+       "value_ko": "S1/S2 제동등 2개(+ S3/S4 중앙 상단 제동등 1개)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제43조제1항제1호",
+       "quote": "자동차의 뒷면에는 다음 각 호의 기준에 적합한 제동등을 설치하여야 한다. ... 1. 좌ㆍ우에 각각 1개를 설치할 것. 다만, 다음 각 목의 자동차는 다음 각 목의 구분에 따른 기준에 따라 제동등을 설치할 수 있다. ... 가. 너비가 130센티미터 이하인 초소형자동차: 1개의 제동등 설치 가능 ... 나. 구난형 특수자동차: 좌ㆍ우에 각각 1개의 제동등 추가 설치 가능",
+       "value_en": "One stop lamp on each side of the rear (micro-vehicles may have one; towing-recovery vehicles may add a pair).",
+       "value_ko": "자동차 뒷면 좌·우에 각각 1개의 제동등(초소형자동차 1개, 구난형 특수자동차 추가 설치 예외)."
+      }
+     ],
+     "diff_ko": "같음: 좌우 2개(보조제동등은 별도 부품)",
+     "diff_en": "Same: two (the high-mounted stop lamp is a separate device)"
+    },
+    {
+     "item": "colour",
+     "label_ko": "색",
+     "label_en": "Colour",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.3.2",
+       "quote": "Stop Lamps 2 Red",
+       "value_en": "red",
+       "value_ko": "적색"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.5.4",
+       "quote": "The colour of the light emitted shall be red. ... These requirements shall also apply within the range of variable luminous intensity produced by stop lamps of categories S2 and S4.",
+       "value_en": "Red, also over the whole intensity range of a variable (S2) lamp",
+       "value_ko": "적색; 가변 광도(S2)의 전체 광도 범위에서도 적색이어야 함"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제43조제1항제2호",
+       "quote": "2. 등광색은 적색일 것",
+       "value_en": "Stop lamp colour: red.",
+       "value_ko": "제동등의 등광색은 적색."
+      }
+     ],
+     "diff_ko": "같음: 적색",
+     "diff_en": "Same: red"
+    },
+    {
+     "item": "position_width",
+     "label_ko": "가로 위치",
+     "label_en": "Lateral position",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.3.3",
+       "quote": "Stop Lamps 2 Red On the rear, at the same height, symmetrically about the vertical centerline, as far apart as practicable",
+       "value_en": "rear, same height, symmetric, as far apart as practicable",
+       "value_ko": "후면, 같은 높이, 좌우 대칭, 가능한 한 멀리 떨어지게"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.7.4.1",
+       "quote": "For M1 and N1 category vehicles: For S1 or S2 categories devices that point on the apparent surface in the direction of the reference axis which is farthest from the vehicle's median longitudinal plane shall not be more than 400 mm from the extreme outer edge of the vehicle ... inner edges of the apparent surfaces in the direction of the reference axes there is no special requirement.",
+       "value_en": "M1/N1: outermost point of the apparent surface at most 400 mm from the extreme outer edge; no special requirement for the distance between the inner edges",
+       "value_ko": "M1/N1: 겉보기 면의 가장 바깥 점이 차량 최외측 가장자리에서 400 mm 이내; 안쪽 가장자리 간 거리는 별도 요건 없음"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의15 제1호가목1)가)",
+       "quote": "승용자동차와 차량총중량 3.5톤 이하 화물자동차 및 특수자동차인 경우 제동등의 발광면 외측 끝은 자동차 최외측으로부터 400밀리미터 이하일 것",
+       "value_en": "Passenger cars: outer edge of the stop-lamp illuminating surface within 400 mm of the outermost edge.",
+       "value_ko": "승용자동차: 제동등 발광면 외측 끝은 최외측에서 400mm 이내."
+      }
+     ],
+     "diff_ko": "UN·한국은 바깥 끝에서 400 mm 이내, 미국은 '가능한 한 멀리'",
+     "diff_en": "UN/Korea: within 400 mm of the edge; US: as far apart as practicable"
+    },
+    {
+     "item": "position_height",
+     "label_ko": "설치 높이",
+     "label_en": "Mounting height",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.3.4",
+       "quote": "Not less than 15 inches, nor more than 72 inches Steady burning. Must be activated upon application of the service brakes.",
+       "value_en": "15-72 in (381-1829 mm) above ground",
+       "value_ko": "지상 15~72인치(381~1,829 mm)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.7.4.2.1",
+       "quote": "Above the ground, not less than 350 mm nor more than 1 500 mm (2 100 mm if the shape of the bodywork makes it impossible to keep within 1 500 mm and if the optional lamps are not installed).",
+       "value_en": "S1/S2: 350 mm minimum, 1 500 mm maximum above ground (up to 2 100 mm if bodywork shape makes 1 500 mm impossible and no optional lamps are fitted)",
+       "value_ko": "S1/S2: 지상 높이 최소 350 mm, 최대 1 500 mm (차체 형상상 불가능하고 선택 램프가 없으면 2 100 mm까지)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의15 제1호가목2)가)",
+       "quote": "제동등의 발광면은 공차상태에서 지상 350밀리미터 이상 1,500밀리미터 이하일 것. 다만, 차체구조상 불가능한 경우에는 2,100밀리미터 이하에 설치할 수 있다.",
+       "value_en": "Illuminating surface 350-1,500 mm above ground, unladen (up to 2,100 mm if impossible by body structure).",
+       "value_ko": "발광면 높이: 공차상태 지상 350~1,500mm(차체구조상 불가능하면 2,100mm 이하)."
+      }
+     ],
+     "diff_ko": "미국 381~1,829 mm vs UN·한국 350~1,500 mm(2,100 mm)",
+     "diff_en": "US 381-1,829 mm vs UN/Korea 350-1,500 mm (2,100 mm)"
+    },
+    {
+     "item": "geometric_visibility",
+     "label_ko": "관측 각도",
+     "label_en": "Visibility",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "",
+       "quote": "",
+       "value_en": "S6.4.3 lens-area or intensity option (as for the tail lamp)",
+       "value_ko": "S6.4.3 발광면적·광도 옵션(후미등과 같음)",
+       "none": true
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.7.5",
+       "quote": "Horizontal angle: For S1 or S2 categories devices: 45° to the left and to the right of the longitudinal axis of the vehicle. However, for the stop lamps of categories S1 and S2 mounted below 750 mm (measured according to the provisions of paragraph 5.8.1. above), the inward angle of 45° may be reduced to 20° under the H plane.",
+       "value_en": "S1/S2 horizontal: 45 deg to the left and to the right of the longitudinal axis (inward angle may be 20 deg under the H plane if mounted below 750 mm)",
+       "value_ko": "S1/S2 수평각: 차량 종방향 축 기준 좌·우 각 45° (750 mm 미만 장착 시 H 평면 아래 안쪽 각도는 20°로 감축 가능)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의15 제1호나목1)",
+       "quote": "제동등의 발광면은 좌측 45도ㆍ우측 45도 이하에서 관측 가능할 것. 다만, 지상에서 750밀리미터 미만에 설치된 경우에는 발광면은 수평면 아래 내측 20도 이하 어느 범위에서도 관측될 수 있어야 한다.",
+       "value_en": "Horizontal: 45 deg left and right (if mounted < 750 mm, also visible 20 deg below the horizontal plane inboard).",
+       "value_ko": "수평각: 좌·우 45도(지상 750mm 미만 설치 시 수평면 아래 내측 20도에서도 관측)."
+      }
+     ],
+     "diff_ko": "UN·한국은 좌우 45°·상하 15°, 미국은 옵션 방식",
+     "diff_en": "UN/Korea: 45 deg left/right, 15 deg up/down; US: option-based"
+    },
+    {
+     "item": "electrical_connection",
+     "label_ko": "점등 조건",
+     "label_en": "Activation",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.3.5",
+       "quote": "Steady burning. Must be activated upon application of the service brakes. When optically combined with a turn signal lamp, the circuit must be such that the stop signal cannot be activated if the turn signal lamp is flashing.",
+       "value_en": "steady; on with the service brake; if combined with a turn signal, the turn signal flashing overrides the stop signal",
+       "value_ko": "상시 점등; 주제동 시 켜짐; 방향지시등과 결합된 경우 방향지시등 점멸 중에는 제동 신호가 켜지지 않아야 함"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.7.7.1",
+       "quote": "All stop lamps shall be switched ON simultaneously when the braking system provides the relevant signal defined in UN Regulations Nos. 13 and 13-H.",
+       "value_en": "All stop lamps light simultaneously when the braking system provides the relevant signal defined in UN R13 / R13-H",
+       "value_ko": "제동 시스템이 UN R13/R13-H에 정의된 해당 신호를 제공할 때 모든 제동등이 동시에 점등"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제15조제9항",
+       "quote": "제동등은 다음 각 호의 경우에 점등되고, 제동력이 해제될 때까지 점등상태가 유지되어야 한다. 다만, 선택적 제동에 의한 경우에는 제동등이 점등되지 않아야 하며, 보조제동장치에 의한 제동의 경우에는 감속도에 따라 점등되거나 점등되지 않을 수 있다. ... 1. 운전자의 조작에 의하여 주제동장치가 작동된 경우 ... 2. 자동제어제동에 의하여 주제동장치가 작동된 경우.",
+       "value_en": "Lights when the service brake is applied by the driver (and on automatic braking) and stays on until braking force is released; not on selective braking (amended 5 Jun 2026).",
+       "value_ko": "운전자 조작에 의한 주제동장치 작동 시(및 자동제어제동 시) 점등, 제동력 해제 시까지 유지; 선택적 제동은 점등하지 않음(2026. 6. 5. 개정)."
+      }
+     ],
+     "diff_ko": "같음: 주제동 시 점등. 미국은 방향지시등과 결합 시 점멸 중 제동신호가 켜지지 않는 회로를 요구",
+     "diff_en": "Same: on with the service brake; the US adds a circuit rule when combined with a turn signal"
+    },
+    {
+     "item": "photometry",
+     "label_ko": "광도",
+     "label_en": "Luminous intensity",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.3.13.1 + Table IX",
+       "quote": "S7.3.13.1 Each stop lamp must be designed to conform to the photometry requirements of Table IX, when tested according to the procedure of S14.2.1",
+       "value_en": "Table IX: H-V min 80 cd (1 lighted section); max 300 / 360 / 420 cd for 1 / 2 / 3 sections",
+       "value_ko": "표 IX: H-V 최소 80 cd(1구획); 최대 300·360·420 cd(1·2·3구획)",
+       "transcribed": "Table IX values read from the table image (CFR 2024 edition)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.5.1",
+       "quote": "Table 7 Luminous intensities for stop lamps ... S1 (steady) 60 260 130",
+       "value_en": "S1 (steady): minimum 60 cd on the axis (H-V); maximum 260 cd in any direction for a single lamp, 130 cd for a lamp marked 'D'",
+       "value_ko": "S1(정광도): 기준축(H-V) 최소 60 cd; 임의 방향 최대 260 cd(단일 램프), 'D' 표시 램프 130 cd"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의15 제2호가목",
+       "quote": "고정광도│60 이상 │260 이하 │130 이하 ... 가변광도│60 이상 │730 이하 │365 이하",
+       "value_en": "Minimum 60 cd; maximum (single / D-lamp): fixed 260 / 130 cd, variable 730 / 365 cd. Rows quoted as exported (cells separated by │).",
+       "value_ko": "최소 60cd; 최대(단일/D-등화): 고정광도 260/130cd, 가변광도 730/365cd."
+      }
+     ],
+     "diff_ko": "최소: 미국 80 cd vs UN·한국 60 cd / 최대: 미국 300 cd vs UN·한국 260 cd → 270 cd 램프는 미국 합격·UN·한국 불합격, 70 cd 램프는 그 반대",
+     "diff_en": "Minimum: US 80 cd vs UN/Korea 60 cd; maximum: US 300 cd vs UN/Korea 260 cd: a 270 cd lamp passes the US and fails UN/Korea, a 70 cd lamp the reverse"
+    },
+    {
+     "item": "other_lamp_relations",
+     "label_ko": "후미등과의 관계",
+     "label_en": "Relation to the tail lamp",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.3.12.1 + Table IX",
+       "quote": "S7.3.12.1 When a taillamp is combined with a stop lamp, the luminous intensity of the stop lamp at each identified test point must not be less than the luminous intensity of the taillamp at that same test point times the multiplier shown for that test point in Table IX.",
+       "value_en": "combined with a taillamp: stop >= taillamp x 5 at H-V (x3 at most other points)",
+       "value_ko": "후미등과 결합 시 제동등 광도 ≥ 후미등 광도 × 5(H-V), 다른 측정점은 대부분 × 3",
+       "transcribed": "multipliers read from the Table IX image (CFR 2024 edition)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "4.8.11",
+       "quote": "If a rear position lamp and/or a rear end-outline marker lamp is reciprocally incorporated with a stop lamp ... the ratio between the luminous intensities actually measured of the two lamps ... should be at least 5: 1 in the field delimited by the straight horizontal lines passing through ±5° V and the straight vertical lines passing through ±10° H of the light distribution table.",
+       "value_en": "Position + stop lamp reciprocally incorporated: stop-to-position intensity ratio at least 5 : 1 within +-5 deg V and +-10 deg H",
+       "value_ko": "후미등과 제동등이 상호 내장된 경우 같은 영역(수직 ±5°, 수평 ±10°)에서 제동등 대 후미등 광도비는 최소 5:1"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의14 제1호마목2)가)",
+       "quote": "후미등이 제동등과 상호 결합된 경우. 다만, 다광원 배열의 일부인 경우는 제외한다.",
+       "value_en": "Tail/stop combination is contemplated; fault-detection condition applies.",
+       "value_ko": "후미등-제동등 결합 허용·고장감지 조건."
+      }
+     ],
+     "diff_ko": "미국·UN은 후미등과 합친 램프에서 제동등이 후미등의 5배 이상, 한국은 합친 경우 고장감지 시스템을 요구",
+     "diff_en": "US and UN: in a combined lamp the stop function must be at least 5x the tail function; Korea requires a failure-detection system for a combined tail/stop lamp"
+    }
+   ]
+  },
+  {
+   "id": "rear_direction_indicator",
+   "title_ko": "뒷면 방향지시등",
+   "title_en": "Rear turn signal",
+   "rows": [
+    {
+     "item": "number",
+     "label_ko": "개수",
+     "label_en": "Number",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.1.2.1",
+       "quote": "2 Amber or red Truck tractor exception, see S6.1.1.3 On the rear",
+       "value_en": "2",
+       "value_ko": "2개"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.5.3",
+       "quote": "Two rear direction-indicator lamps (category 2a or 2b); Two optional lamps (category 2a or 2b) on all vehicles in categories M2, M3, N2, N3.",
+       "value_en": "Arrangement A: two rear direction indicators (category 2a or 2b); two optional extra 2a/2b lamps only for M2, M3, N2, N3 (not M1)",
+       "value_ko": "배치 A: 후방 방향지시등 2개(2a 또는 2b); 선택 2a/2b 램프 2개 추가는 M2, M3, N2, N3에 한함(M1 해당 없음)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제44조제1호",
+       "quote": "1. 자동차 앞면ㆍ뒷면 및 옆면 좌ㆍ우에 각각 1개를 설치할 것. 다만, 승용자동차와 차량총중량 3.5톤 이하 화물자동차 및 특수자동차(구난형 특수자동차는 제외한다)를 제외한 자동차에는 2개의 뒷면 방향지시등을 추가로 설치할 수 있다.",
+       "value_en": "One rear turn signal on each side; passenger cars are not among those allowed two additional rear turn signals.",
+       "value_ko": "뒷면 좌·우에 각각 1개(승용자동차는 추가 2개 설치 예외 대상이 아님)."
+      }
+     ],
+     "diff_ko": "같음: 좌우 2개",
+     "diff_en": "Same: two"
+    },
+    {
+     "item": "colour",
+     "label_ko": "색",
+     "label_en": "Colour",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.1.2.2",
+       "quote": "2 Amber or red",
+       "value_en": "amber or red",
+       "value_ko": "황색 또는 적색"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.6.9",
+       "quote": "The colour of the light emitted shall be amber. This requirement shall also apply within the range of variable luminous intensity produced by rear direction indicator lamps of category 2b.",
+       "value_en": "Amber, also over the whole intensity range of a variable (2b) lamp",
+       "value_ko": "황색(amber); 가변 광도(2b)의 전체 광도 범위에서도 황색이어야 함"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제44조제2호",
+       "quote": "2. 등광색은 호박색일 것",
+       "value_en": "Turn-signal colour: amber (호박색).",
+       "value_ko": "방향지시등의 등광색은 호박색(amber)."
+      }
+     ],
+     "diff_ko": "미국만 적색 허용, UN·한국은 호박색만 → 미국형 적색 방향지시등은 UN·한국 차량에 사용 불가",
+     "diff_en": "Only the US allows red; UN/Korea require amber: a US red rear turn signal cannot be used on UN/Korean vehicles"
+    },
+    {
+     "item": "position_width",
+     "label_ko": "가로 위치",
+     "label_en": "Lateral position",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.1.2.3",
+       "quote": "2 Amber or red Truck tractor exception, see S6.1.1.3 On the rear, at the same height, symmetrically about the vertical centerline, as far apart as practicable",
+       "value_en": "rear, same height, symmetric, as far apart as practicable",
+       "value_ko": "후면, 같은 높이, 좌우 대칭, 가능한 한 멀리 떨어지게"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.5.4.1",
+       "quote": "In width: the edge of the apparent surface in the direction of the reference axis farthest from the median longitudinal plane of the vehicle shall not be more than 400 mm from the extreme outer edge of the vehicle. This condition shall not apply to the optional rear lamps.",
+       "value_en": "Outer edge of the apparent surface at most 400 mm from the vehicle's extreme outer edge (not applied to optional rear lamps)",
+       "value_ko": "겉보기 면의 가장 바깥 가장자리가 차량 최외측 가장자리에서 400 mm 이내 (선택 후방 램프는 제외)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의17 제1호나목1)가)",
+       "quote": "방향지시등의 발광면 외측 끝은 자동차 최외측으로부터 400밀리미터 이하일 것. 다만, 추가 설치한 뒷면방향지시등은 제외한다.",
+       "value_en": "Outer edge within 400 mm of the outermost edge (additional rear turn signals excepted).",
+       "value_ko": "발광면 외측 끝은 최외측에서 400mm 이내(추가 설치한 뒷면방향지시등 제외)."
+      }
+     ],
+     "diff_ko": "UN·한국은 바깥 끝에서 400 mm 이내 + 좌우 간격 600 mm 이상(승용차 면제 없음), 미국은 '가능한 한 멀리'",
+     "diff_en": "UN/Korea: within 400 mm of the edge and at least 600 mm apart (no passenger-car exemption); US: as far apart as practicable"
+    },
+    {
+     "item": "position_height",
+     "label_ko": "설치 높이",
+     "label_en": "Mounting height",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.1.2.4",
+       "quote": "Turn Signal Lamps 2 Amber At or near the front, at the same height, symmetrically about the vertical centerline, as far apart as practicable Not less than 15 inches, nor more than 83 inches",
+       "value_en": "15-83 in (381-2108 mm) above ground (one height row for front and rear)",
+       "value_ko": "지상 15~83인치(381~2,108 mm), 앞·뒤 공통 행"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.5.4.2.2",
+       "quote": "The height of the direction-indicator lamps of categories 1, 1a, 1b, 2a and 2b, measured in accordance with paragraph 5.8., shall not be less than 350 mm and not more than 1 500 mm.",
+       "value_en": "Categories 2a/2b: 350 mm minimum, 1 500 mm maximum above ground (measured per 5.8)",
+       "value_ko": "2a/2b 등급: 지상 높이 최소 350 mm, 최대 1 500 mm (5.8에 따라 측정)"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의17 제1호나목2)나)",
+       "quote": "앞면 및 뒷면방향지시등(카테고리-1ㆍ1aㆍ1bㆍ2aㆍ2b)의 발광면은 공차상태에서 지상 350밀리미터 이상 1,500밀리미터 이하일 것",
+       "value_en": "Rear turn-signal luminous surface 350-1,500 mm above ground (unladen).",
+       "value_ko": "뒷면방향지시등 발광면: 공차상태 지상 350~1,500mm."
+      }
+     ],
+     "diff_ko": "미국 381~2,108 mm vs UN·한국 350~1,500 mm",
+     "diff_en": "US 381-2,108 mm vs UN/Korea 350-1,500 mm"
+    },
+    {
+     "item": "electrical_connection",
+     "label_ko": "점멸",
+     "label_en": "Flashing",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "Table I-a / S7.1.2.5",
+       "quote": "Flash when the turn signal flasher is actuated by the turn signal operating unit.",
+       "value_en": "flashes with the turn signal flasher",
+       "value_ko": "방향지시 작동 시 점멸"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.5.9",
+       "quote": "The light shall be a flashing light flashing 90 ± 30 times per minute. ... Operation of the light-signal control shall be followed within not more than one second by the emission of light and within not more than one and one-half seconds by its first extinction.",
+       "value_en": "Flashing 90 +- 30 per minute; light within 1 s of operating the control and first extinction within 1,5 s",
+       "value_ko": "분당 90 ± 30회 점멸; 조작 후 1초 이내 점등, 1.5초 이내 최초 소등"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의17 제1호바목",
+       "quote": "방향지시등은 1분간 90±30회로 점멸하는 구조일 것 ... 방향지시기를 조작한 후 1초 이내에 점등되어야 하며, 1.5초 이내에 소등될 것 ... 하나의 방향지시등에서 합선 외의 고장이 발생된 경우 다른 방향지시등은 작동되는 구조이어야 하며 점멸횟수는 변경될 수 있다.",
+       "value_en": "Flash rate 90 +/- 30 per minute; lights within 1 s and goes out within 1.5 s of operating the switch; after a non-short-circuit failure of one lamp the others must keep working (rate may change).",
+       "value_ko": "점멸 90±30회/분; 조작 후 1초 이내 점등·1.5초 이내 소등; 한 등의 합선 외 고장 시 나머지는 계속 작동(점멸횟수 변경 가능)."
+      }
+     ],
+     "diff_ko": "UN·한국은 분당 90±30회·1초 이내 점등을 수치로 규정, 미국 FMVSS 108 본문은 점멸기 작동만(점멸 시험은 S14.9)",
+     "diff_en": "UN/Korea: 90 +/- 30 flashes per minute, on within 1 s; the US text points to the flasher (tests in S14.9)"
+    },
+    {
+     "item": "tell_tale",
+     "label_ko": "작동 표시",
+     "label_en": "Tell-tale",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.1.2.8 / S9.3.1",
+       "quote": "S9.3.1 Each vehicle equipped with a turn signal operating unit where any turn signal lamp is not visible to the driver must also have an illuminated pilot indicator",
+       "value_en": "pilot indicator required when a turn signal lamp is not visible to the driver",
+       "value_ko": "운전자가 방향지시등을 볼 수 없으면 작동 표시등 필요"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "6.5.8",
+       "quote": "Operating tell-tale mandatory for direction-indicator lamps of categories 1, 1a, 1b, 2a and 2b. It may be visual or auditory or both. If it is visual it shall be a flashing light which, at least in the event of the malfunction of any of these direction-indicator lamps, is either extinguished, or remains alight without flashing, or shows a marked change of frequency.",
+       "value_en": "Operating tell-tale mandatory for 2a/2b; visual (flashing light that goes out, stays on or changes frequency on a malfunction) and/or auditory",
+       "value_ko": "2a/2b는 작동형 표시등 의무; 시각(고장 시 소등·점멸 없이 점등·주파수 변화) 및/또는 청각 방식"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의17 제1호마목1)·2)",
+       "quote": "방향지시등(카테고리-1ㆍ1aㆍ1bㆍ2aㆍ2b)은 시각적 또는 청각적 또는 시각적ㆍ청각적으로 작동되는 표시장치를 설치할 것 ... 자동차의 앞면ㆍ뒷면 방향지시등 중 어느 하나라도 고장난 경우 다음의 어느 하나 이상을 만족할 것 ... 시각적 표시장치는 주파수 변화에 의해 점멸속도가 변화하거나 점등이 지속되거나 소등되는 구조 ... 경고음을 제공하는 경우 주파수 변화에 의해 점멸속도가 변화하는 기능이 동시에 제공될 것",
+       "value_en": "A visual and/or audible tell-tale is required; if any front/rear turn signal fails, the tell-tale must change flash rate or stay lit/go out (and an audible warning must be accompanied by the flash-rate change).",
+       "value_ko": "시각/청각 작동표시장치 필수; 앞·뒷면 방향지시등 중 하나라도 고장이면 점멸속도 변화·점등 지속/소등 등으로 표시(경고음 시에도 점멸속도 변화 병행)."
+      }
+     ],
+     "diff_ko": "모두 필요(미국은 운전자가 등을 볼 수 없을 때). UN·한국은 고장 시 표시 방식까지 규정",
+     "diff_en": "All require one (US: when the lamp is not visible to the driver); UN/Korea also define the failure indication"
+    },
+    {
+     "item": "photometry",
+     "label_ko": "광도",
+     "label_en": "Luminous intensity",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.1.2.13.1 + Table VII",
+       "quote": "S7.1.2.13.1 Each rear turn signal lamp must be designed to conform to the photometry requirements of Table VII",
+       "value_en": "Table VII (1 lighted section): H-V min 80 cd red / 130 cd amber; max 300 cd red / 750 cd amber",
+       "value_ko": "표 VII(1구획): H-V 최소 적색 80 cd / 황색 130 cd; 최대 적색 300 cd / 황색 750 cd",
+       "transcribed": "Table VII values read from the table image (CFR 2024 edition)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R148",
+       "clause": "5.6.1",
+       "quote": "Table 8 Luminous intensities for direction indicator lamps ... 2a (steady) 50 500 250",
+       "value_en": "2a (steady): minimum 50 cd in the reference axis; maximum 500 cd in any direction for a single lamp, 250 cd for a lamp marked 'D'",
+       "value_ko": "2a(정광도): 기준축 최소 50 cd; 임의 방향 최대 500 cd(단일 램프), 'D' 표시 램프 250 cd"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "별표 6의17 제2호가목",
+       "quote": "카테고리-2a │50 이상 │0.3 이상 │500 이하 │250 이하 ... 카테고리-2b │50 이상 │주간: 0.3 이상 │1,000 이하│500 이하 ... 야간: 0.07 이상",
+       "value_en": "Rear turn signal: cat. 2a min 50 cd, 0.3 cd within field, max 500 cd (D-lamp 250); cat. 2b min 50 cd, field minimum 0.3 (day)/0.07 (night), max 1,000 cd (D-lamp 500). Rows quoted as exported (cells separated by │).",
+       "value_ko": "뒷면방향지시등: 카테고리-2a 최소 50cd, 관측각도 범위 내 0.3cd, 최대 500cd(D-등화 250); 카테고리-2b 최소 50cd, 범위 내 주간 0.3/야간 0.07cd, 최대 1,000cd(D-등화 500)."
+      }
+     ],
+     "diff_ko": "호박색 기준 최소: 미국 130 cd vs UN·한국 50 cd / 최대: 미국 750 cd vs UN·한국 500 cd",
+     "diff_en": "Amber, minimum: US 130 cd vs UN/Korea 50 cd; maximum: US 750 cd vs UN/Korea 500 cd"
+    },
+    {
+     "item": "other_lamp_relations",
+     "label_ko": "다른 등화와의 결합",
+     "label_en": "Combination with other lamps",
+     "us": [
+      {
+       "reg": "FMVSS 108",
+       "clause": "S7.1.2.12.1 + Table VII",
+       "quote": "S7.1.2.12.1 When a taillamp, or a clearance lamp on a multipurpose passenger vehicle, truck, trailer, or bus of 2032 mm or more in overall width, is combined with a rear turn signal lamp, the luminous intensity of the rear turn signal lamp at each identified test point must not be less than the luminous intensity of the taillamp or clearance lamp at that same test point times the multiplier shown for that test point in Table VII.",
+       "value_en": "combined with a taillamp: turn >= taillamp x 5 at H-V (x3 at most other points)",
+       "value_ko": "후미등과 결합 시 방향지시등 광도 ≥ 후미등 광도 × 5(H-V), 다른 측정점은 대부분 × 3",
+       "transcribed": "multipliers read from the Table VII image (CFR 2024 edition)"
+      }
+     ],
+     "un": [
+      {
+       "reg": "UN R48",
+       "clause": "5.7.1.2",
+       "quote": "Stop lamps and direction-indicator lamps are not permitted to be reciprocally incorporated.",
+       "value_en": "Stop lamp and direction indicator may not be reciprocally incorporated with each other",
+       "value_ko": "제동등과 방향지시등은 서로 상호 내장(reciprocally incorporated) 불가"
+      }
+     ],
+     "kr": [
+      {
+       "reg": "KMVSS",
+       "clause": "제48조제1항",
+       "quote": "자동차에 설치된 각종 등화는 1개의 등화로 2 이상의 용도로 겸용할 수 있다. 다만, 화약류를 운송할 때에 사용되는 적색등화의 경우에는 그러하지 아니하다.",
+       "value_en": "One lamp may serve two or more functions (except the red lamp used when carrying explosives) — the general rule relevant to combining tail, stop and turn-signal functions in one module.",
+       "value_ko": "1개의 등화로 2 이상의 용도를 겸용할 수 있다(화약류 운송용 적색등화 제외) — 후미등·제동등·방향지시등 기능을 한 모듈로 결합하는 것과 관련된 일반 규정."
+      }
+     ],
+     "diff_ko": "UN은 제동등과 방향지시등의 상호 결합을 금지, 미국은 후미등과 결합 시 광도 비율만 규정, 한국은 겸용 일반 허용(제동등·방향지시등 결합 금지 조항은 이번 조사에서 확인 못 함)",
+     "diff_en": "UN forbids reciprocally incorporating stop lamp and direction indicator; the US only sets an intensity ratio to the tail lamp; Korea allows shared use in general (no stop/turn ban found in this research)"
+    }
+   ]
+  }
+ ]
+}

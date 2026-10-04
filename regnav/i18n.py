@@ -55,6 +55,11 @@ TEXT = {
         "cmp_note": ("_Same subject in three regimes (curated equivalence, not an applicability verdict); "
                      "(must/check/reference) marks codes judged above._"),
         "cmp_header": "| Topic | FMVSS (US) | UN R (1958 Agreement) | KMVSS (Korea) |",
+        "cl_heading": "Clause comparison: {title}",
+        "cl_header": "| Item | FMVSS (US) | UN R (1958 Agreement) | KMVSS (Korea) | Difference |",
+        "cl_quote": "Original text",
+        "cl_transcribed": "read from the table image",
+        "cl_sources": "Sources",
         # notes added by the pipeline (the OJ note is regnav.sources.unece.OJ_NOTE)
         "warn_ecfr_snapshot": "US FMVSS text came from the bundled eCFR snapshot ({snap}); eCFR was not reachable.",
         "warn_unknown": ("Korean words not in RegNav's glossary, so not used in the candidate search "
@@ -104,6 +109,11 @@ TEXT = {
         "cmp_note": ("_같은 주제를 세 규제 체계에서 나란히 본 표입니다 (선별한 대응 관계이며 적용 판정이 아닙니다). "
                      "괄호 안의 (필수 검토/확인 필요/참고)는 위에서 판정한 코드입니다._"),
         "cmp_header": "| 주제 | FMVSS (미국) | UN R (1958 협정) | KMVSS (한국) |",
+        "cl_heading": "조문 비교: {title}",
+        "cl_header": "| 항목 | 미국 FMVSS | UN R (1958 협정) | 한국 KMVSS | 차이 |",
+        "cl_quote": "원문",
+        "cl_transcribed": "표 그림에서 읽음",
+        "cl_sources": "출처",
         "warn_ecfr_snapshot": "eCFR에 접속할 수 없어 미국 FMVSS 본문을 내장 eCFR 스냅샷({snap})에서 가져왔습니다.",
         "warn_oj": ("UN 규정의 적용범위(Scope) 문안은 EU 관보(Official Journal) 사본에서 가져왔습니다(규정별 링크). "
                     "이 사본은 최신 UNECE 개정 시리즈보다 늦을 수 있으며, 정본은 UNECE 원문뿐입니다."),

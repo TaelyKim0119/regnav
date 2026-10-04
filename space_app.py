@@ -20,6 +20,7 @@ import gradio as gr
 from dotenv import load_dotenv
 
 from regnav import compare, i18n, ko_scopes
+from regnav import clauses as clause_cmp  # render() has a local named clauses
 from regnav.budget import status as budget_status
 from regnav.pipeline import order, review
 
@@ -110,6 +111,8 @@ def render(report) -> str:
         out.append("")
     if report.comparison:
         out += compare.markdown(report.comparison, lang) + [""]
+    if report.clause_topics:
+        out += clause_cmp.ui_markdown(report.clause_topics, lang)
     if report.web_hits:
         out += ["#### " + i18n.tr(lang, "web_heading", n=len(report.web_hits)), ""]
         out += [f"- [{_cell(h.title)}]({h.url})" for h in report.web_hits] + [""]

@@ -6,7 +6,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
-from regnav import compare, i18n, ko, ko_scopes
+from regnav import clauses, compare, i18n, ko, ko_scopes
 from regnav.budget import ReviewBudget
 from regnav.budget import _limits as budget_limits
 from regnav.judge import UNJUDGED, Verdict, judge
@@ -28,6 +28,8 @@ class Report:
     verdicts: list[Verdict] = field(default_factory=list)
     web_hits: list[tavily_search.WebHit] = field(default_factory=list)
     comparison: list[compare.Row] = field(default_factory=list)
+    # ids of curated clause-comparison topics this part matches (regnav.clauses); empty for most parts
+    clause_topics: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     # UN code -> citation of the EU OJ text whose Scope the judge read (unece.OjScope.to_dict()),
     # only for candidates that were judged
@@ -49,7 +51,9 @@ class Report:
              "comparison": [r.to_dict() for r in self.comparison],
              "warnings": list(self.warnings),
              "un_sources": dict(self.un_sources)}
-        # only when set, so an English review's JSON is unchanged
+        # only when set, so a review without them keeps its JSON unchanged
+        if self.clause_topics:
+            d["clause_compare"] = clauses.to_dict(self.clause_topics)
         if self.query:
             d["query"] = self.query
         if self.lang != "en":
@@ -90,6 +94,7 @@ class Report:
                     lines.append("  " + i18n.tr(lang, "md_also", links="; ".join(extra)))
             lines.append("")
         lines += compare.markdown(self.comparison, lang)
+        lines += clauses.markdown(self.clause_topics, lang)
         if self.web_hits:
             lines.append("## " + i18n.tr(lang, "web_heading", n=len(self.web_hits)))
             for h in self.web_hits:
@@ -244,6 +249,7 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     if lang == "ko" and ko_scopes.available():
         report.scope_quotes = {code: ko_scopes.view(q) for code, q in quotes.items() if q and code in judged}
     report.comparison = compare.comparison(query, report.verdicts)
+    report.clause_topics = clauses.match(query, part, {v.regulation for v in report.verdicts})
     unknown = ko.unknown_words(part)
     if unknown:
         report.warnings.append(i18n.tr(lang, "warn_unknown", words=", ".join(unknown)))
