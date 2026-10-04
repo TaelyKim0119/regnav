@@ -3,7 +3,9 @@
 The user picks the language (Gradio switch in space_app.py, ``lang`` in the API and CLI);
 English stays the default everywhere, and its strings are the exact text RegNav printed
 before Korean support. Regulation names and numbers, standard titles and quoted official
-scope text are never translated: only RegNav's own labels, headings and notes are.
+scope text are never translated: only RegNav's own labels, headings and notes are. The one
+addition is in Korean mode: a reference translation of the Scope text printed under the original
+English quote (regnav.ko_scopes), clearly labelled as unofficial; English output never shows it.
 """
 from __future__ import annotations
 
@@ -131,6 +133,16 @@ TEXT = {
         "ui_clauses": " 조항: {clauses}.",
         "ui_scope_src": "<br>적용범위 원문: [EU 관보(OJ) 사본 {cite}]({url}).",
         "ui_later": " 후속 OJ 개정: [{ref}]({url}).",
+        # Scope text quoted under judged verdicts (regnav.ko_scopes). 한국어 mode only: English output
+        # never shows the Scope text, so the English table has no such keys.
+        "scope_en_oj": "적용 범위 원문 (영문, EU 관보 사본)",
+        "scope_en_ecfr": "적용 범위 원문 (영문, eCFR 발췌)",
+        "scope_en_tavily": "적용 범위 원문 (영문, Tavily 검색으로 가져온 UNECE 문서 발췌)",
+        "scope_en_catalogue": "적용 범위 요약 (영문, RegNav 선별 요약이며 규정 원문이 아님)",
+        "scope_ko": "적용 범위 (참고 번역, 비공식: 법적 효력은 원문)",
+        "scope_stale": "이 원문은 번역본과 버전이 달라 번역을 표시하지 않습니다",
+        "scope_missing": "이 원문의 한국어 번역본이 없어 번역을 표시하지 않습니다",
+        "ui_scope_toggle": "적용 범위 보기 (원문 + 참고 번역)",
         "ui_footer": "_검토 보조 결과입니다. 자격 있는 검토자를 위한 후보와 근거이며, 법률 자문이나 형식승인 결정이 아닙니다._",
         "source": "소스 코드 (MIT): https://github.com/TaelyKim0119/regnav",
     },

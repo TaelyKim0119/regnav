@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 data/cache/
+data/translate_work/
 proposal_text.txt
 .claude/
 notes/

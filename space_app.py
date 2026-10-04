@@ -19,7 +19,7 @@ import os
 import gradio as gr
 from dotenv import load_dotenv
 
-from regnav import compare, i18n
+from regnav import compare, i18n, ko_scopes
 from regnav.budget import status as budget_status
 from regnav.pipeline import order, review
 
@@ -56,6 +56,28 @@ def _cell(text: str) -> str:
     return str(text).replace("|", "/").replace("\n", " ").strip()
 
 
+# Quoted regulation text goes into a Markdown table cell as HTML: every character that Markdown or
+# HTML would read as syntax becomes an entity, and line breaks become <br> (a cell is one line).
+_ENTITIES = str.maketrans({c: f"&#{ord(c)};" for c in "&<>|*_`[]\\~"})
+
+
+def _html(text: str) -> str:
+    return "<br>".join(line.strip().translate(_ENTITIES) for line in text.split("\n"))
+
+
+def _scope_html(lang: str, quote: dict) -> str:
+    """The Scope quote of one verdict for its table cell (한국어 mode): the English text and its Korean
+    reference translation, or the one-line reason there is none, inside a collapsed <details> so the
+    table stays short until the reviewer opens it."""
+    english, korean = ko_scopes.display(quote)
+    parts = [f"<b>{i18n.tr(lang, 'scope_en_' + quote['source'])}</b><br>{_html(english)}"]
+    if korean:
+        parts.append(f"<b>{i18n.tr(lang, 'scope_ko')}</b><br>{_html(korean)}")
+    else:
+        parts.append(f"<i>{i18n.tr(lang, 'scope_' + quote['status'])}</i>")
+    return f"<br><details><summary>{i18n.tr(lang, 'ui_scope_toggle')}</summary>{'<br><br>'.join(parts)}</details>"
+
+
 def render(report) -> str:
     """The report as Markdown, labels in ``report.lang``; regulation names, titles and quoted
     scope text stay in their original language."""
@@ -79,6 +101,9 @@ def render(report) -> str:
             text = (i18n.tr(lang, "ui_scope_src", cite=_cell(src["cite"]), url=src["url"])
                     + "".join(i18n.tr(lang, "ui_later", ref=_cell(a["oj_ref"] or a["celex"]), url=a["url"])
                               for a in src.get("later", [])) if src else "")
+            quote = report.scope_quotes.get(v.regulation)
+            if quote:
+                text += _scope_html(lang, quote)
             out.append(f"| [{_cell(v.regulation)}]({v.url}){also} {_cell(v.title)} | "
                        f"{i18n.applies(lang, v.applies)}&nbsp;·&nbsp;{v.confidence:.2f} | "
                        f"{_cell(v.why)}{_cell(clauses)}{text} |")

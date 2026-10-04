@@ -37,6 +37,7 @@ part description
 * `regnav/pipeline.py` - candidate selection and report assembly
 * `regnav/ko.py` - offline Korean -> English automotive-parts glossary for Korean input
 * `regnav/i18n.py` - English (default) and Korean report and UI strings
+* `regnav/ko_scopes.py` + `data/scopes_ko.json` - unofficial Korean reference translations of the Scope texts quoted in Korean reports
 * `app.py` - FastAPI web UI + JSON API; `cli.py` - terminal usage
 
 ## Run
@@ -75,6 +76,19 @@ choice: the demo's English / 한국어 switch, `"lang": "ko"` in the JSON API, o
 `python cli.py "<part>" --lang=ko`. In Korean mode RegNav's labels and notes are Korean and
 the live judge writes its rationale in Korean; regulation names, numbers and quoted scope
 text stay in their original language. English is the default everywhere.
+
+**Scope translations (적용 범위, unofficial).** In Korean mode the report also quotes, under each
+judged UN Regulation and FMVSS standard, the English Scope text the judge read, and below it a
+Korean **reference translation**. The translations (`data/scopes_ko.json`, 159 texts: 40 UN Scope
+paragraphs from the EU Official Journal copies, 79 FMVSS scope excerpts, 40 one-line catalogue
+summaries kept as a fallback) were made with Claude and are labelled "참고 번역, 비공식: 법적 효력은 원문": no human
+or legal translator has reviewed them, and the English original is what counts. A translation is
+shown only when the English text on screen is exactly the text it was made from (its SHA-256 is
+stored next to it); when a live eCFR or search text differs, the report says so instead of showing
+an out-of-date translation. FMVSS excerpts are at most 1,500 characters and end with `[...]` where
+they are cut. In the demo the quote sits in a collapsed "적용 범위 보기" box under each verdict; in
+the JSON API (`lang=ko`) it is `scope_quotes`. English mode, the English-only web page and what
+the judge reads are unchanged: the judge never sees the Korean text.
 
 ## Deploy (Docker / Hugging Face Spaces)
 

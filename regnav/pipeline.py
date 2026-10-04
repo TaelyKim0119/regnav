@@ -2,10 +2,11 @@
 from __future__ import annotations
 
 import os
+import re
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
-from regnav import compare, i18n, ko
+from regnav import compare, i18n, ko, ko_scopes
 from regnav.budget import ReviewBudget
 from regnav.budget import _limits as budget_limits
 from regnav.judge import UNJUDGED, Verdict, judge
@@ -33,6 +34,10 @@ class Report:
     un_sources: dict[str, dict] = field(default_factory=dict)
     lang: str = "en"  # language of RegNav's own labels and notes ("en" | "ko")
     query: str = ""  # English search text when it differs from ``part`` (Korean input), else ""
+    # 한국어 mode only, and only when data/scopes_ko.json exists: code -> ``ko_scopes.view`` of the English
+    # Scope text the judge read (the original, plus its Korean reference translation or why there is
+    # none), for judged UN/FMVSS verdicts. Empty in English: English output never quotes Scope text.
+    scope_quotes: dict[str, dict] = field(default_factory=dict)
 
     def bucket(self, prio: str) -> list[Verdict]:
         return sorted((v for v in self.verdicts if v.review_priority == prio), key=lambda v: -v.confidence)
@@ -49,6 +54,8 @@ class Report:
             d["query"] = self.query
         if self.lang != "en":
             d["lang"] = self.lang
+            if self.scope_quotes:
+                d["scope_quotes"] = {code: dict(q) for code, q in self.scope_quotes.items()}
         return d
 
     def markdown(self) -> str:
@@ -74,6 +81,9 @@ class Report:
                 if src:
                     links = " ; ".join([src["url"]] + [a["url"] for a in src.get("later", [])])
                     lines.append("  " + i18n.tr(lang, "md_scope_src", cite=src["cite"], links=links) + "  ")
+                quote = self.scope_quotes.get(v.regulation)
+                if quote:
+                    lines += scope_lines(lang, quote)
                 lines.append(f"  {v.url}")
                 extra = [f"{label}: {link}" for label, link in v.sources if link != v.url]
                 if extra:
@@ -86,6 +96,32 @@ class Report:
                 lines.append(f"- {h.title} - {h.url}")
             lines.append("")
         return "\n".join(lines)
+
+
+_BLOCK_START = re.compile(r"^(?:(\d+)([.)])|[-+*>#])(?=\s|$)")
+
+
+def _plain(line: str) -> str:
+    """One quoted line as Markdown text: a leading list, heading or quote marker is escaped (UN R117's
+    footnote starts with "* ") so it cannot turn into structure."""
+    m = _BLOCK_START.match(line)
+    if not m:
+        return line
+    return f"{m.group(1)}\\{m.group(2)}{line[m.end(2):]}" if m.group(1) else "\\" + line
+
+
+def scope_lines(lang: str, quote: dict) -> list[str]:
+    """Markdown lines, indented for a report list item, quoting the English Scope text and, below it,
+    its Korean reference translation, or the one-line reason there is none (``ko_scopes.view``)."""
+    english, korean = ko_scopes.display(quote)
+
+    def block(label: str, text: str) -> list[str]:
+        return [f"  {label}:  "] + [f"    {_plain(row.strip())}  " for row in text.split("\n")]
+
+    lines = block(i18n.tr(lang, "scope_en_" + quote["source"]), english)
+    if korean:
+        return lines + block(i18n.tr(lang, "scope_ko"), korean)
+    return lines + ["  " + i18n.tr(lang, "scope_" + quote["status"]) + "  "]
 
 
 def fmvss_candidates(part: str, limit: int = 8) -> list[ecfr.Section]:
@@ -140,10 +176,23 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     oj = {reg.code: unece.oj_scope(reg) for reg in un_cands}
     missing = [reg for reg in un_cands if oj[reg.code] is None]
     un_scopes = tavily_search.un_scopes(missing) if missing and tavily_search.enabled() else {}
-    un_jobs = [(reg.code, reg.title, reg.url,
-                f"{oj[reg.code].tag}\n{oj[reg.code].scope}" if oj[reg.code]
-                else un_scopes.get(reg.code) or reg.scope or reg.title)
-               for reg in un_cands]
+    # ``quotes``: the same Scope text without its source tag, for the 한국어 mode quote under the verdict
+    quotes: dict[str, ko_scopes.Quote | None] = {}
+    un_jobs = []
+    for reg in un_cands:
+        o = oj[reg.code]
+        if o:
+            text = f"{o.tag}\n{o.scope}"
+            quote = ko_scopes.Quote(ko_scopes.un_id(reg.code), "un_scope", o.scope, "oj")
+        elif un_scopes.get(reg.code):
+            text = un_scopes[reg.code]
+            quote = ko_scopes.Quote(ko_scopes.un_id(reg.code), "un_scope", text, "tavily")
+        else:
+            text = reg.scope or reg.title
+            quote = (ko_scopes.Quote(ko_scopes.un_summary_id(reg.code), "un_summary", reg.scope, "catalogue")
+                     if reg.scope else None)
+        un_jobs.append((reg.code, reg.title, reg.url, text))
+        _keep(quotes, reg.code, quote)
     # Web-named UN Regulations outside the curated catalogue become candidates too, judged on
     # the Tavily snippet alone (the job's scope text says this evidence is weaker).
     known_un_numbers = {reg.number for reg in unece.CATALOGUE}
@@ -160,8 +209,11 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
         fm_cands += [s for s in ecfr.index() if s.number in fm_named and s.number not in seen]
     fm_jobs = []
     for s in fm_cands:
-        scope = ecfr.scope(s.identifier) or s.label
-        fm_jobs.append((f"FMVSS {s.number}", s.label, s.url, scope))
+        scope = ecfr.scope(s.identifier)
+        fm_jobs.append((f"FMVSS {s.number}", s.label, s.url, scope or s.label))
+        if scope:
+            _keep(quotes, f"FMVSS {s.number}",
+                  ko_scopes.Quote(ko_scopes.fmvss_id(s.identifier), "fmvss_scope", scope, "ecfr"))
     kr_jobs = []
     if os.environ.get("REGNAV_KMVSS") == "1":  # opt-in until article text comes from the 법제처 API
         kr_jobs = [kmvss.judge_job(t) for t, _ in kmvss.search(query)]
@@ -187,6 +239,10 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     # cap, denied by the budget or lost to a judge error was never evaluated on that Scope.
     judged = {v.regulation for v in report.verdicts if not v.why.startswith(UNJUDGED)}
     report.un_sources = {code: o.to_dict() for code, o in oj.items() if o and code in judged}
+    # 한국어 mode: quote the Scope text under the same verdicts (judged ones) with its Korean reference
+    # translation. Nothing changes for the judge (the jobs above) or for English output.
+    if lang == "ko" and ko_scopes.available():
+        report.scope_quotes = {code: ko_scopes.view(q) for code, q in quotes.items() if q and code in judged}
     report.comparison = compare.comparison(query, report.verdicts)
     unknown = ko.unknown_words(part)
     if unknown:
@@ -197,6 +253,14 @@ def review(part: str, dry_run: bool = False, max_fmvss: int = 8, max_unece: int 
     if report.un_sources:
         report.warnings.append(i18n.tr(lang, "warn_oj") if lang == "ko" else unece.OJ_NOTE)
     return report
+
+
+def _keep(quotes: dict, code: str, quote: ko_scopes.Quote | None) -> None:
+    """Remember the quotable Scope text of a report code. Two different texts under one code (live only:
+    a web search naming FMVSS 122 adds both 571.122 and 571.122a) would put one section's text under the
+    other's verdict, so such a code is left without a quote."""
+    if quote is not None:
+        quotes[code] = quote if quotes.get(code, quote) == quote else None
 
 
 def interleave(*lists):

@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import os
@@ -603,6 +604,443 @@ def check_korean_ui_and_api():
     print("ok korean ui+api: API lang=ko / default en; Gradio switch relabels page, Korean examples and report")
 
 
+@contextlib.contextmanager
+def scopes_ko_table(texts):
+    """Point regnav.ko_scopes at a temporary scopes_ko.json holding ``texts`` ({id: {"src_sha256", "ko"}}),
+    or at no file (None). These checks never write the real data/scopes_ko.json; they only validate it
+    (``check_korean_scope_versions``)."""
+    from regnav import ko_scopes
+    real_path, real_cache = ko_scopes.PATH, ko_scopes._cache
+    path = Path(tempfile.mkdtemp()) / "scopes_ko.json"
+    if texts is not None:
+        path.write_text(json.dumps({"note": "test placeholder, not a translation", "built": "test", "texts": texts},
+                                   ensure_ascii=False), encoding="utf-8")
+    ko_scopes.PATH, ko_scopes._cache = path, None
+    try:
+        yield
+    finally:
+        ko_scopes.PATH, ko_scopes._cache = real_path, real_cache
+
+
+def _exporter():
+    """scripts/export_scopes_for_translation.py as a module (scripts/ is not a package)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("export_scopes_for_translation",
+                                                  ROOT / "scripts" / "export_scopes_for_translation.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _judged_review(part: str, lang: str):
+    """A dry-run review whose judge is stubbed to "judged" for every candidate (as in a live review).
+    Returns (report, the jobs the judge was handed)."""
+    captured = []
+    real_judge_all = pipeline.judge_all
+    pipeline.judge_all = lambda p, jobs, **kw: captured.append(jobs) or [
+        Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "check") for j in jobs]
+    try:
+        rep = pipeline.review(part, dry_run=True, lang=lang)
+    finally:
+        pipeline.judge_all = real_judge_all
+    return rep, captured[0]
+
+
+def check_scope_translation_export():
+    """scripts/export_scopes_for_translation.py lists every text a Korean report can quote
+    (data/translate_work/sources.json); its ids and hashes are the ones regnav.ko_scopes uses to decide
+    whether a translation matches the text being quoted. Offline: builds the list in memory from the
+    committed snapshots and writes no file."""
+    import collections
+    import inspect
+    from regnav import i18n, ko_scopes
+    from regnav.sources import ecfr, unece
+
+    # one normalisation for export and display: whitespace runs collapse, nothing else changes
+    assert ko_scopes.normalise(" a \n  b\u00a0c\t") == "a b c"
+    assert ko_scopes.digest("x  y\n") == ko_scopes.digest("x y") != ko_scopes.digest("x  z")
+    assert re.fullmatch(r"[0-9a-f]{64}", ko_scopes.digest("x"))
+    assert ko_scopes.fmvss_id("571.108") == "FMVSS 108" and ko_scopes.fmvss_id("571.122a") == "FMVSS 122a"
+    assert ko_scopes.un_id("UN R13-H") == "UN R13-H" and ko_scopes.un_summary_id("UN R13-H") == "UN R13-H summary"
+    assert ko_scopes.FMVSS_CAP == inspect.signature(ecfr.scope_excerpt).parameters["limit"].default
+
+    entries = _exporter().build_sources()
+    by_id = {e["id"]: e for e in entries}
+    assert len(by_id) == len(entries), "ids must be unique"
+    un_ok = {c: e for c, e in unece.scopes()["regulations"].items() if e["status"] == "ok" and e["scope"]}
+    fmvss = {i: t for i, t in ecfr.snapshot()["scopes"].items() if t}
+    assert collections.Counter(e["kind"] for e in entries) == {
+        "un_scope": len(un_ok), "fmvss_scope": len(fmvss), "un_summary": sum(1 for r in unece.CATALOGUE if r.scope)}
+    order = [e["kind"] for e in entries]
+    assert order == sorted(order, key=ko_scopes.KINDS.index), "UN Scope, then FMVSS, then catalogue summaries"
+    for e in entries:
+        assert set(e) == {"id", "kind", "title", "src", "src_sha256", "chars", "truncated", "origin"}, e["id"]
+        assert e["kind"] in ko_scopes.KINDS and e["title"] and e["origin"] and e["src"], e["id"]
+        assert e["chars"] == len(e["src"]) and e["src_sha256"] == ko_scopes.digest(e["src"]), e["id"]
+    # the exact stored text, never a normalised copy
+    for code, o in un_ok.items():
+        assert by_id[ko_scopes.un_id(code)]["src"] == o["scope"], code
+    for identifier, text in fmvss.items():
+        assert by_id[ko_scopes.fmvss_id(identifier)]["src"] == text, identifier
+    for reg in unece.CATALOGUE:
+        assert by_id[ko_scopes.un_summary_id(reg.code)]["src"] == reg.scope, reg.code
+    cut = {e["id"] for e in entries if e["truncated"]}
+    assert cut == {ko_scopes.fmvss_id(i) for i, t in fmvss.items() if len(t) >= ko_scopes.FMVSS_CAP - 1} and cut
+    assert by_id["FMVSS 122"]["src"] != by_id["FMVSS 122a"]["src"]  # 571.122 and 571.122a share number 122
+
+    # whatever a Korean report quotes is in the export, with the same text, hash and cut flag
+    parts = list(json.loads(ENGLISH_BASELINE.read_text(encoding="utf-8"))["parts"]) + i18n.EXAMPLES["ko"]
+    quoted: dict[str, str] = {}
+    with scopes_ko_table({"UN R90": {"src_sha256": "0" * 64, "ko": "any entry switches the quotes on"}}):
+        for part in parts:
+            for code, v in pipeline.review(part, dry_run=True, lang="ko").scope_quotes.items():
+                e = by_id[v["id"]]
+                assert v["text"] == e["src"] and ko_scopes.digest(v["text"]) == e["src_sha256"], (part, code)
+                assert v["cut"] == e["truncated"] and v["kind"] == e["kind"], (part, code)
+                quoted[v["id"]] = v["kind"]
+    assert {"un_scope", "fmvss_scope"} <= set(quoted.values()) and "FMVSS 122a" in quoted, sorted(quoted)
+    print(f"ok scope export: {len(entries)} texts ({len(un_ok)} UN Scope, {len(fmvss)} FMVSS excerpts of which "
+          f"{len(cut)} cut at the cap, {len(entries) - len(un_ok) - len(fmvss)} catalogue summaries), "
+          f"{sum(e['chars'] for e in entries)} chars; {len(quoted)} texts quoted over {len(parts)} reviews, all exported")
+
+
+def check_korean_scope_display():
+    """한국어 mode quotes the English Scope text under each judged UN/FMVSS verdict (markdown, Gradio table,
+    JSON), with a Korean reference translation when data/scopes_ko.json has one for exactly that text.
+    Placeholder translations in a temporary file; English output, the judge's prompt and the call caps are
+    untouched; with no translations the Korean report is as before."""
+    from regnav import i18n, ko, ko_scopes
+    from regnav import judge as J
+    from regnav.sources import ecfr, unece
+
+    label = "적용 범위 (참고 번역, 비공식: 법적 효력은 원문)"
+    missing_note = "이 원문의 한국어 번역본이 없어 번역을 표시하지 않습니다"
+    part_en, part_ko = i18n.EXAMPLES["en"][1], i18n.EXAMPLES["ko"][1]  # brake pads, written in both languages
+    oj90, f135 = unece.oj_scope(unece.BY_NUMBER[90]), ecfr.scope("571.135")
+    ko90, ko135 = "시험용 번역 UN R90 적용 범위", "시험용 번역 FMVSS 135 적용 범위"
+    table = {"UN R90": {"src_sha256": ko_scopes.digest(oj90.scope), "ko": ko90},
+             "FMVSS 135": {"src_sha256": ko_scopes.digest(f135), "ko": ko135}}
+    space = _space_app()
+
+    def outputs(rep):
+        return rep.markdown(), json.dumps(rep.to_dict(), ensure_ascii=False), space.render(rep) if space else None
+
+    # no file, or no texts: the feature is off and the Korean report prints no Scope text
+    off = {}
+    for name, texts in (("no file", None), ("empty", {})):
+        with scopes_ko_table(texts):
+            assert not ko_scopes.available()
+            rep, _ = _judged_review(part_ko, "ko")
+            assert rep.scope_quotes == {} and "scope_quotes" not in rep.to_dict(), name
+            off[name] = outputs(rep)
+    assert off["no file"] == off["empty"] and label not in off["no file"][0]
+    assert "<details>" not in (off["no file"][2] or "")
+
+    # two translations present: every judged UN/FMVSS verdict gets its English quote
+    with scopes_ko_table(table):
+        assert ko_scopes.available()
+        rep_ko, jobs_ko = _judged_review(part_ko, "ko")
+        q = rep_ko.scope_quotes
+        assert set(q) == {v.regulation for v in rep_ko.verdicts} and {"UN R90", "FMVSS 135", "FMVSS 106"} <= set(q), sorted(q)
+        assert q["UN R90"] == {"id": "UN R90", "kind": "un_scope", "source": "oj", "text": oj90.scope,
+                               "cut": False, "status": "ok", "ko": ko90}, q["UN R90"]
+        assert q["FMVSS 135"] == {"id": "FMVSS 135", "kind": "fmvss_scope", "source": "ecfr", "text": f135,
+                                  "cut": False, "status": "ok", "ko": ko135}, q["FMVSS 135"]
+        assert q["FMVSS 106"]["status"] == "missing" and q["FMVSS 106"]["ko"] is None
+        assert q["FMVSS 122"]["id"] == "FMVSS 122a", "571.122a's text sits under the report code FMVSS 122"
+        assert q["FMVSS 129"]["cut"] is True and q["UN R90"]["cut"] is False
+        md, js, render = outputs(rep_ko)
+        # markdown: the English quote, then the labelled Korean translation, inside the verdict's list item
+        assert md.count(label + ":") == 2 and ko90 in md and ko135 in md, md.count(label)
+        assert "적용 범위 원문 (영문, EU 관보 사본):" in md and "적용 범위 원문 (영문, eCFR 발췌):" in md
+        assert oj90.scope.split("\n")[0] in md and f135.split("\n")[0].strip() in md
+        assert md.count(missing_note) == len(q) - 2, md.count(missing_note)
+        assert md.index("적용범위 원문: EU 관보(OJ) 사본 OJ L 290") < md.index("적용 범위 원문 (영문, EU 관보 사본):") \
+            < md.index(label) < md.index(ko90) < md.index(unece.addenda_url(90)), "quote sits inside the R90 item"
+        # the cut FMVSS excerpt ends with a visible marker, in the English and in a translation
+        cut_en, cut_ko = ko_scopes.display({**q["FMVSS 129"], "ko": "번역"})
+        assert cut_en == q["FMVSS 129"]["text"] + " [...]" and cut_ko == "번역 [...]"
+        assert ko_scopes.display({**q["FMVSS 129"], "ko": "번역 [...]"})[1] == "번역 [...]", "marker not doubled"
+        assert ko_scopes.display(q["UN R90"]) == (oj90.scope, ko90)
+        # JSON: the same view per verdict, English part untouched
+        d = json.loads(js)
+        assert d["lang"] == "ko" and d["scope_quotes"]["UN R90"] == q["UN R90"] and set(d["scope_quotes"]) == set(q)
+        assert d["verdicts"] == [v.to_dict() for v in rep_ko.verdicts] and d["un_sources"]["UN R90"]["cite"]
+        if space:  # Gradio table: one collapsed <details> per quote, rows still three cells
+            rows = [line for line in render.splitlines() if "<details>" in line]
+            summary = "<details><summary>적용 범위 보기 (원문 + 참고 번역)</summary>"
+            assert len(rows) == len(q) and all(line.count("|") == 4 and line.count(summary) == 1 for line in rows)
+            assert f"<b>{label}</b><br>{ko90}" in render and f"<b>{label}</b><br>{ko135}" in render
+            assert render.count(f"<i>{missing_note}</i>") == len(q) - 2
+            esc = space._html("a|b*c_d [x] <y> & \\ ~ `z`\n  next ")
+            assert esc == "a&#124;b&#42;c&#95;d &#91;x&#93; &#60;y&#62; &#38; &#92; &#126; &#96;z&#96;<br>next", esc
+            assert "tyres&#42;" in space.render(pipeline.review(i18n.EXAMPLES["ko"][4], dry_run=True, lang="ko"))
+        # list markers at the start of a quoted line are escaped so they stay text (UN R117's "* " footnote)
+        assert pipeline._plain("* For the purpose") == "\\* For the purpose" and pipeline._plain("1. A") == "1\\. A"
+        assert pipeline._plain("2) A") == "2\\) A" and pipeline._plain("- A") == "\\- A" and pipeline._plain("# A") == "\\# A"
+        assert pipeline._plain("> A") == "\\> A" and pipeline._plain("1.1. A") == "1.1. A" and pipeline._plain("a *b*") == "a *b*"
+        tpms = pipeline.review(i18n.EXAMPLES["ko"][4], dry_run=True, lang="ko").markdown()
+        assert "    \\* For the purpose of this Regulation" in tpms and "    1.1. This Regulation applies to new pneumatic tyres" in tpms
+
+        # KMVSS (opt-in, Korean already, no article text yet) has no Scope text to quote
+        os.environ["REGNAV_KMVSS"] = "1"
+        try:
+            with_kmvss = _judged_review(part_ko, "ko")[0]
+        finally:
+            os.environ.pop("REGNAV_KMVSS", None)
+        assert any(v.regulation.startswith("KMVSS") for v in with_kmvss.verdicts)
+        assert set(with_kmvss.scope_quotes) == set(q), "no quote under a KMVSS verdict"
+
+        # the JSON API returns the same view for lang=ko; the English-only FastAPI page never shows Scope text
+        from fastapi.testclient import TestClient
+        import app as webapp
+        client = TestClient(webapp.app)
+        api = client.post("/api/review", json={"part": part_ko, "lang": "ko"}).json()
+        assert api["scope_quotes"]["UN R90"]["ko"] == ko90 and api["scope_quotes"]["FMVSS 135"]["status"] == "ok"
+        assert "scope_quotes" not in client.post("/api/review", json={"part": part_ko}).json()
+        page = client.post("/review", data={"part": part_ko}).text
+        assert "적용 범위" not in page and ko90 not in page and oj90.scope.split("\n")[0] not in page
+
+        # English output never changes: not by the table, and not for a Korean part with an English report
+        for part in (part_en, part_ko):
+            rep_en = pipeline.review(part, dry_run=True)
+            assert rep_en.scope_quotes == {} and "scope_quotes" not in rep_en.to_dict()
+            with scopes_ko_table(None):
+                assert outputs(rep_en) == outputs(pipeline.review(part, dry_run=True))
+            shown = outputs(rep_en)
+            assert "적용 범위" not in shown[0] + (shown[2] or "") and "<details>" not in (shown[2] or "")
+        rep_en, jobs_en = _judged_review(part_en, "en")
+        rep_en_ko, jobs_en_ko = _judged_review(part_en, "ko")
+        # the judge is handed the same jobs in both languages, English text only, source tag included
+        assert jobs_en == jobs_en_ko and jobs_ko == _judged_review(part_ko, "en")[1]
+        assert not any(ko.has_hangul(j[3]) for j in jobs_ko + jobs_en_ko), "the judge reads English Scope text only"
+        job90 = next(j for j in jobs_ko if j[0] == "UN R90")
+        assert job90[3] == f"{oj90.tag}\n{oj90.scope}"
+        prompt = J.user_prompt(part_ko, *job90, query=ko.to_english(part_ko))
+        assert oj90.scope in prompt and ko90 not in prompt and label not in prompt
+
+        # live trim: candidates beyond the call cap are not judged, so they get no quote
+        seen = []
+        real_judge_all = pipeline.judge_all
+        pipeline.judge_all = lambda part, jobs, **kw: seen.append(jobs) or [
+            Verdict(j[0], j[1], j[2], "yes", 0.9, "stub", [], "must") for j in jobs]
+        os.environ["REGNAV_MAX_CALLS_PER_REVIEW"] = "3"
+        try:
+            live = pipeline.review(part_ko, dry_run=False, lang="ko")
+        finally:
+            pipeline.judge_all = real_judge_all
+            os.environ.pop("REGNAV_MAX_CALLS_PER_REVIEW", None)
+        tail = {v.regulation for v in live.verdicts if v.why.startswith("[미판정")}
+        assert tail and set(live.scope_quotes) == {j[0] for j in seen[0]} and not set(live.scope_quotes) & tail
+    print(f"ok korean scope display: off without a file; with 2 translations {len(q)} judged verdicts quote their "
+          f"English Scope (markdown, JSON, Gradio <details>), {len(q) - 2} say no translation exists; English output, "
+          f"judge prompt and caps unchanged; unjudged candidates get no quote")
+
+
+def check_korean_scope_versions():
+    """A translation is shown only for the very text it was made from: a live eCFR text or a Tavily text
+    that differs gets a one-line note instead (whitespace alone is not a new version), a catalogue summary
+    has its own entry, and a damaged file switches the feature off. Placeholder tables only: the real
+    data/scopes_ko.json is validated by ``check_scope_translation_data``."""
+    from regnav import i18n, ko_scopes
+    from regnav.sources import ecfr, tavily_search, unece
+
+    label = "적용 범위 (참고 번역, 비공식: 법적 효력은 원문)"
+    stale_note = "이 원문은 번역본과 버전이 달라 번역을 표시하지 않습니다"
+    part_ko = i18n.EXAMPLES["ko"][1]
+    reg90 = unece.BY_NUMBER[90]
+    oj90, f135 = unece.oj_scope(reg90), ecfr.scope("571.135")
+    ko90, ko135, ko_sum = "시험용 번역 UN R90", "시험용 번역 FMVSS 135", "시험용 번역 UN R90 요약"
+    table = {"UN R90": {"src_sha256": ko_scopes.digest(oj90.scope), "ko": ko90},
+             "FMVSS 135": {"src_sha256": ko_scopes.digest(f135), "ko": ko135},
+             "UN R90 summary": {"src_sha256": ko_scopes.digest(reg90.scope), "ko": ko_sum}}
+
+    # live eCFR text that differs from the snapshot: note, no translation; the judge still reads the new text
+    real_scope = ecfr.scope
+    try:
+        with scopes_ko_table(table):
+            ecfr.scope = lambda ident: real_scope(ident) + " Newly amended." if ident == "571.135" else real_scope(ident)
+            rep, jobs = _judged_review(part_ko, "ko")
+            md = rep.markdown()
+            v = rep.scope_quotes["FMVSS 135"]
+            assert v["status"] == "stale" and v["ko"] is None and v["text"] == f135 + " Newly amended.", v
+            assert ko135 not in md and md.count(stale_note) == 1 and "Newly amended." in md and ko90 in md
+            assert next(j for j in jobs if j[0] == "FMVSS 135")[3] == v["text"], "the judge reads the English text shown"
+            assert rep.scope_quotes["UN R90"]["status"] == "ok" and md.count(label + ":") == 1
+            # a whitespace-only difference (line ends, runs of spaces) is the same version
+            ecfr.scope = lambda ident: (real_scope(ident).replace(" \n", "\r\n  ").replace(". ", ".   ")
+                                        if ident == "571.135" else real_scope(ident))
+            same = _judged_review(part_ko, "ko")[0].scope_quotes["FMVSS 135"]
+            assert same["text"] != f135 and same["status"] == "ok" and same["ko"] == ko135, same
+    finally:
+        ecfr.scope = real_scope
+
+    # Tavily's Scope text (live only, for candidates the OJ snapshot lacks) is another version of "UN R90";
+    # with Tavily finding nothing the judge reads the one-line catalogue summary, which has its own entry
+    tavily_text = "1. Scope This Regulation applies to something Tavily found."
+    saved = {n: getattr(tavily_search, n) for n in ("enabled", "search", "un_scopes", "un_links")}
+    tavily_search.enabled = lambda: True
+    tavily_search.search = lambda part, max_results=5: []
+    tavily_search.un_links = lambda reg: []
+    try:
+        with scopes_ko_table(table):
+            unece._scopes_cache = {"regulations": {}}  # hide the OJ snapshot
+            tavily_search.un_scopes = lambda regs: {r.code: tavily_text for r in regs}
+            rep, jobs = _judged_review(part_ko, "ko")
+            v, md = rep.scope_quotes["UN R90"], rep.markdown()
+            assert next(j for j in jobs if j[0] == "UN R90")[3] == tavily_text and not rep.un_sources
+            assert (v["id"], v["source"], v["status"], v["ko"], v["text"]) == \
+                ("UN R90", "tavily", "stale", None, tavily_text), v
+            assert "적용 범위 원문 (영문, Tavily 검색으로 가져온 UNECE 문서 발췌):" in md and stale_note in md
+            assert ko90 not in md and ko135 in md, "FMVSS translations are unaffected by the UN source"
+            tavily_search.un_scopes = lambda regs: {}
+            rep, jobs = _judged_review(part_ko, "ko")
+            v, md = rep.scope_quotes["UN R90"], rep.markdown()
+            assert next(j for j in jobs if j[0] == "UN R90")[3] == reg90.scope
+            assert (v["id"], v["kind"], v["source"], v["status"], v["ko"]) == \
+                ("UN R90 summary", "un_summary", "catalogue", "ok", ko_sum), v
+            assert "적용 범위 요약 (영문, RegNav 선별 요약이며 규정 원문이 아님):" in md and ko_sum in md
+        with scopes_ko_table({k: t for k, t in table.items() if k != "UN R90 summary"}):
+            unece._scopes_cache = {"regulations": {}}
+            assert _judged_review(part_ko, "ko")[0].scope_quotes["UN R90"]["status"] == "missing"
+    finally:
+        unece._scopes_cache = None
+        for name, fn in saved.items():
+            setattr(tavily_search, name, fn)
+
+    # two different texts under one report code (live only: FMVSS 122 and 122a) are left without a quote
+    quote = ko_scopes.Quote
+    a, b = quote("FMVSS 122", "fmvss_scope", "one", "ecfr"), quote("FMVSS 122a", "fmvss_scope", "two", "ecfr")
+    kept: dict = {}
+    pipeline._keep(kept, "FMVSS 122", a)
+    pipeline._keep(kept, "FMVSS 122", a)
+    pipeline._keep(kept, "UN R1", None)
+    assert kept == {"FMVSS 122": a}
+    pipeline._keep(kept, "FMVSS 122", b)
+    pipeline._keep(kept, "FMVSS 122", a)
+    assert kept == {"FMVSS 122": None}
+
+    # view(): the three statuses, and a damaged file switches the feature off instead of breaking reviews
+    with scopes_ko_table({"A": {"src_sha256": ko_scopes.digest("x  y"), "ko": "ㄱ"}, "B": {"src_sha256": "0", "ko": "ㄴ"},
+                          "C": {"src_sha256": ko_scopes.digest("x"), "ko": "  "}, "D": "not a dict"}):
+        status = lambda i: ko_scopes.view(quote(i, "un_scope", "x y", "oj"))["status"]
+        assert [status(i) for i in "ABCDE"] == ["ok", "stale", "missing", "missing", "missing"]
+    with scopes_ko_table(None):
+        ko_scopes.PATH.write_text("{ not json", encoding="utf-8")
+        assert ko_scopes.texts() == {} and not ko_scopes.available()
+        ko_scopes._cache = None
+        ko_scopes.PATH.write_text(json.dumps({"texts": ["not", "a", "dict"]}), encoding="utf-8")
+        assert ko_scopes.texts() == {}
+
+    print("ok korean scope versions: changed live eCFR or Tavily text gets the one-line note, whitespace alone "
+          "does not; catalogue summary has its own entry; damaged file = off")
+
+
+def _merger():
+    """scripts/merge_scope_translations.py as a module: its ``problems`` is the check behind the merge."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("merge_scope_translations",
+                                                  ROOT / "scripts" / "merge_scope_translations.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def check_scope_translation_data():
+    """The real data/scopes_ko.json that the Korean demo ships: every English text a Korean report can quote
+    has a translation made from exactly that text (hash), none is empty, and every number and category or
+    section code of the English appears in the Korean (``problems`` of scripts/merge_scope_translations.py,
+    the same check that gates the merge). The checker is tried on damaged copies, and the real table is run
+    end to end: Korean reviews of all 20 test parts quote only translated texts. Offline, writes nothing."""
+    from regnav import i18n, ko_scopes
+    merger = _merger()
+
+    data = json.loads(ko_scopes.PATH.read_text(encoding="utf-8"))
+    assert {"note", "built", "texts"} <= set(data) and isinstance(data["texts"], dict), sorted(data)
+    assert "비공식 참고 번역" in data["note"] and "원문 우선" in data["note"] and re.fullmatch(r"\d{4}-\d{2}-\d{2}", data["built"])
+    texts = data["texts"]
+    sources = _exporter().build_sources()
+    by_id = {e["id"]: e for e in sources}
+    found = merger.problems(sources, texts)
+    assert not found, f"{len(found)} problem(s) in data/scopes_ko.json:\n- " + "\n- ".join(found[:25])
+    assert set(texts) == set(by_id) and ko_scopes.available() and ko_scopes.texts() == texts
+
+    # the checker is not vacuous: each kind of damage to one real entry is reported against that entry
+    def damaged(victim, **change):
+        table = {i: dict(t) for i, t in texts.items()}
+        if "ko" in change:
+            table[victim]["ko"] = change["ko"]
+        if "src_sha256" in change:
+            table[victim]["src_sha256"] = change["src_sha256"]
+        return merger.problems(sources, table)
+
+    def names(found, victim, word):
+        return any(line.startswith(f"{victim}:") and word in line for line in found)
+
+    def dropping(kind, tokens, minimum_len):
+        """(id, token): a text whose English and Korean carry the token the same number of times, so that
+        taking one out of the Korean must be reported."""
+        for e in sources:
+            ko_tokens = tokens(texts[e["id"]]["ko"])
+            for token, count in tokens(e["src"]).items():
+                if e["kind"] == kind and len(token) >= minimum_len and ko_tokens[token] == count:
+                    return e["id"], token
+        raise AssertionError(f"no {kind} text with a token of {minimum_len}+ characters")
+
+    number_id, number = dropping("fmvss_scope", merger.numbers, 4)
+    code_id, code = dropping("un_scope", merger.codes, 2)
+    un90, ko90 = by_id["UN R90"], texts["UN R90"]["ko"]
+    assert names(damaged(number_id, ko=texts[number_id]["ko"].replace(number, "", 1)), number_id, "number")
+    assert names(damaged(code_id, ko=texts[code_id]["ko"].replace(code, code[0], 1)), code_id, "code")
+    assert names(damaged("UN R90", ko="  "), "UN R90", "empty")
+    assert names(damaged("UN R90", src_sha256="0" * 64), "UN R90", "hash differs")
+    assert names(damaged("UN R90", ko=ko90.replace("\n", " ")), "UN R90", "Korean lines")
+    assert names(damaged("UN R90", ko=un90["src"]), "UN R90", "no Hangul")
+    assert names(damaged("UN R90", ko=ko90 + " [...]"), "UN R90", "cut marker")
+    assert names(damaged("UN R90", ko=ko90[: len(un90["src"]) // 8]), "UN R90", "ratio")
+    assert names(damaged("UN R90", ko=" " + ko90), "UN R90", "whitespace")
+    assert merger.problems(sources, {i: t for i, t in texts.items() if i != "UN R90"}) == ["UN R90: no translation"]
+    assert merger.problems(sources, {i: t for i, t in texts.items() if i != "UN R90"}, partial=True) == []
+    assert merger.problems(sources, {**texts, "UN R999": texts["UN R90"]}) == ["UN R999: not the id of any quotable text"]
+    assert merger.problems(sources, {**texts, "UN R90": "not a dict"})
+    assert merger.numbers("4,536 kg, 1.1. and 2.43.1, 1949") == {"4,536": 1, "1.1": 1, "2.43.1": 1, "1949": 1}
+    assert merger.codes("M1, N2G and R13-H; not 571.122a, M or 4,536") == {"M1": 1, "N2G": 1, "R13-H": 1}
+
+    # the display agrees with the table: every exported text gets status ok for the very text it was made from
+    for e in sources:
+        view = ko_scopes.view(ko_scopes.Quote(e["id"], e["kind"], e["src"], "oj"))
+        assert view["status"] == "ok" and view["ko"] == texts[e["id"]]["ko"] and view["cut"] == e["truncated"], e["id"]
+
+    # end to end with the real table: every verdict that quotes a Scope text shows its Korean translation
+    parts = list(json.loads(ENGLISH_BASELINE.read_text(encoding="utf-8"))["parts"]) + i18n.EXAMPLES["ko"]
+    space = _space_app()
+    quoted: set[str] = set()
+    for part in parts:
+        rep = pipeline.review(part, dry_run=True, lang="ko")
+        md = rep.markdown()
+        assert rep.scope_quotes, part
+        for code, q in rep.scope_quotes.items():
+            assert q["status"] == "ok" and q["ko"] == texts[q["id"]]["ko"], (part, code)
+            assert pipeline._plain(q["ko"].split("\n")[0].strip()) in md, (part, code)
+            quoted.add(q["id"])
+        assert md.count("적용 범위 (참고 번역, 비공식: 법적 효력은 원문):") == len(rep.scope_quotes), part
+        assert "번역본이 없어" not in md and "버전이 달라" not in md, part
+        if space:
+            assert space.render(rep).count("<details>") == len(rep.scope_quotes), part
+    assert {"UN R90", "FMVSS 135"} <= quoted and any(i.endswith("a") for i in quoted), sorted(quoted)
+    english = pipeline.review(parts[0], dry_run=True)
+    assert english.scope_quotes == {} and "적용 범위" not in english.markdown()
+
+    n_numbers = sum(sum(merger.numbers(e["src"]).values()) for e in sources)
+    n_codes = sum(sum(merger.codes(e["src"]).values()) for e in sources)
+    kinds = {k: sum(1 for e in sources if e["kind"] == k) for k in ko_scopes.KINDS}
+    print(f"ok scope translation data: {len(texts)}/{len(by_id)} texts ({kinds['un_scope']} UN Scope, "
+          f"{kinds['fmvss_scope']} FMVSS excerpts, {kinds['un_summary']} catalogue summaries), "
+          f"{sum(len(t['ko']) for t in texts.values())} Korean chars for {sum(e['chars'] for e in sources)} English; "
+          f"hashes match, none empty, {n_numbers} numbers and {n_codes} codes of the English present in the Korean, "
+          f"checker catches 9 kinds of damage; {len(parts)} Korean reviews quote {len(quoted)} distinct texts, all translated")
+
+
 if __name__ == "__main__":
     if "--update-english-baseline" in sys.argv:
         if _space_app() is None:
@@ -625,4 +1063,8 @@ if __name__ == "__main__":
     check_korean_input()
     check_korean_judge_and_caps()
     check_korean_ui_and_api()
+    check_scope_translation_export()
+    check_korean_scope_display()
+    check_korean_scope_versions()
+    check_scope_translation_data()
     print("all dry-run checks passed")
