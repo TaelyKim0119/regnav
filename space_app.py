@@ -40,6 +40,19 @@ EXAMPLES_KO = i18n.EXAMPLES["ko"]  # the same five parts, written in Korean
 LANGUAGES = [("English", "en"), ("한국어", "ko")]  # English is the default: judges are international
 MODEL = os.environ.get("REGNAV_MODEL", "nvidia/nemotron-3-super-120b-a12b")
 
+# Gradio's own Markdown CSS sets `overflow-wrap: break-word` on the rendered prose (so a long
+# URL in a paragraph cannot overflow the page); inherited into a report's multi-column tables
+# (verdicts, the FMVSS/UN R/KMVSS comparison, the clause-by-clause comparison) on a phone-width
+# viewport, that forces ordinary words into a one-letter-per-line column rather than wrapping at
+# spaces, since the auto table layout shrinks every column to fit and `break-word` lets it do so
+# mid-word. Restoring normal word breaking inside tables, with the table's own block allowed to
+# scroll horizontally instead of being squeezed, keeps every table readable on a phone screen
+# (checked at 390px width; see docs/devlog for the before/after screenshots).
+TABLE_CSS = """
+.prose { overflow-x: auto; }
+.prose table, .prose table td, .prose table th { overflow-wrap: normal; word-break: normal; }
+"""
+
 
 def _live() -> bool:
     return bool(os.environ.get("NEBIUS_API_KEY"))
@@ -181,4 +194,4 @@ with gr.Blocks(title="RegNav") as demo:
         .then(end_review, inputs=lang, outputs=go, api_visibility="private")
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(css=TABLE_CSS)

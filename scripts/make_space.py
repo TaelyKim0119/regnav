@@ -75,7 +75,7 @@ def check_contract(out: Path) -> list[str]:
     if meta.get("app_file") != "space_app.py":
         problems.append("README front matter: app_file must be space_app.py")
     app = (out / "space_app.py").read_text(encoding="utf-8")
-    if "@spaces.GPU" not in app or "demo.launch()" not in app:
+    if "@spaces.GPU" not in app or "demo.launch(" not in app:
         problems.append("space_app.py must register a @spaces.GPU function and call demo.launch()")
     if (out / "data" / "budget.json").exists():
         problems.append("data/budget.json must not ship (the Space keeps its own daily counter)")

@@ -647,6 +647,29 @@ def check_korean_ui_and_api():
           "panel), Korean examples and report, button loading state")
 
 
+def check_mobile_table_css():
+    """A phone-width (390px) screenshot of a rendered review on 2026-10-05 showed Gradio's own
+    Markdown CSS (`overflow-wrap: break-word`, meant to stop a long URL in a paragraph overflowing
+    the page) forcing ordinary words in the verdict, comparison and clause-comparison tables into a
+    one-letter-per-line column, since the auto table layout shrinks every column to fit the phone
+    width and `break-word` lets it do so mid-word. ``space_app.TABLE_CSS`` restores normal word
+    breaking inside tables and lets a table that still doesn't fit scroll horizontally on its own
+    instead (verified against a live page with a headless browser: the clause-comparison table's
+    `.prose` block scrolls, the page itself does not). Checked here without a browser: the CSS
+    string itself, and that ``demo.launch`` is actually called with it (``make_space.py``'s Space
+    contract check only requires the literal substring ``"demo.launch("`` for this reason)."""
+    space = _space_app()
+    if space is None:
+        print("ok mobile table css: skipped (no gradio)")
+        return
+    css = space.TABLE_CSS
+    assert "overflow-wrap: normal" in css and "word-break: normal" in css and "overflow-x: auto" in css
+    source = (ROOT / "space_app.py").read_text(encoding="utf-8")
+    assert "demo.launch(css=TABLE_CSS)" in source
+    print("ok mobile table css: table cells no longer forced to break words mid-letter on a phone "
+          "screen; a too-wide table scrolls on its own, the page does not")
+
+
 @contextlib.contextmanager
 def scopes_ko_table(texts):
     """Point regnav.ko_scopes at a temporary scopes_ko.json holding ``texts`` ({id: {"src_sha256", "ko"}}),
@@ -1108,6 +1131,7 @@ if __name__ == "__main__":
     check_korean_input()
     check_korean_judge_and_caps()
     check_korean_ui_and_api()
+    check_mobile_table_css()
     check_scope_translation_export()
     check_korean_scope_display()
     check_korean_scope_versions()
