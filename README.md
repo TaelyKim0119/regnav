@@ -11,6 +11,13 @@ and a link to the official text.
 
 Built for the Nebius x NVIDIA Global AI Hackathon (2026).
 
+![RegNav verdict table for a sample part, offline demo mode](docs/screenshots/demo_result.png)
+
+*English desktop view, offline demo mode (keyword placeholder verdicts, no model calls).
+The Korean UI at phone width looks like this:*
+
+<img src="docs/screenshots/demo_mobile_ko.png" alt="RegNav Korean UI at phone width" width="360">
+
 ## Why
 
 Before a part can be certified, engineers and certification bodies spend hours finding
@@ -111,12 +118,58 @@ per-review and per-day call caps in `regnav/budget.py` stay active on the public
 * Deployable on Nebius AI Cloud via the included `Dockerfile`.
 * Licence: MIT.
 
+## Measured accuracy
+
+`scripts/accuracy_table.py` runs 10 part descriptions (5 worked examples + 5 held-out parts
+added after the example-driven keyword gaps were fixed, so their numbers are an honest estimate
+for unseen parts) against a draft reference list of the regulations a certification reviewer
+would expect, and reports recall on the candidate list (did RegNav even propose the right
+regulation?) and on the "Must review" bucket (did it also rank it correctly?). This measures the
+**dry-run mode**: a keyword placeholder judge with no model calls, used so the table is
+reproducible with zero spend; it is the floor the live Nemotron judge is expected to beat, not a
+measurement of Nemotron itself (that needs a paid run, tracked as an open item).
+
+Baseline, 2026-10-06 (offline, `NEBIUS_API_KEY=` `TAVILY_API_KEY=`):
+
+| | Candidate recall | Must-review recall |
+|---|---:|---:|
+| English, dev (5 example parts) | 15/15 (100%) | 9/15 (60%) |
+| English, held-out (5 unseen parts) | 10/10 (100%) | 7/10 (70%) |
+| English, total | 25/25 (100%) | 16/25 (64%) |
+| Korean input, total | 25/25 (100%) | 15/25 (60%) |
+
+Candidate recall is 100%: every expected regulation at least reaches the review list. The
+remaining must-review gap is mostly the dry-run judge's keyword scoring, not retrieval - e.g. a
+held-out muffler part scores one point under the "must" threshold against UN R59 even though the
+part's own words ("silencer", "muffler", "exhaust") already literally match the regulation's
+scope text, a genuine threshold question left untuned so the held-out set stays honest. Re-run
+with `NEBIUS_API_KEY= TAVILY_API_KEY= REGNAV_ECFR_OFFLINE=1 python scripts/accuracy_table.py` to
+reproduce.
+
 ## Roadmap
 
 * Tavily web retrieval for regulations outside the seed catalogue
 * Korean KMVSS (자동차 및 자동차부품의 성능과 기준에 관한 규칙) via the 법제처 Open API
 * EU type-approval regulation (EU 2018/858, 2019/2144) via EUR-Lex
 * Side-by-side comparison table (FMVSS vs UN R vs KMVSS) for the same part
+
+## Limitations
+
+* The accuracy numbers above are the offline dry-run (keyword placeholder) judge, not a measured
+  live Nemotron run - that needs a paid Token Factory call and is an open item.
+* UN Regulation scope text is read from EU Official Journal republications (unece.org itself
+  refuses programmatic access), which can lag the current UNECE series of amendments; every
+  report says so and links the OJ date and the UNECE original.
+* Korean reference translations of the quoted Scope text (`data/scopes_ko.json`) were made by
+  Claude with no human or legal-translator review; they are labelled unofficial and the English
+  original is what counts.
+* Korean Motor Vehicle Safety Standards (KMVSS) article numbers are a seed table copied from a
+  public mirror of the rule, unverified against the 법제처 current text, and the automotive EMC
+  article is still missing - both need a 법제처 Open API key (owner sign-up) RegNav does not have.
+* The free Hugging Face Space sleeps after about 48 hours without visitors; waking it takes about
+  2 minutes.
+* RegNav proposes candidates from a curated catalogue plus optional Tavily web search; it is not
+  a guarantee that no applicable regulation was missed.
 
 ## Disclaimer
 
