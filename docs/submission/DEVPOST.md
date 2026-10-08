@@ -82,5 +82,14 @@ python, fastapi, nvidia-nemotron, nebius-token-factory, ecfr-api, tavily, docker
 
 ## Feedback for Nebius / NVIDIA (Most Valuable Feedback prize)
 
-[[Concrete notes from the live run: model-id discoverability, JSON-mode tag visibility on
-model cards, latency and rate limits at hackathon credit level, docs gaps.]]
+Model id discoverability (no model-card page with the exact `model=` string); reasoning
+tokens silently consumed our `max_tokens` cap (5/11 calls returned empty JSON at 300
+tokens, fixed at 1000, no `reasoning_tokens` field to budget by); no Token Factory
+spending cap, so we built our own; the hackathon promo code needed a separate form from
+the normal Top-up dialog; Tavily finds the right unece.org PDFs but can't extract text
+from them (bot-blocked), so we read UN Regulation Scope text from the EU Official Journal
+instead; once correctly token-budgeted, Nemotron's verdicts on our first live run were
+accurate and cited real scope wording, including correctly overriding a keyword-ranking
+mistake.
+
+Full write-up with file/line evidence for each point: `docs/submission/FEEDBACK.md`.
