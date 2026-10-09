@@ -31,7 +31,7 @@ Python 3.12, FastAPI, httpx. The eCFR versioner API needs no key and returns sec
 
 ## What we learned
 
-Regulation applicability is a scope-clause problem, not a search problem. Giving the model the official Scope paragraph and a strict verdict schema does more for precision than any amount of retrieval tuning. Live evaluation numbers on a hand-checked sample set will be added before the deadline.
+Regulation applicability is a scope-clause problem, not a search problem. Giving the model the official Scope paragraph and a strict verdict schema does more for precision than any amount of retrieval tuning. On 10 hand-checked part descriptions (5 worked examples + 5 held-out), the offline dry-run floor is candidate recall 25/25 (100%) and must-review recall 16/25 (64%) English / 15/25 (60%) Korean input - a live Nemotron evaluation is the next thing to measure.
 
 ## What is next for RegNav
 

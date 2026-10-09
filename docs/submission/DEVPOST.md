@@ -41,7 +41,8 @@ and `response_format={"type": "json_object"}`, temperature 0.1, 300 output token
 Every review makes N runtime calls to Nebius (one per candidate), so the model is in the
 loop for every answer, not just at build time. Without a key the app runs a keyword
 dry-run mode so the pipeline can be exercised offline. Deployed with the included
-Dockerfile on Nebius AI Cloud: [[demo URL]].
+Dockerfile on Nebius AI Cloud. Current demo (Hugging Face Space, offline mode until the
+`NEBIUS_API_KEY` secret is added): https://huggingface.co/spaces/kim0192/regnav.
 
 ## Challenges we ran into
 
@@ -57,7 +58,12 @@ Dockerfile on Nebius AI Cloud: [[demo URL]].
 * End-to-end: description in, cited and prioritised regulation list out, in
   about 38 seconds for 11 candidates (sequential calls; parallel calls are a planned speed-up).
 * Primary sources only. Every verdict links to ecfr.gov or unece.org.
-* [[Accuracy on the sample set: e.g. 10 parts, Must-review recall vs. hand-made answer key]]
+* Measured on 10 part descriptions (5 worked examples + 5 held-out) against a hand-made
+  reference list: candidate recall 25/25 (100%) - every expected regulation reaches the
+  review list; must-review recall 16/25 (64%) English / 15/25 (60%) Korean input. This is
+  the offline dry-run (keyword placeholder) judge, the floor the live Nemotron judge is
+  expected to beat, not yet a measurement of Nemotron itself (`scripts/accuracy_table.py`,
+  reproducible with zero spend).
 
 ## What we learned
 
@@ -76,9 +82,9 @@ python, fastapi, nvidia-nemotron, nebius-token-factory, ecfr-api, tavily, docker
 
 ## Links
 
-* Demo: [[demo URL]]
+* Demo: https://huggingface.co/spaces/kim0192/regnav
 * Video: [[YouTube URL]]
-* Repo: [[GitHub URL]] (MIT)
+* Repo: https://github.com/TaelyKim0119/regnav (MIT)
 
 ## Feedback for Nebius / NVIDIA (Most Valuable Feedback prize)
 
