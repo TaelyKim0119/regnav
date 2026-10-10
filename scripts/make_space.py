@@ -115,7 +115,7 @@ def boot(out: Path, timeout: float = 120.0) -> None:
         # Korean description with the 한국어 report language (the page's language switch)
         status_ko, report_ko = client.predict(
             "승용차 디스크 브레이크용 애프터마켓 브레이크 패드 세트", "ko", api_name="/run_review")
-        if "오프라인 데모 모드" not in status_ko or "UN R90" not in report_ko or "#### 필수 검토" not in report_ko:
+        if "오프라인 데모 모드" not in status_ko or "UN R90" not in report_ko or "#### 🔴 필수 검토" not in report_ko:
             raise SystemExit(f"unexpected Korean review output: {status_ko[:200]} / {report_ko[:300]}")
         print(f"boot ok on port {port}: page renders, review returns {report.count(chr(10))} lines, UN R90 present; "
               f"Korean review returns {report_ko.count(chr(10))} lines in Korean, UN R90 present")

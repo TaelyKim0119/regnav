@@ -628,7 +628,7 @@ def check_korean_ui_and_api():
         return
     status, out = space.run_review(kr, "ko")
     assert "오프라인 데모 모드" in status and "오늘 모델 호출" in status, status
-    assert "#### 필수 검토 (" in out and "| 규정 | 판정 | 근거 (적용범위 문안 기준) |" in out and "UN R90" in out
+    assert "#### 🔴 필수 검토 (" in out and "| 규정 | 판정 | 근거 (적용범위 문안 기준) |" in out and "UN R90" in out
     assert "_검색어 (한글 용어집으로 바꾼 영문): " in out and "(필수 검토)" in out and "형식승인 결정이 아닙니다" in out
     intro, status_ko, box, button, examples, source, how, how_body = space.switch_language("ko")
     assert intro.startswith("# RegNav\n**이 자동차 부품에는") and box.label == "부품 설명" and button.value == "검토"
@@ -637,7 +637,7 @@ def check_korean_ui_and_api():
     assert [s[0] for s in examples.raw_samples] == i18n.EXAMPLES["ko"] and source.startswith("소스 코드")
     assert space.pick_example(1, "ko") == kr and space.pick_example(1, "en") == i18n.EXAMPLES["en"][1]
     status_en, out_en = space.run_review(i18n.EXAMPLES["en"][1])
-    assert "Offline demo mode" in status_en and "#### Must review (" in out_en and "필수" not in out_en
+    assert "Offline demo mode" in status_en and "#### 🔴 Must review (" in out_en and "필수" not in out_en
     # loading state: the Review button disables and relabels while a review runs, then resets
     loading = space.start_review("ko")
     assert loading.value == "검토 중..." and loading.interactive is False
