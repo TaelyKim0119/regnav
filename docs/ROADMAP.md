@@ -54,7 +54,7 @@ and the backlog when work lands. Dates are KST.
 | 10-08 | owner | Review the expected regulations for 5 parts in `scripts/accuracy_table.py` (1 h) | open |
 | 10-10 | Claude | FMVSS / UN R / KMVSS comparison table | done 09-26 |
 | 10-13 | Claude | README and `docs/submission/DEVPOST*.md` final text with measured numbers | partial: done 10-10 (DEVPOST.md/DEVPOST_STORY.md accuracy numbers + known demo/repo URLs filled, README already had this from backlog item 5); only `[[YouTube URL]]` left, blocked on the owner's 10-20/10-21 recording |
-| 10-15 | Claude | Demo rehearsal: all 5 examples, no UI errors, fix bugs | open |
+| 10-15 | Claude | Demo rehearsal: all 5 examples, no UI errors, fix bugs | done 10-12 (headless-browser pass over all 5 examples x EN/KO x desktop/mobile = 20 runs, no console or page errors, screenshots reviewed by eye; no bugs found, no code change needed) |
 | 10-17 | Claude | `docs/submission/FEEDBACK.md` (feedback prize) and Devpost answer text (Nemotron rating 9) | open |
 | 10-18 | owner | Read the video script, mark lines to say in own words | open |
 | 10-20 | owner | Record the 3-minute video | open |
