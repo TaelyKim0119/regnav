@@ -56,6 +56,13 @@ TABLE_CSS = """
 .rn-badge.rn-must { background: #fde2e1; color: #a61b1b; }
 .rn-badge.rn-check { background: #fdecd2; color: #92600a; }
 .rn-badge.rn-reference { background: #e6e8eb; color: #44484d; }
+/* Each verdict row reads as its own card: a left accent bar in the row's own priority colour,
+   so a reviewer scanning the page sees must/confirm/reference on the row's edge too, not only
+   in the pill. :has() picks the row from the badge already inside it, so render()'s plain
+   markdown table (one row per verdict, unchanged) needs no new markup for this. */
+.prose table tr:has(.rn-must) td:first-child { border-left: 4px solid #a61b1b; }
+.prose table tr:has(.rn-check) td:first-child { border-left: 4px solid #92600a; }
+.prose table tr:has(.rn-reference) td:first-child { border-left: 4px solid #44484d; }
 """
 
 # Verdict priority -> the badge's CSS modifier class (TABLE_CSS above) and a heading marker, so a

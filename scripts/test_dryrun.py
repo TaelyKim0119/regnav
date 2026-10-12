@@ -668,6 +668,13 @@ def check_mobile_table_css():
     assert "demo.launch(css=TABLE_CSS)" in source
     print("ok mobile table css: table cells no longer forced to break words mid-letter on a phone "
           "screen; a too-wide table scrolls on its own, the page does not")
+    # A :has() rule gives each verdict row a left accent bar in its own priority colour (picked
+    # from the ``.rn-must``/``.rn-check``/``.rn-reference`` badge already inside the row), so a
+    # reviewer scanning the page sees the priority on the row's edge too, not only in the pill.
+    for cls in ("rn-must", "rn-check", "rn-reference"):
+        assert f"tr:has(.{cls}) td:first-child" in css and "border-left:" in css.split(f".{cls})")[1][:40], cls
+    print("ok row accent css: each verdict row has a left border in its own must/confirm/reference "
+          "colour, picked from the badge already in the row (no render() change needed)")
 
 
 @contextlib.contextmanager
