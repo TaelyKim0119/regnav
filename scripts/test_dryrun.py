@@ -675,6 +675,16 @@ def check_mobile_table_css():
         assert f"tr:has(.{cls}) td:first-child" in css and "border-left:" in css.split(f".{cls})")[1][:40], cls
     print("ok row accent css: each verdict row has a left border in its own must/confirm/reference "
           "colour, picked from the badge already in the row (no render() change needed)")
+    # Card-layout first slice, continued: border-collapse must be "separate" for border-spacing (the
+    # vertical gap between rows) and the rounded corners below to take effect at all; without it every
+    # row's border merges into its neighbour's and corners cannot round.
+    assert "border-collapse: separate" in css and "border-spacing:" in css
+    for cls in ("rn-must", "rn-check", "rn-reference"):
+        assert f"tr:has(.{cls}) td:first-child" in css and "border-radius:" in css.split(f".{cls})")[1][:90], cls
+        assert f"tr:has(.{cls}) td:last-child" in css, cls
+    assert "border-radius:" in css.split("td:last-child")[-1][:40]
+    print("ok card spacing css: rows are separated with a vertical gap and rounded corners (needs "
+          "border-collapse: separate), so a verdict reads as its own card, not only a coloured line")
 
 
 @contextlib.contextmanager

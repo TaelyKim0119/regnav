@@ -60,9 +60,18 @@ TABLE_CSS = """
    so a reviewer scanning the page sees must/confirm/reference on the row's edge too, not only
    in the pill. :has() picks the row from the badge already inside it, so render()'s plain
    markdown table (one row per verdict, unchanged) needs no new markup for this. */
-.prose table tr:has(.rn-must) td:first-child { border-left: 4px solid #a61b1b; }
-.prose table tr:has(.rn-check) td:first-child { border-left: 4px solid #92600a; }
-.prose table tr:has(.rn-reference) td:first-child { border-left: 4px solid #44484d; }
+.prose table tr:has(.rn-must) td:first-child { border-left: 4px solid #a61b1b; border-radius: 6px 0 0 6px; }
+.prose table tr:has(.rn-check) td:first-child { border-left: 4px solid #92600a; border-radius: 6px 0 0 6px; }
+.prose table tr:has(.rn-reference) td:first-child { border-left: 4px solid #44484d; border-radius: 6px 0 0 6px; }
+.prose table tr:has(.rn-must) td:last-child,
+.prose table tr:has(.rn-check) td:last-child,
+.prose table tr:has(.rn-reference) td:last-child { border-radius: 0 6px 6px 0; }
+/* border-collapse must be "separate" for border-spacing and the per-cell border-radius above to
+   show at all (with the default "collapse" every row's borders merge into its neighbour's, and
+   corners cannot round). The vertical gap this opens between rows is what turns "a table" into
+   "a stack of cards" - the same effect the rest of this block already gives through colour and
+   shape, extended to the rows' own spacing instead of only their edge and pill. */
+.prose table { border-collapse: separate; border-spacing: 0 6px; }
 """
 
 # Verdict priority -> the badge's CSS modifier class (TABLE_CSS above) and a heading marker, so a
