@@ -14,9 +14,9 @@ Built for the Nebius x NVIDIA Global AI Hackathon (2026).
 ![RegNav verdict table for a sample part, offline demo mode](docs/screenshots/demo_result.png)
 
 *English desktop view, offline demo mode (keyword placeholder verdicts, no model calls).
-The Korean UI at phone width looks like this:*
+A Korean-language review at phone width looks like this:*
 
-<img src="docs/screenshots/demo_mobile_ko.png" alt="RegNav Korean UI at phone width" width="360">
+<img src="docs/screenshots/demo_mobile_ko.png" alt="RegNav Korean UI at phone width, showing a reviewed part's Must-review table" width="360">
 
 ## Why
 
