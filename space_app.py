@@ -128,6 +128,9 @@ def render(report) -> str:
     if report.query:  # Korean input: show the English search terms the glossary produced
         out += [i18n.tr(lang, "query", query=_cell(report.query)), ""]
     out += ["> " + i18n.tr(lang, "note", text=_cell(w)) for w in report.warnings] + ([""] if report.warnings else [])
+    counts = " &nbsp;&middot;&nbsp; ".join(f"{_PRIO_ICON[prio]} {len(report.bucket(prio))} {label}"
+                                            for prio, label in order(lang))
+    out += [f"**{i18n.tr(lang, 'summary_heading')}:** {counts}", ""]
     for prio, label in order(lang):
         items = report.bucket(prio)
         if not items:
