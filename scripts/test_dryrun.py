@@ -404,6 +404,45 @@ def check_uncatalogued_un_candidate():
     print("ok uncatalogued UN candidate: web-named UN R79 (outside the curated catalogue) judged on the Tavily snippet")
 
 
+def check_fmvss_mentioned_candidate():
+    """Unlike the UN path above, this one was never untested, not unbuilt: ``pipeline.review()``
+    has added FMVSS numbers a web search names (``tavily_search.mentioned_regulations()``'s ``fm``
+    set, looked up in the full eCFR index by number) since the very first commit, but no offline
+    check ever exercised it - ``tavily_search.search`` only returns hits with a real
+    ``TAVILY_API_KEY``, which every automated run keeps empty, so this branch of ``review()`` has
+    run in production only, never in CI. Stubs ``tavily_search.search`` the same way
+    ``check_uncatalogued_un_candidate`` does. Unlike an uncatalogued UN Regulation, FMVSS 108 has a
+    real scope text in the committed eCFR snapshot, so the web-named path here gives the judge that
+    text, not just the Tavily snippet."""
+    from regnav.sources import ecfr, tavily_search
+
+    part = "Aftermarket infotainment touchscreen head unit"
+    assert not any(s.number == "108" for s in pipeline.fmvss_candidates(part)), \
+        "test needs an FMVSS number the part's own keywords don't match"
+    hit = tavily_search.WebHit("Lighting equipment requirements", "https://www.ecfr.gov/current/title-49/section-571.108",
+                                "Replacement lamps must meet FMVSS 108 photometric requirements for lighting.")
+    un, fm = tavily_search.mentioned_regulations([hit])
+    assert un == set() and fm == {"108"}, (un, fm)
+
+    seen_scopes: dict[str, str] = {}
+    real_judge = pipeline.judge
+    def spy(part, regulation, title, url, scope, **kw):
+        seen_scopes[regulation] = scope
+        return real_judge(part, regulation, title, url, scope, **kw)
+    real_search = tavily_search.search
+    tavily_search.search, pipeline.judge = (lambda part, max_results=5: [hit]), spy
+    try:
+        rep = pipeline.review(part, dry_run=True)
+    finally:
+        tavily_search.search, pipeline.judge = real_search, real_judge
+    f108 = next((v for v in rep.verdicts if v.regulation == "FMVSS 108"), None)
+    assert f108 is not None and "[dry-run]" in f108.why, rep.verdicts
+    assert f108.title == "Standard No. 108; Lamps, reflective devices, and associated equipment.", f108.title
+    assert seen_scopes["FMVSS 108"] == ecfr.scope("571.108") and "S1 Scope." in seen_scopes["FMVSS 108"], \
+        "judge must read the real eCFR scope, not just the Tavily snippet or the bare title"
+    print("ok fmvss mentioned candidate: web-named FMVSS 108 (missed by title keywords) judged on its real eCFR scope text")
+
+
 def check_comparison_table():
     from fastapi.testclient import TestClient
     import app as webapp
@@ -1142,6 +1181,7 @@ if __name__ == "__main__":
     check_tavily_un_scope()
     check_unece_oj_snapshot()
     check_uncatalogued_un_candidate()
+    check_fmvss_mentioned_candidate()
     check_comparison_table()
     check_clause_comparison()
     check_english_unchanged()
